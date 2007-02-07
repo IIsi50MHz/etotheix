@@ -1,5 +1,5 @@
+#summary What is this project about?
 #labels Featured,Phase-Requirements
-#What is this project about?
 
 = What are we trying to do? =
 Create a computer algebra system comparable to Mathmatica or Maple that runs completely in browser. Actually, "comparable" is probably not the right word. It won't do any serious number crunching, but it should be able to do the basics:
@@ -12,7 +12,6 @@ Create a computer algebra system comparable to Mathmatica or Maple that runs com
 
 = How? =
 I'm thinking it might be possible to create something that will simplify, factor, expand algebraic expressions pretty easily. Maybe. I'm think mixing in some XLST might make it relatively straight forward.  
-
 
 
 
