@@ -2,8 +2,14 @@
 // Updated 2007.01.31
 // Pruned 2007.02.06
 
-/////
-// To create a function with options, use the options() function like so...
+/**
+ * For creating functions with options.
+ * @function options
+ * @param {Object} defaultOpts >>> Typically an object literal 
+ * @param {Function} f >>> Typically an annonymous function 
+ * @return{Function} >>> Returns f with added options object 
+ */
+// EXAMPLE
 /*
 var func = options(
 	{
@@ -28,24 +34,28 @@ Options for func can now be used in three ways:
 		f(args, {ding: "bling"}); // alerts "bling wrong"
 		f(args); // alerts "dong wrong"		
 */
-function options(defaultOpts, f) {
-	var _default = defaultOpts;
-	var _current = deepProto(defaultOpts);
+var options = function () {
 	var optsObj = {
+		defaultOpts: {},
+		currentOpts: {},
 		use: function (tempOpts) {
-			var opts = deepCopy(_current);
+			var opts = deepCopy(this.currentOpts);
 			return deepExtend(opts, tempOpts || {});			
 		},
 		set: function (opts) {
-			deepExtend(_current, opts);
+			deepExtend(this.currentOpts, opts);
 		},
-		reset: function () {
-			_current = deepProto(_default);
+		reset: function () {		
+			this.currentOpts = deepProto(this.currentOpts);
 		}	
 	};
-	f.options = deepProto(optsObj); //**does this really need to be a deepProto? Probably	
-	return f;
-};
+	return function (defaultOpts, f) {
+		f.options = deepProto(optsObj);
+		f.options.defaultOpts = defaultOpts;
+		f.options.currentOpts = deepProto(defaultOpts);
+		return f;
+	}
+}();
 
 
 // proto() is an exact copy of Douglass Crockford's object() function (Mochit's clone() function is very similar)
