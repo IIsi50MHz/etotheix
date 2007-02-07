@@ -46,7 +46,7 @@ var options = function () {
 			deepExtend(this.currentOpts, opts);
 		},
 		reset: function () {		
-			this.currentOpts = deepProto(this.currentOpts);
+			this.currentOpts = deepProto(this.defaultOpts);
 		}	
 	};
 	return function (defaultOpts, f) {
