@@ -11,34 +11,35 @@
  */
 // EXAMPLE
 /*
-var func = options(
-	{
-		ding: "dong",
-		ring: "wrong"
-	}, 
-	function f(args, tempOpts) {
-		var opts = f.options.use(tempOpts);
+var func = function () {
+	var defaultOpts = {ding: "dong", ring: "wrong"};
+	var f = function (tempOpts) {
+		var opts = f.options.temp(tempOpts);
 		// do stuff using opts...
 		alert(opts.ding + " " + opts.ring);
-	}
-);
+	};
+	return options(defaultOpts, f);
+}();
 Options for func can now be used in three ways:
 	1) Use default options: 
-		f(args); //alerts "dong wrong"
-	2) Non-destructively use one or more different options until f.options.reset() is called:
-		f.options.set({ding: "bling"})
-		f(args); // now alerts "bling wrong"
-		f.options.reset(); 
-		f(args); // alerts "dong wrong"
+		func(); //alerts "dong wrong"
+	2) Non-destructively use one or more different options until func.options.reset() is called:
+		func.options.set({ding: "bling"});
+		func(); // now alerts "bling wrong"
+		func.options.reset(); 
+		func(); // alerts "dong wrong"
 	3) Use options for one call only:
-		f(args, {ding: "bling"}); // alerts "bling wrong"
-		f(args); // alerts "dong wrong"		
+		func({ding: "bling"}); // alerts "bling wrong"
+		func(); // alerts "dong wrong"		
 */
-var options = function () {
-	var optsObj = {
+// Call executeOnce right now and assign the result to options
+// Calling options creates a new options object
+var options = function executeOnce() {
+	// Create prototype for options objects
+	var optsProto = {
 		defaultOpts: {},
 		currentOpts: {},
-		use: function (tempOpts) {
+		temp: function (tempOpts) {
 			var opts = deepCopy(this.currentOpts);
 			return deepExtend(opts, tempOpts || {});			
 		},
@@ -49,15 +50,26 @@ var options = function () {
 			this.currentOpts = deepProto(this.defaultOpts);
 		}	
 	};
-	return function (defaultOpts, f) {
-		f.options = deepProto(optsObj);
-		f.options.defaultOpts = defaultOpts;
-		f.options.currentOpts = deepProto(defaultOpts);
+	
+	// Return a function and assign it to options
+	// (This gets executed only once)
+	return function (defualtOpts, f) {
+		var optsObj = deepProto(optsProto);
+		optsObj.defaultOpts = defaultOpts;
+		optsObj.currentOpts = deepProto(defaultOpts);
+		f.options = optsObj;
 		return f;
-	}
+	}	
 }();
-
-
+var func = function () {
+	var defaultOpts = {ding: "dong", ring: "wrong"};
+	var f = function (tempOpts) {
+		var opts = f.options.temp(tempOpts);
+		// do stuff using opts...
+		alert(opts.ding + " " + opts.ring);
+	};
+	return options(defaultOpts, f);
+}();
 // proto() is an exact copy of Douglass Crockford's object() function (Mochit's clone() function is very similar)
 // Create a new object and set its prototype property to o.
 function proto(o) {
