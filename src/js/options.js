@@ -17,8 +17,8 @@ var func = function () {
 		var opts = f.options.temp(tempOpts);
 		// do stuff using opts...
 		alert(opts.ding + " " + opts.ring);
-	};
-	return options(defaultOpts, f);
+	};	
+	return f.options(defaultOpts);
 }();
 Options for func can now be used in three ways:
 	1) Use default options: 
@@ -34,41 +34,41 @@ Options for func can now be used in three ways:
 */
 // Call executeOnce right now and assign the result to options
 // Calling options creates a new options object
-var options = function executeOnce() {
+Function.prototype.options = function once() {
 	// Create prototype for options objects
 	var optsProto = {
-		defaultOpts: {},
-		currentOpts: {},
+		_defaultOpts: {},
+		_currentOpts: {},
 		temp: function (tempOpts) {
-			var opts = deepCopy(this.currentOpts);
+			var opts = deepCopy(this._currentOpts);
 			return deepExtend(opts, tempOpts || {});			
 		},
 		set: function (opts) {
-			deepExtend(this.currentOpts, opts);
+			deepExtend(this._currentOpts, opts);
 		},
 		reset: function () {		
-			this.currentOpts = deepProto(this.defaultOpts);
+			this._currentOpts = deepProto(this._defaultOpts);
 		}	
 	};
 	
 	// Return a function and assign it to options
 	// (This gets executed only once)
-	return function (defualtOpts, f) {
-		var optsObj = deepProto(optsProto);
-		optsObj.defaultOpts = defaultOpts;
-		optsObj.currentOpts = deepProto(defaultOpts);
-		f.options = optsObj;
-		return f;
+	return function (defualtOpts) {
+		this.options = deepProto(optsProto); 
+		this.options._defaultOpts = defaultOpts; // Ideally, this would be hidden
+		this.options._currentOpts = deepProto(defaultOpts);
+		return this;
 	}	
 }();
+// Example of use of options objects
 var func = function () {
 	var defaultOpts = {ding: "dong", ring: "wrong"};
 	var f = function (tempOpts) {
 		var opts = f.options.temp(tempOpts);
 		// do stuff using opts...
 		alert(opts.ding + " " + opts.ring);
-	};
-	return options(defaultOpts, f);
+	}.options(defaultOpts);	
+	return f;
 }();
 // proto() is an exact copy of Douglass Crockford's object() function (Mochit's clone() function is very similar)
 // Create a new object and set its prototype property to o.
