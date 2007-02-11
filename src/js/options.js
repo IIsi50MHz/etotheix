@@ -53,7 +53,7 @@ Function.prototype.options = function once() {
 	
 	// Return a function and assign it to options
 	// (This gets executed only once)
-	return function (defualtOpts) {
+	return function (defaultOpts) {
 		this.options = deepProto(optsProto); 
 		this.options._defaultOpts = defaultOpts; // Ideally, this would be hidden
 		this.options._currentOpts = deepProto(defaultOpts);
@@ -67,8 +67,8 @@ var func = function () {
 		var opts = f.options.temp(tempOpts);
 		// do stuff using opts...
 		alert(opts.ding + " " + opts.ring);
-	}.options(defaultOpts);	
-	return f;
+	};
+	return f.options(defaultOpts);	
 }();
 // proto() is an exact copy of Douglass Crockford's object() function (Mochit's clone() function is very similar)
 // Create a new object and set its prototype property to o.
