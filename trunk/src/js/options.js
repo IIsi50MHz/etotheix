@@ -62,13 +62,15 @@ Function.prototype.options = function once() {
 }();
 // Example of use of options objects
 var func = function () {
-	var defaultOpts = {ding: "dong", ring: "wrong"};
 	var f = function (tempOpts) {
 		var opts = f.options.temp(tempOpts);
 		// do stuff using opts...
 		alert(opts.ding + " " + opts.ring);
 	};
-	return f.options(defaultOpts);	
+	return f.options({
+		ding: "dong", 
+		ring: "wrong"
+	});
 }();
 // proto() is an exact copy of Douglass Crockford's object() function (Mochit's clone() function is very similar)
 // Create a new object and set its prototype property to o.
