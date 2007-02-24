@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mtsi:training_session_information xmlns:mtsi="http://www.ais-sim.com/mongoose/ns/session-information">
+	<mts:training_settings xmlns:mts="http://www.ais-sim.com/mongoose/ns/training-settings">
+		<mts:session_description />
+		<mts:session_location />
+		<mts:session_name />
+		<mc:course mc:name="Abridged Rifle Qualification" xmlns:mc="http://www.ais-sim.com/mongoose/ns/course">
+			<mc:full_description>The intent of record fire is to facilitate the commander's evaluation of several individual tasks and integrated marksmanship skill performances, and to provide unit readiness indicators. The qualification standards are specifically related to a prescribed procedure for the conduct of record fire.</mc:full_description>
+			<mc:short_description>Abridged Army M9 Record Fire Qualification Course</mc:short_description>
+			<mc:categories>
+				<mc:category mc:name="Qualification Courses">
+				</mc:category>
+				<mc:category mc:name="Courses of Fire">
+				</mc:category>
+			</mc:categories>
+			<mc:segment_list mc:name="Abridged Rifle Record Qualification">
+				<mc:full_description />
+				<mc:short_description />
+				<mc:segment_list mc:name="Table 1">
+					<mc:full_description />
+					<mc:short_description>Table 1 - Supported Fighting Position</mc:short_description>
+					<mc:course_segment mc:id="0c82fe3d-8720-428e-ab03-d0e38730b6d7" mc:name="Round 1" mc:type="String of Fire" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+						<mc:delay_after_segment bt:type="time_duration" bt:units="seconds">1.000000</mc:delay_after_segment>
+						<mc:delay_before_segment bt:type="time_duration" bt:units="seconds">1.000000</mc:delay_before_segment>
+						<mc:full_description>Target #1: 50 meters for 3 seconds</mc:full_description>
+						<mc:media_dataset>rifle range</mc:media_dataset>
+						<mc:short_description>50m 3sec</mc:short_description>
+						<mc:target_list>
+							<mc:target>
+								<mc:target_model>e-type stationary target</mc:target_model>
+								<mc:target_model_instance>m50l</mc:target_model_instance>
+								<mc:target_name>Round 1: 50m Target</mc:target_name>
+								<mc:offset_from_shooter bt:type="distance_3" bt:units="meters" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+									<bt:x>0.000000</bt:x>
+									<bt:y>50.000000</bt:y>
+									<bt:z>0.000000</bt:z>
+								</mc:offset_from_shooter>
+							</mc:target>
+						</mc:target_list>
+						<mc:end_condition_list>
+							<mc:end_on_timer mc:segment_to_time="Round 1" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+								<mc:timer_duration bt:type="time_duration" bt:units="seconds">3.000000</mc:timer_duration>
+							</mc:end_on_timer>
+							<mc:end_on_hit mc:condition="hit specific target">
+								<mc:target>m50l</mc:target>
+							</mc:end_on_hit>
+						</mc:end_condition_list>
+					</mc:course_segment>
+					<mc:course_segment mc:id="0db20a20-bbc4-424e-8316-01f20378c23b" mc:name="Round 2" mc:type="String of Fire" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+						<mc:delay_after_segment bt:type="time_duration" bt:units="seconds">1.000000</mc:delay_after_segment>
+						<mc:delay_before_segment bt:type="time_duration" bt:units="seconds">1.000000</mc:delay_before_segment>
+						<mc:full_description>Target #2: 200 meters for 6 seconds</mc:full_description>
+						<mc:media_dataset>rifle range</mc:media_dataset>
+						<mc:short_description>200m 6sec</mc:short_description>
+						<mc:target_list>
+							<mc:target>
+								<mc:target_model>e-type stationary target</mc:target_model>
+								<mc:target_model_instance>m200</mc:target_model_instance>
+								<mc:target_name>Round 2: 200m Target</mc:target_name>
+								<mc:offset_from_shooter bt:type="distance_3" bt:units="meters" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+									<bt:x>0.000000</bt:x>
+									<bt:y>200.000000</bt:y>
+									<bt:z>0.000000</bt:z>
+								</mc:offset_from_shooter>
+							</mc:target>
+						</mc:target_list>
+						<mc:end_condition_list>
+							<mc:end_on_timer mc:segment_to_time="Round 2" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+								<mc:timer_duration bt:type="time_duration" bt:units="seconds">6.000000</mc:timer_duration>
+							</mc:end_on_timer>
+							<mc:end_on_hit mc:condition="hit specific target">
+								<mc:target>m200</mc:target>
+							</mc:end_on_hit>
+						</mc:end_condition_list>
+					</mc:course_segment>
+					<mc:course_segment mc:id="0924c16e-d9eb-4a87-b296-14f17b87b93b" mc:name="Round 3" mc:type="String of Fire" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+						<mc:delay_after_segment bt:type="time_duration" bt:units="seconds">1.000000</mc:delay_after_segment>
+						<mc:delay_before_segment bt:type="time_duration" bt:units="seconds">1.000000</mc:delay_before_segment>
+						<mc:full_description>Target #3: 100 meters for 4 seconds</mc:full_description>
+						<mc:media_dataset>rifle range</mc:media_dataset>
+						<mc:short_description>100m 4sec</mc:short_description>
+						<mc:target_list>
+							<mc:target>
+								<mc:target_model>e-type stationary target</mc:target_model>
+								<mc:target_model_instance>m100</mc:target_model_instance>
+								<mc:target_name>Round 3: 100m Target</mc:target_name>
+								<mc:offset_from_shooter bt:type="distance_3" bt:units="meters" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+									<bt:x>0.000000</bt:x>
+									<bt:y>100.000000</bt:y>
+									<bt:z>0.000000</bt:z>
+								</mc:offset_from_shooter>
+							</mc:target>
+						</mc:target_list>
+						<mc:end_condition_list>
+							<mc:end_on_timer mc:segment_to_time="Round 3" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+								<mc:timer_duration bt:type="time_duration" bt:units="seconds">4.000000</mc:timer_duration>
+							</mc:end_on_timer>
+							<mc:end_on_hit mc:condition="hit specific target">
+								<mc:target>m100</mc:target>
+							</mc:end_on_hit>
+						</mc:end_condition_list>
+					</mc:course_segment>
+					<mc:course_segment mc:id="ff1b00e5-9b82-4c1f-abfd-d13aceab269a" mc:name="Round 4" mc:type="String of Fire" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+						<mc:delay_after_segment bt:type="time_duration" bt:units="seconds">1.000000</mc:delay_after_segment>
+						<mc:delay_before_segment bt:type="time_duration" bt:units="seconds">1.000000</mc:delay_before_segment>
+						<mc:full_description>Target #4: 150 meters for 5 seconds</mc:full_description>
+						<mc:media_dataset>rifle range</mc:media_dataset>
+						<mc:short_description>150m 5sec</mc:short_description>
+						<mc:target_list>
+							<mc:target>
+								<mc:target_model>e-type stationary target</mc:target_model>
+								<mc:target_model_instance>m150</mc:target_model_instance>
+								<mc:target_name>Round 4: 150m Target</mc:target_name>
+								<mc:offset_from_shooter bt:type="distance_3" bt:units="meters" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+									<bt:x>0.000000</bt:x>
+									<bt:y>150.000000</bt:y>
+									<bt:z>0.000000</bt:z>
+								</mc:offset_from_shooter>
+							</mc:target>
+						</mc:target_list>
+						<mc:end_condition_list>
+							<mc:end_on_timer mc:segment_to_time="Round 4" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+								<mc:timer_duration bt:type="time_duration" bt:units="seconds">5.000000</mc:timer_duration>
+							</mc:end_on_timer>
+							<mc:end_on_hit mc:condition="hit specific target">
+								<mc:target>m150</mc:target>
+							</mc:end_on_hit>
+						</mc:end_condition_list>
+					</mc:course_segment>
+					<mc:course_segment mc:id="f08718b3-0b5c-4a13-b75c-956debd4c7c1" mc:name="Round 5" mc:type="String of Fire" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+						<mc:delay_after_segment bt:type="time_duration" bt:units="seconds">1.000000</mc:delay_after_segment>
+						<mc:delay_before_segment bt:type="time_duration" bt:units="seconds">1.000000</mc:delay_before_segment>
+						<mc:full_description>Target #5: 300 meters for 8 seconds</mc:full_description>
+						<mc:media_dataset>rifle range</mc:media_dataset>
+						<mc:short_description>300m 8sec</mc:short_description>
+						<mc:target_list>
+							<mc:target>
+								<mc:target_model>e-type stationary target</mc:target_model>
+								<mc:target_model_instance>m300</mc:target_model_instance>
+								<mc:target_name>Round 5: 300m Target</mc:target_name>
+								<mc:offset_from_shooter bt:type="distance_3" bt:units="meters" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+									<bt:x>0.000000</bt:x>
+									<bt:y>300.000000</bt:y>
+									<bt:z>0.000000</bt:z>
+								</mc:offset_from_shooter>
+							</mc:target>
+						</mc:target_list>
+						<mc:end_condition_list>
+							<mc:end_on_timer mc:segment_to_time="Round 5" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+								<mc:timer_duration bt:type="time_duration" bt:units="seconds">8.000000</mc:timer_duration>
+							</mc:end_on_timer>
+							<mc:end_on_hit mc:condition="hit specific target">
+								<mc:target>m300</mc:target>
+							</mc:end_on_hit>
+						</mc:end_condition_list>
+					</mc:course_segment>
+				</mc:segment_list>
+			</mc:segment_list>
+		</mc:course>
+		<mts:assigned_trainee_list>
+			<mts:assigned_trainee>
+				<mts:assigned_lane>1</mts:assigned_lane>
+				<mts:first_name>Arvind</mts:first_name>
+				<mts:last_name>Sekar</mts:last_name>
+				<mts:title>Senior Software Engineer</mts:title>
+				<mts:user_index>67</mts:user_index>
+			</mts:assigned_trainee>
+			<mts:assigned_trainee>
+				<mts:assigned_lane>2</mts:assigned_lane>
+				<mts:first_name>Diane</mts:first_name>
+				<mts:last_name>Brand</mts:last_name>
+				<mts:title>AR/Training Admin</mts:title>
+				<mts:user_index>10</mts:user_index>
+			</mts:assigned_trainee>
+			<mts:assigned_trainee>
+				<mts:assigned_lane>3</mts:assigned_lane>
+				<mts:first_name>Brent</mts:first_name>
+				<mts:last_name>Robinett</mts:last_name>
+				<mts:title>Product Test Technician</mts:title>
+				<mts:user_index>63</mts:user_index>
+			</mts:assigned_trainee>
+		</mts:assigned_trainee_list>
+		<mts:assigned_instructor_list>
+		</mts:assigned_instructor_list>
+	</mts:training_settings>
+	<mtsi:interaction_list>
+		<mtsi:shot_interaction mtsi:id="98e71e37-96c7-439f-aacb-03924348150d" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:end_time bt:type="time_duration" bt:units="seconds">4.061028</mtsi:end_time>
+			<mtsi:lane_number>3</mtsi:lane_number>
+			<mtsi:model_instance_hit>Target3m50l</mtsi:model_instance_hit>
+			<mtsi:start_time bt:type="time_duration" bt:units="seconds">4.061028</mtsi:start_time>
+			<mtsi:hit_position bt:type="distance_3" bt:units="meters" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+				<bt:x>-274.134003</bt:x>
+				<bt:y>-438.041992</bt:y>
+				<bt:z>40.247898</bt:z>
+			</mtsi:hit_position>
+		</mtsi:shot_interaction>
+		<mtsi:shot_interaction mtsi:id="eb32bf99-7c4a-4377-87d2-0eb08cf45f60" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:end_time bt:type="time_duration" bt:units="seconds">9.263071</mtsi:end_time>
+			<mtsi:lane_number>1</mtsi:lane_number>
+			<mtsi:model_instance_hit>Target1m200</mtsi:model_instance_hit>
+			<mtsi:start_time bt:type="time_duration" bt:units="seconds">9.263071</mtsi:start_time>
+			<mtsi:hit_position bt:type="distance_3" bt:units="meters" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+				<bt:x>-203.112000</bt:x>
+				<bt:y>-588.041992</bt:y>
+				<bt:z>39.781700</bt:z>
+			</mtsi:hit_position>
+		</mtsi:shot_interaction>
+		<mtsi:shot_interaction mtsi:id="2c6d56b6-7acb-4a42-928b-75174f8c4c88" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:end_time bt:type="time_duration" bt:units="seconds">9.704464</mtsi:end_time>
+			<mtsi:lane_number>1</mtsi:lane_number>
+			<mtsi:model_instance_hit />
+			<mtsi:start_time bt:type="time_duration" bt:units="seconds">9.704464</mtsi:start_time>
+			<mtsi:hit_position bt:type="distance_3" bt:units="meters" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+				<bt:x>0.000000</bt:x>
+				<bt:y>0.000000</bt:y>
+				<bt:z>0.000000</bt:z>
+			</mtsi:hit_position>
+		</mtsi:shot_interaction>
+		<mtsi:shot_interaction mtsi:id="b88fb0fd-70a6-4c2b-9b84-d947ea096b39" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:end_time bt:type="time_duration" bt:units="seconds">11.948543</mtsi:end_time>
+			<mtsi:lane_number>2</mtsi:lane_number>
+			<mtsi:model_instance_hit>Target2m200</mtsi:model_instance_hit>
+			<mtsi:start_time bt:type="time_duration" bt:units="seconds">11.948543</mtsi:start_time>
+			<mtsi:hit_position bt:type="distance_3" bt:units="meters" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+				<bt:x>-243.112000</bt:x>
+				<bt:y>-588.041992</bt:y>
+				<bt:z>39.629101</bt:z>
+			</mtsi:hit_position>
+		</mtsi:shot_interaction>
+		<mtsi:shot_interaction mtsi:id="dcd495a7-05dc-48c5-80b5-5f8fc4856a9d" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:end_time bt:type="time_duration" bt:units="seconds">15.722892</mtsi:end_time>
+			<mtsi:lane_number>2</mtsi:lane_number>
+			<mtsi:model_instance_hit>Target2m100</mtsi:model_instance_hit>
+			<mtsi:start_time bt:type="time_duration" bt:units="seconds">15.722892</mtsi:start_time>
+			<mtsi:hit_position bt:type="distance_3" bt:units="meters" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+				<bt:x>-236.184998</bt:x>
+				<bt:y>-488.041992</bt:y>
+				<bt:z>40.556702</bt:z>
+			</mtsi:hit_position>
+		</mtsi:shot_interaction>
+		<mtsi:shot_interaction mtsi:id="88035990-546a-48a9-8a7b-252fac35a9c6" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:end_time bt:type="time_duration" bt:units="seconds">17.457226</mtsi:end_time>
+			<mtsi:lane_number>1</mtsi:lane_number>
+			<mtsi:model_instance_hit>Target1m100</mtsi:model_instance_hit>
+			<mtsi:start_time bt:type="time_duration" bt:units="seconds">17.457226</mtsi:start_time>
+			<mtsi:hit_position bt:type="distance_3" bt:units="meters" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+				<bt:x>-196.033005</bt:x>
+				<bt:y>-488.041992</bt:y>
+				<bt:z>40.167599</bt:z>
+			</mtsi:hit_position>
+		</mtsi:shot_interaction>
+		<mtsi:shot_interaction mtsi:id="cc48fe1e-cdbf-4ea0-b12d-9bd2e1714573" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:end_time bt:type="time_duration" bt:units="seconds">22.726656</mtsi:end_time>
+			<mtsi:lane_number>2</mtsi:lane_number>
+			<mtsi:model_instance_hit />
+			<mtsi:start_time bt:type="time_duration" bt:units="seconds">22.726656</mtsi:start_time>
+			<mtsi:hit_position bt:type="distance_3" bt:units="meters" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+				<bt:x>0.000000</bt:x>
+				<bt:y>0.000000</bt:y>
+				<bt:z>0.000000</bt:z>
+			</mtsi:hit_position>
+		</mtsi:shot_interaction>
+		<mtsi:shot_interaction mtsi:id="889d369c-9723-4071-95f3-4d611d06882e" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:end_time bt:type="time_duration" bt:units="seconds">25.412146</mtsi:end_time>
+			<mtsi:lane_number>3</mtsi:lane_number>
+			<mtsi:model_instance_hit>Target3m150</mtsi:model_instance_hit>
+			<mtsi:start_time bt:type="time_duration" bt:units="seconds">25.412146</mtsi:start_time>
+			<mtsi:hit_position bt:type="distance_3" bt:units="meters" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+				<bt:x>-276.794006</bt:x>
+				<bt:y>-538.041992</bt:y>
+				<bt:z>40.344799</bt:z>
+			</mtsi:hit_position>
+		</mtsi:shot_interaction>
+		<mtsi:shot_interaction mtsi:id="98917ce8-1e4d-4f20-9279-ee93fb0aeec2" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:end_time bt:type="time_duration" bt:units="seconds">31.209871</mtsi:end_time>
+			<mtsi:lane_number>1</mtsi:lane_number>
+			<mtsi:model_instance_hit />
+			<mtsi:start_time bt:type="time_duration" bt:units="seconds">31.209871</mtsi:start_time>
+			<mtsi:hit_position bt:type="distance_3" bt:units="meters" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+				<bt:x>0.000000</bt:x>
+				<bt:y>0.000000</bt:y>
+				<bt:z>0.000000</bt:z>
+			</mtsi:hit_position>
+		</mtsi:shot_interaction>
+		<mtsi:shot_interaction mtsi:id="5794853f-ec81-4884-8cfe-d8676b1d1059" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:end_time bt:type="time_duration" bt:units="seconds">33.572669</mtsi:end_time>
+			<mtsi:lane_number>1</mtsi:lane_number>
+			<mtsi:model_instance_hit>Target1m300</mtsi:model_instance_hit>
+			<mtsi:start_time bt:type="time_duration" bt:units="seconds">33.572669</mtsi:start_time>
+			<mtsi:hit_position bt:type="distance_3" bt:units="meters" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+				<bt:x>-203.294998</bt:x>
+				<bt:y>-688.041992</bt:y>
+				<bt:z>40.621300</bt:z>
+			</mtsi:hit_position>
+		</mtsi:shot_interaction>
+	</mtsi:interaction_list>
+	<mtsi:event_list>
+		<mtsi:segment_begin_event mtsi:id="8b56cb06-7a09-4de8-bfef-0d40322d12a3" mtsi:name="Begin Round 1" mtsi:segment_link="0c82fe3d-8720-428e-ab03-d0e38730b6d7" mtsi:segment_was_active="true" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:comments />
+			<mtsi:short_description>50m 3sec</mtsi:short_description>
+			<mtsi:timestamp bt:type="time_duration" bt:units="seconds">1.001503</mtsi:timestamp>
+		</mtsi:segment_begin_event>
+		<mtsi:segment_end_event mtsi:id="a5fe7873-104a-46cf-8dce-f8e79fae2e34" mtsi:name="End Round 1" mtsi:segment_link="0c82fe3d-8720-428e-ab03-d0e38730b6d7" mtsi:segment_was_active="false" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:comments />
+			<mtsi:short_description>50m 3sec</mtsi:short_description>
+			<mtsi:timestamp bt:type="time_duration" bt:units="seconds">4.010224</mtsi:timestamp>
+		</mtsi:segment_end_event>
+		<mtsi:shot_event mtsi:id="869af12c-c9c5-4fc8-9f54-1987670d0603" mtsi:interaction_link="98e71e37-96c7-439f-aacb-03924348150d" mtsi:is_rogue="false" mtsi:name="Round Fired: HIT" mtsi:segment_link="0c82fe3d-8720-428e-ab03-d0e38730b6d7" mtsi:segment_was_active="false" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:comments />
+			<mtsi:short_description>Lane #3: Robinett, Brent</mtsi:short_description>
+			<mtsi:target_name>Round 1: 50m Target</mtsi:target_name>
+			<mtsi:timestamp bt:type="time_duration" bt:units="seconds">4.061028</mtsi:timestamp>
+			<mtsi:trainee_index>63</mtsi:trainee_index>
+		</mtsi:shot_event>
+		<mtsi:segment_begin_event mtsi:id="429c8a7d-c2a9-4b55-a524-ab73f6c461d3" mtsi:name="Begin Round 2" mtsi:segment_link="0db20a20-bbc4-424e-8316-01f20378c23b" mtsi:segment_was_active="true" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:comments />
+			<mtsi:short_description>200m 6sec</mtsi:short_description>
+			<mtsi:timestamp bt:type="time_duration" bt:units="seconds">6.032657</mtsi:timestamp>
+		</mtsi:segment_begin_event>
+		<mtsi:shot_event mtsi:id="fe0069f6-096d-47ca-b25c-6bbd21a7a969" mtsi:interaction_link="eb32bf99-7c4a-4377-87d2-0eb08cf45f60" mtsi:is_rogue="false" mtsi:name="Round Fired: HIT" mtsi:segment_link="0db20a20-bbc4-424e-8316-01f20378c23b" mtsi:segment_was_active="true" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:comments />
+			<mtsi:short_description>Lane #1: Sekar, Arvind</mtsi:short_description>
+			<mtsi:target_name>Round 2: 200m Target</mtsi:target_name>
+			<mtsi:timestamp bt:type="time_duration" bt:units="seconds">9.263071</mtsi:timestamp>
+			<mtsi:trainee_index>67</mtsi:trainee_index>
+		</mtsi:shot_event>
+		<mtsi:shot_event mtsi:id="8660f20f-9771-4b38-a82e-4aa07e6fa73d" mtsi:interaction_link="2c6d56b6-7acb-4a42-928b-75174f8c4c88" mtsi:is_rogue="false" mtsi:name="Round Fired: MISS" mtsi:segment_link="0db20a20-bbc4-424e-8316-01f20378c23b" mtsi:segment_was_active="true" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:comments />
+			<mtsi:short_description>Lane #1: Sekar, Arvind</mtsi:short_description>
+			<mtsi:target_name />
+			<mtsi:timestamp bt:type="time_duration" bt:units="seconds">9.704464</mtsi:timestamp>
+			<mtsi:trainee_index>67</mtsi:trainee_index>
+		</mtsi:shot_event>
+		<mtsi:shot_event mtsi:id="940ca881-692a-44cb-abdb-8f957e9ec600" mtsi:interaction_link="b88fb0fd-70a6-4c2b-9b84-d947ea096b39" mtsi:is_rogue="false" mtsi:name="Round Fired: HIT" mtsi:segment_link="0db20a20-bbc4-424e-8316-01f20378c23b" mtsi:segment_was_active="true" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:comments />
+			<mtsi:short_description>Lane #2: Brand, Diane</mtsi:short_description>
+			<mtsi:target_name>Round 2: 200m Target</mtsi:target_name>
+			<mtsi:timestamp bt:type="time_duration" bt:units="seconds">11.948543</mtsi:timestamp>
+			<mtsi:trainee_index>10</mtsi:trainee_index>
+		</mtsi:shot_event>
+		<mtsi:segment_end_event mtsi:id="c5111a1b-2f0f-4105-8c63-849aab561e6b" mtsi:name="End Round 2" mtsi:segment_link="0db20a20-bbc4-424e-8316-01f20378c23b" mtsi:segment_was_active="false" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:comments />
+			<mtsi:short_description>200m 6sec</mtsi:short_description>
+			<mtsi:timestamp bt:type="time_duration" bt:units="seconds">12.033515</mtsi:timestamp>
+		</mtsi:segment_end_event>
+		<mtsi:segment_begin_event mtsi:id="5fab2874-55c2-4afe-90f4-c8600d8d95b8" mtsi:name="Begin Round 3" mtsi:segment_link="0924c16e-d9eb-4a87-b296-14f17b87b93b" mtsi:segment_was_active="true" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:comments />
+			<mtsi:short_description>100m 4sec</mtsi:short_description>
+			<mtsi:timestamp bt:type="time_duration" bt:units="seconds">14.056909</mtsi:timestamp>
+		</mtsi:segment_begin_event>
+		<mtsi:shot_event mtsi:id="37b8ad27-eace-4178-9262-ed2bda47c53c" mtsi:interaction_link="dcd495a7-05dc-48c5-80b5-5f8fc4856a9d" mtsi:is_rogue="false" mtsi:name="Round Fired: HIT" mtsi:segment_link="0924c16e-d9eb-4a87-b296-14f17b87b93b" mtsi:segment_was_active="true" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:comments />
+			<mtsi:short_description>Lane #2: Brand, Diane</mtsi:short_description>
+			<mtsi:target_name>Round 3: 100m Target</mtsi:target_name>
+			<mtsi:timestamp bt:type="time_duration" bt:units="seconds">15.722892</mtsi:timestamp>
+			<mtsi:trainee_index>10</mtsi:trainee_index>
+		</mtsi:shot_event>
+		<mtsi:shot_event mtsi:id="d61530d3-404e-4552-ab24-354817ab143f" mtsi:interaction_link="88035990-546a-48a9-8a7b-252fac35a9c6" mtsi:is_rogue="false" mtsi:name="Round Fired: HIT" mtsi:segment_link="0924c16e-d9eb-4a87-b296-14f17b87b93b" mtsi:segment_was_active="true" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:comments />
+			<mtsi:short_description>Lane #1: Sekar, Arvind</mtsi:short_description>
+			<mtsi:target_name>Round 3: 100m Target</mtsi:target_name>
+			<mtsi:timestamp bt:type="time_duration" bt:units="seconds">17.457226</mtsi:timestamp>
+			<mtsi:trainee_index>67</mtsi:trainee_index>
+		</mtsi:shot_event>
+		<mtsi:segment_end_event mtsi:id="69b7af38-f120-4507-a4e5-b3c1f4a05e48" mtsi:name="End Round 3" mtsi:segment_link="0924c16e-d9eb-4a87-b296-14f17b87b93b" mtsi:segment_was_active="false" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:comments />
+			<mtsi:short_description>100m 4sec</mtsi:short_description>
+			<mtsi:timestamp bt:type="time_duration" bt:units="seconds">18.068555</mtsi:timestamp>
+		</mtsi:segment_end_event>
+		<mtsi:segment_begin_event mtsi:id="d1a07df2-e869-4ab4-8701-2df579e41797" mtsi:name="Begin Round 4" mtsi:segment_link="ff1b00e5-9b82-4c1f-abfd-d13aceab269a" mtsi:segment_was_active="true" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:comments />
+			<mtsi:short_description>150m 5sec</mtsi:short_description>
+			<mtsi:timestamp bt:type="time_duration" bt:units="seconds">20.091964</mtsi:timestamp>
+		</mtsi:segment_begin_event>
+		<mtsi:shot_event mtsi:id="ad44af78-1759-4639-ad18-fa7b0d001d38" mtsi:interaction_link="cc48fe1e-cdbf-4ea0-b12d-9bd2e1714573" mtsi:is_rogue="false" mtsi:name="Round Fired: MISS" mtsi:segment_link="ff1b00e5-9b82-4c1f-abfd-d13aceab269a" mtsi:segment_was_active="true" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:comments />
+			<mtsi:short_description>Lane #2: Brand, Diane</mtsi:short_description>
+			<mtsi:target_name />
+			<mtsi:timestamp bt:type="time_duration" bt:units="seconds">22.726656</mtsi:timestamp>
+			<mtsi:trainee_index>10</mtsi:trainee_index>
+		</mtsi:shot_event>
+		<mtsi:segment_end_event mtsi:id="a1ea47f6-5ad0-44f1-8ffe-b3edccbf7635" mtsi:name="End Round 4" mtsi:segment_link="ff1b00e5-9b82-4c1f-abfd-d13aceab269a" mtsi:segment_was_active="false" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:comments />
+			<mtsi:short_description>150m 5sec</mtsi:short_description>
+			<mtsi:timestamp bt:type="time_duration" bt:units="seconds">25.106479</mtsi:timestamp>
+		</mtsi:segment_end_event>
+		<mtsi:shot_event mtsi:id="aa13823a-cee8-4a06-ab9e-d576b991ad8d" mtsi:interaction_link="889d369c-9723-4071-95f3-4d611d06882e" mtsi:is_rogue="false" mtsi:name="Round Fired: HIT" mtsi:segment_link="ff1b00e5-9b82-4c1f-abfd-d13aceab269a" mtsi:segment_was_active="false" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:comments />
+			<mtsi:short_description>Lane #3: Robinett, Brent</mtsi:short_description>
+			<mtsi:target_name>Round 4: 150m Target</mtsi:target_name>
+			<mtsi:timestamp bt:type="time_duration" bt:units="seconds">25.412146</mtsi:timestamp>
+			<mtsi:trainee_index>63</mtsi:trainee_index>
+		</mtsi:shot_event>
+		<mtsi:segment_begin_event mtsi:id="514b124d-19be-4bea-acc7-c13973b1534f" mtsi:name="Begin Round 5" mtsi:segment_link="f08718b3-0b5c-4a13-b75c-956debd4c7c1" mtsi:segment_was_active="true" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:comments />
+			<mtsi:short_description>300m 8sec</mtsi:short_description>
+			<mtsi:timestamp bt:type="time_duration" bt:units="seconds">27.129880</mtsi:timestamp>
+		</mtsi:segment_begin_event>
+		<mtsi:shot_event mtsi:id="b726105c-fde4-4436-878e-ed11fb647748" mtsi:interaction_link="98917ce8-1e4d-4f20-9279-ee93fb0aeec2" mtsi:is_rogue="false" mtsi:name="Round Fired: MISS" mtsi:segment_link="f08718b3-0b5c-4a13-b75c-956debd4c7c1" mtsi:segment_was_active="true" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:comments />
+			<mtsi:short_description>Lane #1: Sekar, Arvind</mtsi:short_description>
+			<mtsi:target_name />
+			<mtsi:timestamp bt:type="time_duration" bt:units="seconds">31.209871</mtsi:timestamp>
+			<mtsi:trainee_index>67</mtsi:trainee_index>
+		</mtsi:shot_event>
+		<mtsi:shot_event mtsi:id="11e04903-7e5e-416e-a28b-9a3a237ea4d1" mtsi:interaction_link="5794853f-ec81-4884-8cfe-d8676b1d1059" mtsi:is_rogue="false" mtsi:name="Round Fired: HIT" mtsi:segment_link="f08718b3-0b5c-4a13-b75c-956debd4c7c1" mtsi:segment_was_active="true" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:comments />
+			<mtsi:short_description>Lane #1: Sekar, Arvind</mtsi:short_description>
+			<mtsi:target_name>Round 5: 300m Target</mtsi:target_name>
+			<mtsi:timestamp bt:type="time_duration" bt:units="seconds">33.572669</mtsi:timestamp>
+			<mtsi:trainee_index>67</mtsi:trainee_index>
+		</mtsi:shot_event>
+		<mtsi:segment_end_event mtsi:id="ba77ab6e-f6c5-4153-a251-31efdf7249cf" mtsi:name="End Round 5" mtsi:segment_link="f08718b3-0b5c-4a13-b75c-956debd4c7c1" mtsi:segment_was_active="false" xmlns:bt="http://www.ais-sim.com/mongoose/ns/basic-types">
+			<mtsi:comments />
+			<mtsi:short_description>300m 8sec</mtsi:short_description>
+			<mtsi:timestamp bt:type="time_duration" bt:units="seconds">35.136554</mtsi:timestamp>
+		</mtsi:segment_end_event>
+	</mtsi:event_list>
+	<mtsi:target_list>
+		<mtsi:target mtsi:id="bc712303-23dd-4ded-8adb-50c9dc5ded60" mtsi:name="Round 1: 50m Target" mtsi:segment_link="0c82fe3d-8720-428e-ab03-d0e38730b6d7">
+			<mtsi:comments />
+			<mtsi:short_description>e-type stationary target</mtsi:short_description>
+			<mtsi:shot_event_list>
+				<mtsi:shot_event mtsi:link="869af12c-c9c5-4fc8-9f54-1987670d0603">
+				</mtsi:shot_event>
+			</mtsi:shot_event_list>
+		</mtsi:target>
+		<mtsi:target mtsi:id="f7db4146-3068-4377-bac3-7143b126cb74" mtsi:name="Round 2: 200m Target" mtsi:segment_link="0db20a20-bbc4-424e-8316-01f20378c23b">
+			<mtsi:comments />
+			<mtsi:short_description>e-type stationary target</mtsi:short_description>
+			<mtsi:shot_event_list>
+				<mtsi:shot_event mtsi:link="fe0069f6-096d-47ca-b25c-6bbd21a7a969">
+				</mtsi:shot_event>
+				<mtsi:shot_event mtsi:link="940ca881-692a-44cb-abdb-8f957e9ec600">
+				</mtsi:shot_event>
+			</mtsi:shot_event_list>
+		</mtsi:target>
+		<mtsi:target mtsi:id="dc27da05-819a-4869-a9e4-ff6e50674909" mtsi:name="Round 3: 100m Target" mtsi:segment_link="0924c16e-d9eb-4a87-b296-14f17b87b93b">
+			<mtsi:comments />
+			<mtsi:short_description>e-type stationary target</mtsi:short_description>
+			<mtsi:shot_event_list>
+				<mtsi:shot_event mtsi:link="37b8ad27-eace-4178-9262-ed2bda47c53c">
+				</mtsi:shot_event>
+				<mtsi:shot_event mtsi:link="d61530d3-404e-4552-ab24-354817ab143f">
+				</mtsi:shot_event>
+			</mtsi:shot_event_list>
+		</mtsi:target>
+		<mtsi:target mtsi:id="0e1a2cfb-e6d2-4eee-bbfc-c0f2aa74cdf3" mtsi:name="Round 4: 150m Target" mtsi:segment_link="ff1b00e5-9b82-4c1f-abfd-d13aceab269a">
+			<mtsi:comments />
+			<mtsi:short_description>e-type stationary target</mtsi:short_description>
+			<mtsi:shot_event_list>
+				<mtsi:shot_event mtsi:link="aa13823a-cee8-4a06-ab9e-d576b991ad8d">
+				</mtsi:shot_event>
+			</mtsi:shot_event_list>
+		</mtsi:target>
+		<mtsi:target mtsi:id="d912b4f1-d557-4416-8338-7f9965c28122" mtsi:name="Round 5: 300m Target" mtsi:segment_link="f08718b3-0b5c-4a13-b75c-956debd4c7c1">
+			<mtsi:comments />
+			<mtsi:short_description>e-type stationary target</mtsi:short_description>
+			<mtsi:shot_event_list>
+				<mtsi:shot_event mtsi:link="11e04903-7e5e-416e-a28b-9a3a237ea4d1">
+				</mtsi:shot_event>
+			</mtsi:shot_event_list>
+		</mtsi:target>
+	</mtsi:target_list>
+	<mtsi:training_message_list>
+	</mtsi:training_message_list>
+	<mtsi:trainee_performance_data>
+		<mtsi:performance_data mtsi:trainee_index="10">
+			<mtsi:hit_events>
+				<mtsi:shot_event mtsi:link="940ca881-692a-44cb-abdb-8f957e9ec600">
+				</mtsi:shot_event>
+				<mtsi:shot_event mtsi:link="37b8ad27-eace-4178-9262-ed2bda47c53c">
+				</mtsi:shot_event>
+			</mtsi:hit_events>
+			<mtsi:miss_events>
+				<mtsi:shot_event mtsi:link="ad44af78-1759-4639-ad18-fa7b0d001d38">
+				</mtsi:shot_event>
+			</mtsi:miss_events>
+		</mtsi:performance_data>
+		<mtsi:performance_data mtsi:trainee_index="63">
+			<mtsi:hit_events>
+				<mtsi:shot_event mtsi:link="869af12c-c9c5-4fc8-9f54-1987670d0603">
+				</mtsi:shot_event>
+				<mtsi:shot_event mtsi:link="aa13823a-cee8-4a06-ab9e-d576b991ad8d">
+				</mtsi:shot_event>
+			</mtsi:hit_events>
+			<mtsi:miss_events>
+			</mtsi:miss_events>
+		</mtsi:performance_data>
+		<mtsi:performance_data mtsi:trainee_index="67">
+			<mtsi:hit_events>
+				<mtsi:shot_event mtsi:link="fe0069f6-096d-47ca-b25c-6bbd21a7a969">
+				</mtsi:shot_event>
+				<mtsi:shot_event mtsi:link="d61530d3-404e-4552-ab24-354817ab143f">
+				</mtsi:shot_event>
+				<mtsi:shot_event mtsi:link="11e04903-7e5e-416e-a28b-9a3a237ea4d1">
+				</mtsi:shot_event>
+			</mtsi:hit_events>
+			<mtsi:miss_events>
+				<mtsi:shot_event mtsi:link="8660f20f-9771-4b38-a82e-4aa07e6fa73d">
+				</mtsi:shot_event>
+				<mtsi:shot_event mtsi:link="b726105c-fde4-4436-878e-ed11fb647748">
+				</mtsi:shot_event>
+			</mtsi:miss_events>
+		</mtsi:performance_data>
+	</mtsi:trainee_performance_data>
+	<mtsi:unknown_performance_data>
+		<mtsi:performance_data mtsi:trainee_index="-1">
+			<mtsi:hit_events>
+			</mtsi:hit_events>
+			<mtsi:miss_events>
+			</mtsi:miss_events>
+		</mtsi:performance_data>
+	</mtsi:unknown_performance_data>
+</mtsi:training_session_information>
