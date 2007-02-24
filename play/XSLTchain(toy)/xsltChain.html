@@ -1,0 +1,154 @@
+<html>
+<head>
+<title>XSLT chaining toy</title>
+<script src="http://jquery.com/src/jquery-latest.js"></script>
+<script>
+///////////////////////////////
+function proto(o) {
+	function F() {}
+	F.prototype = o;
+	return new F();
+}
+/////////////
+// Might be nice to extend the jQuery object with this this stuff... not sure if it's a good idea. Maybe it's a good idea. Hmmm.
+jQ = jQuery;
+var Transform = function () {	
+	var transformProto = {	
+		xmlDoc: "", // a document object
+		xslDoc: "", // a document object
+		result: "", // result of last transformation
+
+		// Get an xml or xsl document. Takes a url as its argument.
+		// The result can be passed to the node, xml, or xsl methods.
+		get: function (xml) { //** need to fix this so we can to this asycnronously
+			return jQ.ajax({url: xml, async: false}).responseXML; 
+		},
+		
+		// Imports a document object (use xml() if you want to pass a url), or a node (object or jQuery string)
+		// If passed a document fragment or a node, a document object is created from them
+		// Returns Transform object
+		node: function (xml) {			
+			// if "xml" is a string, assume it's a jQuery selector
+			if (typeof xml === "string") {				
+				xml = jQ(xml)[0]//.clone();			
+			} 
+			/*
+			if (xml.doctype === undefined){ 
+				// If passed a document fragment or node, make a document out of it
+				// ** I've only been able to get XSL transforms to work on documents, not document fragments or nodes
+				doc = document.implementation.createDocument("", "", null);
+				jQ(doc).append(xml);
+				this.xmlDoc = doc;				
+			} else {*/
+				this.xmlDoc = xml;
+			//}					
+			return this;
+		},
+		
+		// Imports a document (url or object), or node object (use node() if you want to pass a jQuery string)		
+		// Returns Transform object
+		xml: function (xml) {			
+			// if "xml" is a string, assume it's a filename
+			if (typeof xml === "string") {				
+				this.xmlDoc = this.get(xml);				
+			} else {
+				this.node(xml);
+			}					
+			return this;
+		},
+		
+		// import the xsl doc
+		// **rename to setXSL?
+		// Returns Transform object
+		xsl: function (xsl) {
+			// if "xsl" is a string, assume it's a filename
+			if (typeof xsl === "string") {
+				this.xslDoc = this.get(xsl);
+			} else {				
+				this.xslDoc = xsl;
+			}
+			this.XSLT.reset();	
+			this.XSLT.importStylesheet(this.xslDoc);
+			return this;
+		},
+		
+		// Set parameters to pass to xsl transform		
+		// Returns Transform object
+		param: function (values) {	
+			for (var param in values) {
+				this.XSLT.setParameter(null, param, values[param]);			
+			}					
+			return this;
+		},
+		
+		// Create a transformed document fragment and store in the result attribute	
+		// Returns Transform object		
+		// 	Example:
+		// 		Trainsform().xml("doc.xml").toFragment("a.xsl").insertIn("#here");		
+		toFragment: function (xsl) {
+			if (xsl) {
+				this.xsl(xsl);				
+			}
+			this.result = this.XSLT.transformToFragment(this.xmlDoc, document);
+			return this;
+		},
+		
+		// Create a transformed document and store in the result attribute
+		// Returns Transform object
+		// 	Example:
+		// 		docResult = Trainsform().xml("doc.xml").toDocument("d.xsl").result;		
+		toDocument: function (xsl) {
+			if (xsl) {
+				this.xsl(xsl);				
+			}
+			this.result = this.XSLT.transformToDocument(this.xmlDoc);
+			return this;
+		},
+		
+		// Create a transformed document and store in the result attribute
+		// Returns Transform object
+		// NOTE: This also stores the result in xmlDoc alowing a chain of transformations.
+		// 	Example:
+		// 		docTransform = Trainsform().xml("doc.xml");
+		//		docTransform.transform("a.xsl").transform("b.xsl").transform("c.xsl").toFragment("d.xsl").insertIn("#here");
+		// Only use this if you want to permanently change the original xmlDoc
+		transform: function (xsl) {
+			this.xmlDoc = this.toDocument(xsl).result;
+			return this;
+		},
+		
+		// Inserts result transformation into the page. Replayces everything inside node(s)
+		// node can be anything thats valid for the jQuery object (css slector, XPath, an element, an array of elements) 
+		// Returns Transform object
+		//	 Example:		
+		//		docTransform = Transform().xml("doc.xml")toFragment("d.xsl");
+		//		docTransform.insertIn(document.getElementById("here"));
+		//		docTransform.insertIn("#there").insertIn(".everywhere");		
+		insertIn: function (node) {
+			jQ(node).html(this.result)
+			return this;
+		}		
+	};
+	// return new Transform object
+	return function () {
+		var obj = proto(transformProto);
+		obj.XSLT = new XSLTProcessor;
+		return obj;
+	}
+}();	
+</script>
+<script>
+jQ(function () {
+	asdf = Transform().xml("toChain.xml").xsl("xsltChain.xsl").toFragment().insertIn("#ding");
+	listTransform = Transform().node("#ding").xsl("xsltChain2.xsl");
+	listTransform.toFragment().insertIn("#ding > ol");
+})
+</script>
+</head>
+<body>
+<div id="ding">
+</div>
+<div id="dong">
+</div>
+</body>
+</html>
