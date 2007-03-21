@@ -1,3 +1,4 @@
+// A wrapper for extending javascript objects' functionality (kind of like how jQuery extends the functionality of the DOM)
 var jObject = function () {
 	var objProto = {
 		o: {},
