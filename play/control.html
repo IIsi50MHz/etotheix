@@ -1,0 +1,64 @@
+<html>
+	<head>		
+		<script src="http://jquery.com/src/jquery-latest.js"></script>
+		<script src="control.js"></script>
+		<script>
+			$(function () {
+				var a = function () {
+					return '({"a":1, "b":2})';
+				};
+				var b = eval(a());
+				alert(b.a+b.b);
+			});
+		</script>
+	</head>
+	<body>
+		<!-- 
+			Classes
+				control
+				delegator
+				controlLinks
+			Attributes and their defaults
+				href
+				event="click"
+				action="select"
+				wrapper= id of delegator
+				control= tagName of first child of wrapper... first child that is not class "controlLinks"... or first sibling of last "controlLinks" element?
+			Tags
+				<a>
+				<div class="controlLinks">
+		-->
+		<p class="control" id="dong">control
+			<div class="controlLinks">
+				<a href="#dong" event="click" action="select highlight"></a>
+				<a href="#ding" event="click" action="show"></a>
+			</div>	
+		</p>
+
+		<p class="delegator" id="kong">delegator
+			<div class="controlLinks" wrapper="#king" control=".thing">
+				<a href=".thing" event="hover" action="highlight" data="{color: 'red'}"></a>
+				<a href="#ding" event="click" action="select"></a>
+				<a href="#ding" event="click" action="show"></a>
+				<a href="#ding" event="hover" action="highlight"></a>		
+			</div>
+			<div class="controlLinks" wrapper=".thing" control=".button">
+				<a href="#ding" event="hover" action="explode"></a>
+			</div>
+			
+			<ul id="king">
+				<li class="thing">one</li>
+				<li class="thing">two
+					<div class="button">bink</div>
+				</li>
+				<li class="thing">three
+					<div class="button">bink</div>
+				</li>
+				<li class="thing">four</li>
+				<li class="thing">five</li>
+			</ul>
+		</p>
+
+		<div id="ding">DING!</div>
+	</body>
+</html>
