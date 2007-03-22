@@ -1,48 +1,74 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 	<head>		
 		<script src="http://jquery.com/src/jquery-latest.js"></script>
-		<script src="control.js"></script>
-		<script>
-			$(function () {
-				var a = function () {
-					return '({"a":1, "b":2})';
-				};
-				var b = eval(a());
-				alert(b.a+b.b);
-			});
-		</script>
+		<script src="control.js"></script>		
 	</head>
 	<body>
 		<!-- 
 			Classes
 				control
 				delegator
-				controlLinks
+				controlHooks
 			Attributes and their defaults
-				href
-				event="click"
-				action="select"
-				wrapper= id of delegator
-				control= tagName of first child of wrapper... first child that is not class "controlLinks"... or first sibling of last "controlLinks" element?
+				"div.controlHooks"
+					control=#id of delegator=#id of parent
+				"div.controlinks > a"
+					href=div.controlHooks[control]
+					event="click"
+					action="select"
 			Tags
 				<a>
-				<div class="controlLinks">
+				<div class="controlHooks">
 		-->
-		<p class="control" id="dong">control
-			<div class="controlLinks">
-				<a href="#dong" event="click" action="select highlight"></a>
-				<a href="#ding" event="click" action="show"></a>
-			</div>	
-		</p>
-
-		<p class="delegator" id="kong">delegator
-			<div class="controlLinks" wrapper="#king" control=".thing">
-				<a href=".thing" event="hover" action="highlight"></a>
-				<a href="#ding" event="click" action="select show"></a>
-				<a href="#ding" event="hover" action="highlight"></a>
+		
+		<!-- a delegator is what events are bound to. It should be an element that never gets destroyed or repelaced for the life of the page -->
+		<!-- a control is an element where the delgator looks for events. You can create and destroy controls at will -->
+		<!-- controlHooks class div holds "links" to elements effected by the control element -->
+		<!-- the event and action attributes of a link determine when (event) and how (action) the element (href) is affected by the control element -->
+		<!--
+			instead of anchors in divs, maybe use lists
+			<div id="kong">
+				<ul class="controlHooks" control=".thing">
+					<li action="selectOne"></li>				
+					<li hook="#ding" event="click" action="toggleSelect"></li>
+				</ul>
+				<ul class="controlHooks" control=".button">
+					<li hook="#ding" event="hover" action="select"></li>
+				</ul>
+				
+				<ul id="king">
+					<li class="thing">one</li>
+					<li class="thing">two
+						<div class="button">bink</div>
+					</li>
+					<li class="thing">three
+						<div class="button">bink</div>
+					</li>
+					<li class="thing">four</li>
+					<li class="thing">five</li>
+				</ul>
 			</div>
-			<div class="controlLinks" wrapper=".thing" control=".button">
-				<a href="#ding" event="hover" action="explode"></a>
+		-->
+		<div id="dong">
+			delegator-control
+			<div class="controlHooks"> <!-- default control should be parent of controlHooks class element (control="#dong") -->
+				<a href="#dong" event="click" action="select"></a>
+				<a href="#ding" event="click" action="select"></a>
+			</div>	
+		</div>
+
+		<!-- delegator will always be the parent of controlHooks class element -->
+		<!-- control elements must be the parent of the controlHooks class element or a decentdant of that paernet -->	
+		<!-- currently delegator element (parent of one or more controlHooks class elements) must have an id -->
+		<!-- might want to think about using an attribute other than href... -->
+		<div id="kong">delegator 
+			<div class="controlHooks" control=".thing">
+				<a action="selectOne"></a>				
+				<a href="#ding" event="click" action="toggleSelect"></a>
+			</div>
+			<div class="controlHooks" control=".button">
+				<a href="#ding" event="hover" action="select"></a>
 			</div>
 			
 			<ul id="king">
@@ -56,7 +82,7 @@
 				<li class="thing">four</li>
 				<li class="thing">five</li>
 			</ul>
-		</p>
+		</div>
 
 		<div id="ding">DING!</div>
 	</body>
