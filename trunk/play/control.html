@@ -5,70 +5,53 @@
 		<script src="control.js"></script>		
 	</head>
 	<body>
-		<!-- 
-			Classes
-				control
-				delegator
-				controlHooks
-			Attributes and their defaults
-				"div.controlHooks"
-					control=#id of delegator=#id of parent
-				"div.controlinks > a"
-					href=div.controlHooks[control]
-					event="click"
-					action="select"
-			Tags
-				<a>
-				<div class="controlHooks">
+		<!-- 	
+			Concepts:
+				delegator object
+					protoDelegator
+						init() -- initializes all controls on a page						
+				
+				delegator element -- the parent of one or more anchor containers
+					a delegator element is what events are bound to. It should be an element that never gets destroyed or repelaced for the life of the page
+				control elements -- defined by control attribute of an anchor container
+					NOTE: It is possible for a control element and a delegator element to be the same element
+								
+				anchor container -- together with its control anchors, an anchor container defines connections between a control and other elements
+					tag:
+						div
+					attributes:
+						control	
+			
+				control anchors -- together with their anchor container, control anchors define connections between a control and other elements					
+					tag: 
+						a
+					attributes: 
+						hook
+						action
+						event
 		-->
 		
 		<!-- a delegator is what events are bound to. It should be an element that never gets destroyed or repelaced for the life of the page -->
-		<!-- a control is an element where the delgator looks for events. You can create and destroy controls at will -->
-		<!-- controlHooks class div holds "links" to elements effected by the control element -->
-		<!-- the event and action attributes of a link determine when (event) and how (action) the element (href) is affected by the control element -->
-		<!--
-			instead of anchors in divs, maybe use lists
-			<div id="kong">
-				<ul class="controlHooks" control=".thing">
-					<li action="selectOne"></li>				
-					<li hook="#ding" event="click" action="toggleSelect"></li>
-				</ul>
-				<ul class="controlHooks" control=".button">
-					<li hook="#ding" event="hover" action="select"></li>
-				</ul>
-				
-				<ul id="king">
-					<li class="thing">one</li>
-					<li class="thing">two
-						<div class="button">bink</div>
-					</li>
-					<li class="thing">three
-						<div class="button">bink</div>
-					</li>
-					<li class="thing">four</li>
-					<li class="thing">five</li>
-				</ul>
-			</div>
-		-->
-		<div id="dong">
-			delegator-control
-			<div class="controlHooks"> <!-- default control should be parent of controlHooks class element (control="#dong") -->
-				<a href="#dong" event="click" action="select"></a>
-				<a href="#ding" event="click" action="select"></a>
+		<!-- a control element where the delgator looks for events. You can create and destroy control elements at will; nothing bad will happen because events are bound to the delegator element -->
+		<!-- an anchor container holds anchors with hooks to elements affected by a control -->
+		<!-- anchor elements define when (event) and how (action) an element (hook) is affected by the events on control elements -->
+		
+		<div id="dong">delegator-control
+			<div control="#dong">
+				<a hook="#dong" event="click" action="select"></a>
+				<a hook="#ding" event="click" action="select"></a>
 			</div>	
 		</div>
 
-		<!-- delegator will always be the parent of controlHooks class element -->
-		<!-- control elements must be the parent of the controlHooks class element or a decentdant of that paernet -->	
-		<!-- currently delegator element (parent of one or more controlHooks class elements) must have an id -->
-		<!-- might want to think about using an attribute other than href... -->
+		<!-- a delegator is always the parent of an anchor container -->
+		<!-- delegator elements should have an id -->
 		<div id="kong">delegator 
-			<div class="controlHooks" control=".thing">
-				<a action="selectOne"></a>				
-				<a href="#ding" event="click" action="toggleSelect"></a>
+			<div control=".thing">
+				<a hook=".thing" event="click" action="toggleSelectOne"></a>		
+				<a hook="#ding" event="click" action="select"></a>
 			</div>
-			<div class="controlHooks" control=".button">
-				<a href="#ding" event="hover" action="select"></a>
+			<div control=".button">
+				<a hook="#ding" event="hover" action="select"></a>
 			</div>
 			
 			<ul id="king">
