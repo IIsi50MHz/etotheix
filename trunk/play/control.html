@@ -4,69 +4,44 @@
 		<script src="http://jquery.com/src/jquery-latest.js"></script>
 		<script src="control.js"></script>		
 	</head>
+	<title>control example</title>
 	<body>
-		<!-- 	
-			Concepts:
-				delegator object
-					protoDelegator
-						init() -- initializes all controls on a page						
-				
-				delegator element -- the parent of one or more anchor containers
-					a delegator element is what events are bound to. It should be an element that never gets destroyed or repelaced for the life of the page
-				control elements -- defined by control attribute of an anchor container
-					NOTE: It is possible for a control element and a delegator element to be the same element
-								
-				anchor container -- together with its control anchors, an anchor container defines connections between a control and other elements
-					tag:
-						div
-					attributes:
-						control	
+		<!-- Use markup like this to define the behavior for a control or a class of controls. -->
+			<!-- NOTE: -->
+			<!-- If the definition markup is for a class of controls, they must be contained within the parent element of the definition -->
+			<!-- If the parent element of a control definition is destroyed, you're screwed... -->
+			<!-- ...You can, however, create and destroy the control elements themselves at will. -->
 			
-				control anchors -- together with their anchor container, control anchors define connections between a control and other elements					
-					tag: 
-						a
-					attributes: 
-						hook
-						action
-						event
-		-->
-		
-		<!-- a delegator is what events are bound to. It should be an element that never gets destroyed or repelaced for the life of the page -->
-		<!-- a control element where the delgator looks for events. You can create and destroy control elements at will; nothing bad will happen because events are bound to the delegator element -->
-		<!-- an anchor container holds anchors with hooks to elements affected by a control -->
-		<!-- anchor elements define when (event) and how (action) an element (hook) is affected by the events on control elements -->
-		
-		<div id="dong">delegator-control
-			<div control="#dong">
-				<a hook="#dong" event="click" action="select"></a>
-				<a hook="#ding" event="click" action="select"></a>
-			</div>	
-		</div>
-
-		<!-- a delegator is always the parent of an anchor container -->
-		<!-- delegator elements should have an id -->
-		<div id="kong">delegator 
-			<div control=".thing">
-				<a hook=".thing" event="click" action="toggleSelectOne"></a>		
-				<a hook="#ding" event="click" action="select"></a>
-			</div>
-			<div control=".button">
-				<a hook="#ding" event="hover" action="select"></a>
-			</div>
-			
-			<ul id="king">
-				<li class="thing">one</li>
-				<li class="thing">two
-					<div class="button">bink</div>
-				</li>
-				<li class="thing">three
-					<div class="button">bink</div>
-				</li>
-				<li class="thing">four</li>
-				<li class="thing">five</li>
+		<!-- EXAMPLE 1: Setting up behavior for a class of controls -->		
+		<div id="controlContainerBlah">
+			<!-- this span cotains a control definition -->
+			<span control=".ding">  <!-- the control attribute refers to the control elements -->
+				<!-- these anchors define how the control affects other elements -->
+				<!-- the hook attribute refers an element affected by the control -->
+				<!-- the event and action attributes define when and how the elements are affected  -->				
+				<a hook=".ding" event="click" action="select"></a> <!-- when a class ding control is clicked, select it... -->
+				<a hook="#dong" event="click" action="toggleShow"></a> <!-- when a class ding control is clicked, show or hide the element with id="dong" -->
+			</span>			
+			<ul id="classDingControls"> 				
+				<li class="ding">do</li>
+				<li class="ding">re</li>
+				<li class="ding">mi</li>
+				<li class="ding">fa</li>
+				<li class="ding">so</li>
+				<!-- if you dynamically add more class ding controls here -- say, "la" and "ti" -- they will just work -->
 			</ul>
 		</div>
-
-		<div id="ding">DING!</div>
+		<h1 id="dong">DONG!</h1>
+			
+		<!-- EXAMPLE 2: Setting up behavior for a stand-alone control -->
+		<h1 id="boo">BOO!
+			<!-- when the "boo" control is clicked, select it and show or hide the element with id="dong" -->
+			<span control="#boo"> 
+				<a event="click" action="select"></a>
+				<a hook="#eek" event="click" action="toggleShow"></a>				
+			</span>						
+		</h1>
+		<p class="scare" id="eek">EEK!</p>		
 	</body>
 </html>
+	
