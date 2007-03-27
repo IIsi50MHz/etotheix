@@ -1,6 +1,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-	<head>		
+	<head>
+		<style type="text/css">
+			.selected {
+				background-color: pink;
+			}			
+			.tab, .ding {
+				cursor: pointer;
+			}
+		</style>
+		
 		<script src="http://jquery.com/src/jquery-latest.js"></script>
 		<script src="control.js"></script>		
 	</head>
@@ -15,12 +24,12 @@
 		<!-- EXAMPLE 1: Setting up behavior for a class of controls -->		
 		<div id="controlContainerBlah">
 			<!-- this span cotains a control definition -->
-			<span control=".ding">  <!-- the control attribute refers to the control elements -->
+			<span control=".ding">  <!-- the control attribute refers to the control elements. Currently can be one of two forms: ".aClass", "#anId" -->
 				<!-- these anchors define how the control affects other elements -->
 				<!-- the hook attribute refers an element affected by the control -->
 				<!-- the event and action attributes define when and how the elements are affected  -->				
-				<a hook=".ding" event="click" action="select"></a> <!-- when a class ding control is clicked, select it... -->
-				<a hook="#dong" event="click" action="toggleShow"></a> <!-- when a class ding control is clicked, show or hide the element with id="dong" -->
+				<a hook=".ding" event="click" action="select" exclusive="true"></a> <!-- when a class ding control is clicked, select it... -->
+				<a hook="#dong" event="click" action="show" toggle="true"></a> <!-- when a class ding control is clicked, show or hide the element with id="dong" -->
 			</span>			
 			<ul id="classDingControls"> 				
 				<li class="ding">do</li>
@@ -37,11 +46,48 @@
 		<h1 id="boo">BOO!
 			<!-- when the "boo" control is clicked, select it and show or hide the element with id="dong" -->
 			<span control="#boo"> 
-				<a event="click" action="select"></a>
-				<a hook="#eek" event="click" action="toggleShow"></a>				
+				<a hook="#boo" event="click" action="select" toggle="true"></a>
+				<a hook="#eek" event="click" action="show" toggle="true"></a>		
 			</span>						
 		</h1>
-		<p class="scare" id="eek">EEK!</p>		
+		<p class="scare" id="eek">EEK!</p>
+
+		<!-- EXAMPLE 3: Tab control expample -->					
+		<ul id="tabs">
+			<!-- tab control definition -->
+			<span control=".tab">  
+				<a hook=".tab" event="click" action="select" toggle="true" exclusive="true"></a> 
+				<a hook="#panes .pane" event="click" action="show" exclusive="true"></a>
+			</span>
+			<!-- the tabs -->
+			<li class="tab">do
+				<!-- connect tab to a specific pane -->
+				<a hook="#do"></a>
+			</li>
+			<li class="tab">re
+				<a hook="#re"></a>
+			</li>
+			<li class="tab">mi
+				<a hook="#mi"></a>
+			</li>
+			<li class="tab">fa
+				<a hook="#fa"></a>
+			</li>
+			<li class="tab">so
+				<a hook="#so"></a>
+			</li>			
+		</ul>
+		
+		<div id="panes">
+			<div class="pane" id="do">DO!</div>
+			<div class="pane" id="re">RE!</div>
+			<div class="pane" id="mi">MI!</div>
+			<div class="pane" id="fa">FA!</div>
+			<div class="pane" id="so">SO!</div>
+		</div>
+		
+		</div>
+		<h1 id="dong">DONG!</h1>
 	</body>
 </html>
 	

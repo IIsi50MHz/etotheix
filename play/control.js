@@ -34,7 +34,7 @@ How to create a control:
 				<!-- the event and action attributes define when and how the elements are affected  -->				
 				<a hook=".ding" event="click" action="select"></a> <!-- when a class ding control is clicked, select it... -->
 				<a hook="#dong" event="click" action="toggleShow"></a> <!-- when a class ding control is clicked, show or hide the element with id="dong" -->
-			</span>			
+			</span>		
 			<ul id="classDingControls"> 				
 				<li class="ding">do</li>
 				<li class="ding">re</li>
@@ -134,29 +134,77 @@ var protoControl = {
 		// set up event handlers for each control
 		controlDefs.each(function () {
 			var controlDef = jQ(this);
-			var delegatorObj = protoControl.make(controlDef.parent(), controlDef.attr("control"));
+			var containerObj = protoControl.make(controlDef.parent(), controlDef.attr("control"));
 			// get all the control anchors inside this control
 			var controlAnchors = jQ("a", this);
-			// for each control anchor, hook up the appropriate event handler to the delegator element
+			// for each control anchor, hook the appropriate event handler to the delegator element
 			controlAnchors.each(function () {
-				var controlAnchor = jQ(this);
-				var hook = controlAnchor.attr("hook") || delegatorObj._control;	
+				var controlAnchor = jQ(this);				
+				var container;
+				var targetContainer;
+				// Check if container id was inclued as part of the hook
+				var hook = controlAnchor.attr("hook") || containerObj._control;
+				hook = hook.split(/\s+/);
+				if (hook.length === 2) {
+					container = targetContainer = hook[0];
+					hook = hook[1];
+				} else {
+					targetContainer = containerObj._delegator;
+					container = document;
+					hook = hook[0];
+				}
 				var event = controlAnchor.attr("event") || "click";	//**user should be able set default event and action for page to something else		
 				var action = controlAnchor.attr("action") || "select";
-				var funcName;
-				delegatorObj.bind(event, function() {
-					// check for custom version of action
-					if (!delegatorObj[hook + " " + action]) {						
-						funcName = action;
-					} else {								
-						funcName = hook + " " + action;
-					}
-					// check if action should be applied to control element only
-					if (delegatorObj.targetControl.filter(hook).length > 0) {
-						delegatorObj[funcName](delegatorObj.targetControl);
-					} else {
-						delegatorObj[funcName](hook);
-					}
+				var toggle = controlAnchor.attr("toggle") === "true";
+				var exclusive = controlAnchor.attr("exclusive") === "true";	
+				
+				var funcName;						
+				// check for custom version of action 
+				// **not sure this is the best way to do custom actions
+				// **WHY? because it depends on hook being simple class or id selector. Might want more complex hooks at some point.
+				if (!containerObj[hook + " " + action]) {						
+					funcName = action;
+				} else {								
+					funcName = hook + " " + action;
+				}
+				
+				// toggle action? exclusive action? both?
+				var modFunc;								
+				if (exclusive && toggle) {
+					modFunc = containerObj.exclusiveToggle(funcName); 
+				} else if (toggle) {
+					modFunc = containerObj.toggle(funcName);				
+				} else if (exclusive) {						
+					modFunc = containerObj.exclusive(funcName); 				
+				} 			
+				
+				containerObj.bind(event, function() {
+					// find any control anchors inside the target control
+					var innerAnchors = jQ("a[@hook]", containerObj.targetControl);
+					// get elements hooked to by inner anchors
+					var hooks = [];
+					innerAnchors.each(function(i) {
+						// get hook values
+						hooks[i] = jQ(this).attr("hook");
+					})
+					// get the actual elements associated with each hook... 
+					// ...keep only elements that match the control anchor's hook
+					hooks = hooks.join();
+					var hookedElems = hooks ? jQ(hooks).filter(hook) : [];	
+								
+					// **We need to be able to apply the action to one element only...
+					// ** ...This could be a control, or it could be some other element that is part of a group of elements.
+					// All cases beleow use a modified function (modFunc) if available. 
+					// case 1: action applies to target control itself					
+					if (containerObj.targetControl.filter(hook).length > 0) {						
+						(modFunc || containerObj[funcName])(containerObj.targetControl, hook, container);											
+					// case 2: action applies to an element refered to by an anchor inside the target control
+					} else if (hookedElems.length > 0) {				
+						(modFunc || containerObj[funcName])(hookedElems, hook, container);
+					// case 3: action applies directly to hook element(s)
+					} else {						
+						(modFunc || containerObj[funcName])(hook);
+					}				
 				});
 			});			
 		});
@@ -183,46 +231,71 @@ var protoControl = {
 	/////
 	// Default Actions
 	/////
-	// select elements
-	select: function (expr) {
+	// select elements -- expr is a jQuery expression
+	select: function (expr) {		
 		jQ(expr).addClass("selected");		
 		return this;
 	},
 	// deselect elements
-	deselect: function (expr) {
+	deselect: function (expr) {		
 		jQ(expr).removeClass("selected");
 		return this;
 	},
-	// toggle element selection
-	toggleSelect: function (expr) {
-		jQ(expr).toggleClass("selected");
-		return this;
-	},
-	// Select the target control and deselect the other controls. Selecting the same control twice in a row does nothing.
-	selectOne: function () { //** Should accept and arument... Should be able to use on a group of elements other than the control.
-		// select new element
-		this.select(this.targetControl);
-		// deselect old elements
-		this.deselect(this.otherControls.filter(".selected"));
-		return this;
-	},
-	// Select the target control and deselect the other controls. Selecting the same control twice in a row toggles the
-	toggleSelectOne: function () {
-		// toggle target control
-		this.toggleSelect(this.targetControl);
-		// deselect other controls
-		this.deselect(this.otherControls.filter(".selected"));
-		return this;
-	},
+	// show elements
 	show: function (expr) {
 		jQ(expr).show();
 	},
-	hide: function () {
+	// hide elements
+	hide: function (expr) {
 		jQ(expr).hide();
 	},
-	toggleShow: function (expr) {
-		jQ(expr).toggle();
-	}
+	// undo relates actions to their opposites (selecte/deselect, hide/show, etc.)
+	// It's is used by exclusive() and toggle().
+	// **not sure undo is a good name
+	undo: {
+		"select": 	{
+			inv: "deselect", 
+			flag: ".selected"
+		},
+		"show": {
+			inv: "hide", 
+			flag: ":visible"	
+		}
+	},
+	// exclusive() -- takes an action makes it exclusive (by exlusive, I mean exclusive like XOR is exclusive)
+	// For example, passing the select function returns a function that selects one element and delselects all
+	// similar elements.
+	exclusive: function (f) {
+		var that = this;		
+		var fInv = this.undo[f].inv;
+		var flag = this.undo[f].flag;
+		return function (elem, hook, container) {		
+			that[f](elem);			
+			that[fInv](jQ(hook, container).filter(flag).not(elem));
+			return that;
+		}		
+	},
+	// returns function that toggles an action for elements
+	toggle: function (f) {				
+		var that = this;
+		var fInv = this.undo[f].inv;
+		var flag = this.undo[f].flag;		
+		return function (elem, hook, container) {					
+			jQ(elem).is(flag) ? that[fInv](elem, hook) : that[f](elem, hook);
+			return that;
+		}
+	},
+	// returns function that toggles an action for elements
+	exclusiveToggle: function (f) {
+		var that = this;
+		var fInv = this.undo[f].inv;
+		var flag = this.undo[f].flag;
+		return function (elem, hook, container) {						
+			that.toggle(f)(elem);			
+			that[fInv](jQ(hook, container).filter(flag).not(elem));
+			return that;
+		}
+	}	
 }
 
 protoControl.extend({
