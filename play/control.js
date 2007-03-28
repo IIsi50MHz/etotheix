@@ -1,9 +1,9 @@
 // The protoControl object
-// With the help of this object, you can add simple html markup defining the behavior of a control or a whole class of controls.
-//	If you define controls (or a class of controls) on elements created dynamically, don't worry, they'll still work fine. 
-//	This is because the event handlers are not normally bound to the control element; instead, they are bound to the parent 
-//	element of the control definition markup.
-// 	**TO DO: Add the following to comments
+// 	With the help of protoControl, you can use simple html markup create a control definition that lays out the behavior of 
+//	an individual control or a whole class of controls.  If you define controls (or a class of controls) on elements created 
+//	dynamically, don't worry, they'll still work fine. This is because the event handlers are not directly bound to the control 
+//	element; instead, they are bound to the parent element of the control definition. (In the code, this parent element is refered to as the delegator.)
+// 	**TO DO -- Add the following to comments:
 //		explain toggle and exclusive attributes
 //		explain use of anchors added directly inside controls instead of control definition
 //		explain when hooks of the form "#id .class" are appropriate
@@ -12,11 +12,18 @@
 //			what can you do with it?
 //			when should you use it?
 //			when should you not use it?
-//
+//			describe what sorts of values each of the custom xhtml attributes can have
+//				hook
+//				action
+//				event
+//				toggle
+//				exclusive
+//				control
+// **Does there need to be a css file that hides the textless span and anchor elements in the control definitions?
 /*
-How to create a control:
+How to automate control creation:
 	javascript code: 
-		// Call on page load.
+		// do this on page load
 		protoControl.init();
 	markup:
 				<!-- Use markup like this to define the behavior for a control or a class of controls. -->
@@ -214,7 +221,7 @@ var protoControl = {
 				// check for custom version of action 
 				// **not sure this is the best way to do custom actions
 				// **WHY? because it depends on hook being simple class or id selector. Might want more complex hooks at some point.
-				//	 **UPDATE: this is not a problem anymore for hooks of the form "#id .class"
+				//	 ****UPDATE: this is not a problem anymore for hooks of the form "#id .class"
 				if (!controlObj[hook + " " + action]) {						
 					funcName = action;
 				} else {								
@@ -289,7 +296,8 @@ var protoControl = {
 	/////
 	// pairs
 	// pairs relates actions to their opposites (selecte/deselect, hide/show, etc.)
-	// used by exclusive() and toggle(), and pair()
+	// used by exclusive() and toggle() and toggleExclusive(), and pair()
+	// **need to explain what flag if for
 	pairs: {
 		"select": 	{
 			inv: "deselect", 
@@ -305,7 +313,8 @@ var protoControl = {
 	// NOTE: flag is optional, but should be included if possible.	
 	// action, inv, and flag ar all strings
 	// used by... user.
-	pair: function (action, inv, flag) {		
+	pair: function (action, inv, flag) {
+		flag = flag || "*";
 		this.pairs[action] = {
 			inv: inv,
 			flag: flag,
