@@ -26,8 +26,8 @@ How to automate control creation:
 		// do this on page load
 		protoControl.init();
 	markup:
-				<!-- Use markup like this to define the behavior for a control or a class of controls. -->
-			<!-- NOTE: -->
+		<!-- Use markup like this to define the behavior for a control or a class of controls. -->
+		<!-- NOTE: -->
 			<!-- If the definition markup is for a class of controls, they must be contained within the parent element of the definition -->
 			<!-- If the parent element of a control definition is destroyed, you're screwed... -->
 			<!-- ...You can, however, create and destroy the control elements themselves at will. -->
@@ -95,10 +95,7 @@ How to automate control creation:
 			<div class="pane" id="mi">MI!</div>
 			<div class="pane" id="fa">FA!</div>
 			<div class="pane" id="so">SO!</div>
-		</div>
-		
-		</div>
-		<h1 id="dong">DONG!</h1>
+		</div>		
 
 How to create custom actions that override default actions:
 	javascript code:

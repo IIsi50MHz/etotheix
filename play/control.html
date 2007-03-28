@@ -8,6 +8,9 @@
 			.tab, .ding {
 				cursor: pointer;
 			}
+			span[control], a[hook] {
+				display: hidden !important;
+			}
 		</style>
 		
 		<script src="http://jquery.com/src/jquery-latest.js"></script>		
@@ -21,8 +24,7 @@
 				F.prototype = o;
 				return new F();
 			}
-		</script>
-		
+		</script>		
 		<script src="control.js"></script>
 		<script>				
 			protoControl.extend({
@@ -34,7 +36,7 @@
 
 			jQ(function () {
 				protoControl.init();
-			})
+			});
 		</script>
 		<script src="control.js"></script>
 		
@@ -42,7 +44,7 @@
 	<title>control example</title>
 	<body>
 		<!-- Use markup like this to define the behavior for a control or a class of controls. -->
-			<!-- NOTE: -->
+		<!-- NOTE: -->
 			<!-- If the definition markup is for a class of controls, they must be contained within the parent element of the definition -->
 			<!-- If the parent element of a control definition is destroyed, you're screwed... -->
 			<!-- ...You can, however, create and destroy the control elements themselves at will. -->
@@ -110,10 +112,7 @@
 			<div class="pane" id="mi">MI!</div>
 			<div class="pane" id="fa">FA!</div>
 			<div class="pane" id="so">SO!</div>
-		</div>
-		
-		</div>
-		<h1 id="dong">DONG!</h1>
+		</div>		
 	</body>
 </html>
 	
