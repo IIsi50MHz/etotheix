@@ -10,8 +10,34 @@
 			}
 		</style>
 		
-		<script src="http://jquery.com/src/jquery-latest.js"></script>
-		<script src="control.js"></script>		
+		<script src="http://jquery.com/src/jquery-latest.js"></script>		
+		<script>		
+			// Setup jQuery so it's $ function doesn't conflict with Mochikit's -- use jQ() instead of jQuerie's $()
+			jQuery.noConflict();		
+			var jQ = jQuery;
+			// proto() is an exact copy of Douglas Crockford's object() operator
+			function proto(o) {
+				var F = function F() {};
+				F.prototype = o;
+				return new F();
+			}
+		</script>
+		
+		<script src="control.js"></script>
+		<script>				
+			protoControl.extend({
+				".ding select": function (expr) {
+					this.select(expr); 
+					alert('hello');
+				},
+			});
+
+			jQ(function () {
+				protoControl.init();
+			})
+		</script>
+		<script src="control.js"></script>
+		
 	</head>
 	<title>control example</title>
 	<body>
