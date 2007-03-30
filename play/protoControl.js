@@ -116,6 +116,17 @@ How to create custom actions that override default actions:
 			<a hook="#dong" event="click" action="toggleShow"></a>
 		</span>	
 */
+// Setup jQuery so it's $ function doesn't conflict with Mochikit's
+jQuery.noConflict();
+// Use jQ instead
+var jQ = jQuery;
+
+// proto() is an exact copy of Douglas Crockford's object() operator
+function proto(o) {
+	var F = function F() {};
+	F.prototype = o;
+	return new F();
+}
 
 var protoControl = {
 	// jQuery object holding the delegator element. Events are bound to the delegator element.
@@ -129,7 +140,7 @@ var protoControl = {
 	// holds the most recent target control (jQuery object) - updated by event()
 	targetControl: null, // **Should this be private -- provide a function to access?
 	// holds other controls other controls that are similar to target control (jQuery object) - updated by event()
-	otherControls: null, // **Should this be private -- provide a function to access?	
+	otherControls: null, // **might want to get rid of this? Not using anymore. If you get rid of it, remember to take it out of event() too!
 	
 	// event()
 	// sets event e and calculates targetControl element
@@ -144,13 +155,13 @@ var protoControl = {
 			var targetControl = eventTarget.parents(this._control);			
 			if (eventTarget.is(this._control)) {
 				this.targetControl = jQ(eventTarget[0]);
-				this.otherControls = jQ(this._control, this._delegator).not(this.targetControl[0]);
+				this.otherControls = jQ(this._control, this._delegator).not(this.targetControl[0]); //** get rid of this?
 			} else if (targetControl.length > 0) {
 				this.targetControl = jQ(targetControl[0]);
-				this.otherControls = jQ(this._control, this._delegator).not(this.targetControl[0]);
+				this.otherControls = jQ(this._control, this._delegator).not(this.targetControl[0]); //** get rid of this?
 			} else {
 				this.targetControl = false;
-				this.otherControls = false;			
+				this.otherControls = false;	//** get rid of this?	
 			}
 		}
 		return this;
@@ -176,7 +187,7 @@ var protoControl = {
 	// the delegator argument can be an id selector (example: "#ding"), an element, or a jQuery wrapped element
 	// the control argument should be a class or an id selector (examples: "#dong", ".thingy")
 	// used by init()
-	make: function function (delegator, control) {
+	make: function (delegator, control) {
 		var obj = proto(this);
 		obj._delegator = jQ(delegator);
 		obj._control = control;
@@ -185,12 +196,13 @@ var protoControl = {
 	// init()
 	// initializes all delegator controls that are within the context node (default is document)
 	init: function (context) {
+		console.log("protoControl.init() called!");
 		// gather all control definitions
 		var controlDefs = jQ("span[@control]", context || document);
 		// set up event handlers for each control
 		controlDefs.each(function () {
 			var controlDef = jQ(this);
-			var controlObj = protoControl.make(controlDef.parent(), controlDef.attr("control"));
+			var controlObj = protoControl.make(controlDef.attr("delegator") || controlDef.parent(), controlDef.attr("control"));
 			// get all the control anchors inside this control
 			var controlAnchors = jQ("a", this);
 			// for each control anchor, hook the appropriate event handler to the delegator element
@@ -235,7 +247,8 @@ var protoControl = {
 					modFunc = controlObj.exclusive(funcName); 				
 				} 			
 				
-				controlObj.bind(event, function() {
+				console.log(event, controlObj);
+				controlObj.bind(event, function() {					
 					// find any control anchors inside the target control
 					var innerAnchors = jQ("a[@hook]", controlObj.targetControl);
 					// get elements hooked to by inner anchors
@@ -271,21 +284,25 @@ var protoControl = {
 	// action functions
 	/////
 	// select elements -- expr is a jQuery expression
-	select: function (expr) {		
+	select: function (expr) {
+		console.log("called select");
 		jQ(expr).addClass("selected");		
 		return this;
 	},
 	// deselect elements
 	deselect: function (expr) {		
+		console.log("called deselect");
 		jQ(expr).removeClass("selected");
 		return this;
 	},
 	// show elements
 	show: function (expr) {
+		console.log("called show");
 		jQ(expr).show();
 	},
 	// hide elements
 	hide: function (expr) {
+		console.log("called hide");
 		jQ(expr).hide();
 	},
 	/////
@@ -394,5 +411,5 @@ var protoControl = {
 			that[inv](jQ(hook, container).filter(flag).not(elem));
 			return that;
 		}
-	}
+	}	
 }
