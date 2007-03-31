@@ -3,22 +3,35 @@
 //	an individual control or a whole class of controls.  If you define controls (or a class of controls) on elements created 
 //	dynamically, don't worry, they'll still work fine. This is because the event handlers are not directly bound to the control 
 //	element; instead, they are bound to the parent element of the control definition. (In the code, this parent element is refered to as the delegator.)
-// 	**TO DO -- Add the following to comments:
-//		explain toggle and exclusive attributes
-//		explain use of anchors added directly inside controls instead of control definition
-//		explain when hooks of the form "#id .class" are appropriate
-// 		add an more detailed overview of the use and consepts behinde the protoControl object
-//			why was it written?
-//			what can you do with it?
-//			when should you use it?
-//			when should you not use it?
-//			describe what sorts of values each of the custom xhtml attributes can have
-//				hook
-//				action
-//				event
-//				toggle
-//				exclusive
-//				control
+/*
+ 	**TO DO -- Add the following to comments:
+		explain toggle and exclusive attributes
+		explain use of anchors added directly inside controls instead of control definition
+		explain when hooks of the form "#id .class" are appropriate
+		explain structure of control definitions 
+			<dl class="controlDef">
+			<dt>
+			<dd>
+			<a class="directHook">
+			JSON
+ 		add an more detailed overview of the use and consepts behinde the protoControl object
+			why was it written?
+			what's it for?
+				high level control definition
+					relationships between control elements and other elements
+					doesn't define what controls look like			
+			what can you do with it?
+			when should you use it?
+			when should you not use it?
+			describe what sorts of values each of the these attributes can have
+				hook
+				action
+				event
+				toggle
+				exclusive
+				control
+				delegator
+*/
 // **Does there need to be a css file that hides the textless span and anchor elements in the control definitions?
 /*
 How to automate control creation:
@@ -28,74 +41,77 @@ How to automate control creation:
 	markup:
 		<!-- Use markup like this to define the behavior for a control or a class of controls. -->
 		<!-- NOTE: -->
-			<!-- If the definition markup is for a class of controls, they must be contained within the parent element of the definition -->
-			<!-- If the parent element of a control definition is destroyed, you're screwed... -->
-			<!-- ...You can, however, create and destroy the control elements themselves at will. -->
+			<!-- Both control and delegator elements default to the next sibling element after the control definition list  -->
+			<!-- The control element of a control definition must have an id -->
+			<!-- The delgator element of a control definition doesn't need an id -->
+			<!-- If the definition markup is for a class of controls, they must be contained within delegator element -->
+			<!-- If if a delegator element is destroyed, you're screwed... -->
+			<!-- ...You can, however, create and destroy any control elements you like (as long as they are not also delegator elements). -->			
 			
 		<!-- EXAMPLE 1: Setting up behavior for a class of controls -->		
 		<div id="controlContainerBlah">
-			<!-- this span cotains a control definition -->
-			<span control=".ding">  <!-- the control attribute refers to the control elements. Currently can be one of two forms: ".aClass", "#anId" -->
-				<!-- these anchors define how the control affects other elements -->
-				<!-- the hook attribute refers an element affected by the control -->
-				<!-- the event and action attributes define when and how the elements are affected  -->				
-				<a hook=".ding" event="click" action="select" exclusive="true"></a> <!-- when a class ding control is clicked, select it... -->
-				<a hook="#dong" event="click" action="show" toggle="true"></a> <!-- when a class ding control is clicked, show or hide the element with id="dong" -->
-			</span>			
+			<!-- control definition -->
+			<!-- delegator element defaults to #classDingControls -->
+			<dl class="controlDef">
+				<dt>{control:".ding"}</dt>
+				<dd>{hook:".ding", event:"click", action:"select", exclusive:"true"}</dd>
+				<dd>{hook:"#dong", event:"click", action:"show", toggle:"true"}</dd>				
+			</dl>
 			<ul id="classDingControls"> 				
 				<li class="ding">do</li>
 				<li class="ding">re</li>
 				<li class="ding">mi</li>
 				<li class="ding">fa</li>
 				<li class="ding">so</li>
-				<!-- if you dynamically add more class ding controls here -- say, "la" and "ti" -- they will just work -->
+				<!-- if you dynamically add more class ding controls here (say, "la" and "ti") they will just work -->
 			</ul>
 		</div>
 		<h1 id="dong">DONG!</h1>
 			
 		<!-- EXAMPLE 2: Setting up behavior for a stand-alone control -->
-		<h1 id="boo">BOO!
-			<!-- when the "boo" control is clicked, select it and show or hide the element with id="dong" -->
-			<span control="#boo"> 
-				<a hook="#boo" event="click" action="select" toggle="true"></a>
-				<a hook="#eek" event="click" action="show" toggle="true"></a>		
-			</span>						
-		</h1>
+		<!-- when the "boo" control is clicked, select it and show or hide the element with id="dong" -->
+		<!-- both control and delegator elements default to #boo -->
+		<dl class="controlDef">						
+			<dd>{hook:"#boo", event:"click", action:"select", toggle:"true"}</dd>
+			<dd>{hook:"#eek", event:"click", action:"show", toggle:"true"}</dd>				
+		</dl>
+		<h1 id="boo">BOO!</h1>
 		<p class="scare" id="eek">EEK!</p>
 
 		<!-- EXAMPLE 3: Tab control expample -->					
+		<!-- tab control definition -->
+		<dl class="controlDef">
+			<dt>{control:'.tab', delegator:'#tabs'}</dt>
+			<dd>{hook:".tab", event:"click", action:"select", toggle:"true", exclusive:"true"}</dd>			
+			<dd>{hook:"#panes .pane", event:"click", action:"show", exclusive:"true"}</dd>					
+		</dl>
+		<!-- the tabs -->
 		<ul id="tabs">
-			<!-- tab control definition -->
-			<span control=".tab">  
-				<a hook=".tab" event="click" action="select" toggle="true" exclusive="true"></a> 
-				<a hook="#panes .pane" event="click" action="show" exclusive="true"></a>
-			</span>
-			<!-- the tabs -->
 			<li class="tab">do
 				<!-- connect tab to a specific pane -->
-				<a hook="#do"></a>
+				<a class="directHook">#do</a>
 			</li>
 			<li class="tab">re
-				<a hook="#re"></a>
+				<a class="directHook">#re</a>
 			</li>
 			<li class="tab">mi
-				<a hook="#mi"></a>
+				<a class="directHook">#mi</a>
 			</li>
 			<li class="tab">fa
-				<a hook="#fa"></a>
+				<a class="directHook">#fa</a>
 			</li>
 			<li class="tab">so
-				<a hook="#so"></a>
-			</li>			
-		</ul>
-		
+				<a class="directHook">#so</a>
+			</li>
+		</ul>		
+
 		<div id="panes">
 			<div class="pane" id="do">DO!</div>
 			<div class="pane" id="re">RE!</div>
 			<div class="pane" id="mi">MI!</div>
 			<div class="pane" id="fa">FA!</div>
 			<div class="pane" id="so">SO!</div>
-		</div>		
+		</div>	
 
 How to create custom actions that override default actions:
 	javascript code:
@@ -196,7 +212,7 @@ var protoControl = {
 	// init()
 	// initializes all delegator controls that are within the context node (default is document)
 	init: function (context) {
-		console.log("protoControl.init() called!");
+		//**console.log("protoControl.init() called!");
 		// gather all control definitions
 		//**OLD var controlDefs = jQ("span[@control]", context || document);
 		var controlDefs = jQ("dl.controlDef", context || document);
@@ -210,7 +226,7 @@ var protoControl = {
 			dt = eval("(" + dt + ")");					
 			var delegator = dt.delegator || controlDef.next();
 			var control = dt.control || "#" + jQ(delegator).attr("id");
-			console.log("delegator:", delegator, ", control:", control);
+			//**console.log("delegator:", delegator, ", control:", control);
 			
 			//**OLD var controlObj = protoControl.make(controlDef.attr("delegator") || controlDef.parent(), controlDef.attr("control"));			
 			var controlObj = protoControl.make(delegator, control);
@@ -230,8 +246,7 @@ var protoControl = {
 				
 				// Check if container id was inclued as part of the hook				
 				//**OLD var hook = controlAnchor.attr("hook") || controlObj._control;
-				var hook = dd.hook || controlObj._control;
-				
+				var hook = dd.hook || controlObj._control;				
 				hook = hook.split(/\s+/);
 				if (hook.length === 2) {
 					container = targetContainer = hook[0];
@@ -251,7 +266,7 @@ var protoControl = {
 				var event = dd.event || "click";	//**user should be able set default event and action for page to something else		
 				var action = dd.action || "select";
 				var toggle = dd.toggle || dd.toggle === "true"; // both true and "true" valid
-				var exclusive = dd.exclusive || dd.toggle === "true"; // both true and "true" valid
+				var exclusive = dd.exclusive || dd.exclusive === "true"; // both true and "true" valid
 				
 				var funcName;						
 				// check for custom version of action 
@@ -274,7 +289,7 @@ var protoControl = {
 					modFunc = controlObj.exclusive(funcName); 				
 				} 			
 				
-				console.log(event, controlObj);
+				//**console.log(event, controlObj);
 				controlObj.bind(event, function() {					
 					// find any control anchors inside the target control
 					//**OLD var innerAnchors = jQ("a[@hook]", controlObj.targetControl);
@@ -282,30 +297,59 @@ var protoControl = {
 					// get elements hooked to by inner anchors
 					var hooks = [];
 					innerAnchors.each(function(i) {
-						// get hook values
+						// get hook values, (will be a list of id's)
 						//**OLD hooks[i] = jQ(this).attr("hook");
 						hooks[i] = jQ(this).text();
-						console.log(hooks[i]);
+						//**console.log(hooks[i]);
 					})
+					
+					//** Not sure how well this has been tested...
 					// get the actual elements associated with each hook... 
 					// ...keep only elements that match the control anchor's hook
-					//** Not sure how well this has been tested...
 					hooks = hooks.join();
-					var hookedElems = hooks ? jQ(hooks).filter(hook) : [];	
-								
+					//** OLD var hookedElems = hooks ? jQ(hooks).filter(hook) : [];
+					//**NEW					
+					var hookedElems; 
+					if (hooks) {
+						// ...keep only elements that match the control anchor's hook						
+						hookedElems = jQ(hooks).filter(hook);
+					} else {
+						//**console.log("no direct hook");
+						// if there are no direct hooks, make one up						
+						//	 get the index of the target control
+						var elem = controlObj.targetControl[0];
+						var index = false;
+						//** Not sure this makes sense if _control is an id selector. Should only do this if it's class selector?
+						//**console.log("control:", controlObj._control, "delegator:", controlObj._delegator);
+						jQ(controlObj._control, controlObj._delegator).each(function(i) {
+							//**console.log("this:", this, "targetControl:", elem);
+						    if (this === elem) {
+						        index = i;
+						    }
+						})
+						// 	get the element in container that matches hook and has the same index as the target control
+						hookedElems = jQ(hook, container).eq(index);
+						//**console.log(hook, container, index, " -- artificial hook:", hookedElems);
+					}
+					//**END NEW
+					
 					// **We need to be able to apply the action to one element only...
 					// ** ...This could be a control, or it could be some other element that is part of a group of elements.
 					// All cases beleow use a modified function (modFunc) if available. 
 					// case 1: action applies to target control itself					
 					if (controlObj.targetControl.filter(hook).length > 0) {						
-						(modFunc || controlObj[funcName])(controlObj.targetControl, hook, container);											
+						//**console.log("target control itself");
+						(modFunc || controlObj[funcName])(controlObj.targetControl, hook, container);						
 					// case 2: action applies to an element refered to by an anchor inside the target control
-					} else if (hookedElems.length > 0) {				
-						(modFunc || controlObj[funcName])(hookedElems, hook, container);
+					} else if (hookedElems.length > 0) {
+						//**console.log("direct hook in control");					
+						(modFunc || controlObj[funcName])(hookedElems, hook, container);						
 					// case 3: action applies directly to hook element(s)
-					} else {						
-						(modFunc || controlObj[funcName])(hook);
-					}				
+					} else {	
+						//**console.log("hook");					
+						(modFunc || controlObj[funcName])(hook);						
+					}
+					//**console.log("done");
 				});
 			});			
 		});
@@ -316,24 +360,24 @@ var protoControl = {
 	/////
 	// select elements -- expr is a jQuery expression
 	select: function (expr) {
-		console.log("called select");
+		//**console.log("called select");
 		jQ(expr).addClass("selected");		
 		return this;
 	},
 	// deselect elements
 	deselect: function (expr) {		
-		console.log("called deselect");
+		//**console.log("called deselect");
 		jQ(expr).removeClass("selected");
 		return this;
 	},
 	// show elements
 	show: function (expr) {
-		console.log("called show");
+		//**console.log("called show", expr);
 		jQ(expr).show();
 	},
 	// hide elements
 	hide: function (expr) {
-		console.log("called hide");
+		//**console.log("called hide", expr);
 		jQ(expr).hide();
 	},
 	/////
