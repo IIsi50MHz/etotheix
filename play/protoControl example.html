@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 	<head>
-		<style type="text/css">
+		<style type='text/css'>
 			.selected {
 				background-color: pink;
 			}			
@@ -11,14 +11,17 @@
 			dl.controlDef, a.directHook {
 				display: none !important;
 			}
+			#panes .pane {
+				display: none;
+			}
 		</style>		
-		<script type="text/javascript" src="http://jquery.com/src/jquery-latest.js"></script>		
-		<script type="text/javascript" src="protoControl.js"></script>
-		<script type="text/javascript">				
+		<script type='text/javascript' src='http://jquery.com/src/jquery-latest.js'></script>		
+		<script type='text/javascript' src='protoControl.js'></script>
+		<script type='text/javascript'>				
 			protoControl.extend({
-				".ding select": function (expr) {
+				'.ding select': function (expr) {
 					this.select(expr); 
-					console.log("controlObj:", this);
+					console.log('controlObj:', this);
 				},
 			});
 
@@ -40,68 +43,56 @@
 			<!-- ...You can, however, create and destroy any control elements you like (as long as they are not also delegator elements). -->			
 			
 		<!-- EXAMPLE 1: Setting up behavior for a class of controls -->		
-		<div id="controlContainerBlah">
-			<!-- control definition -->
-			<!-- delegator element defaults to #classDingControls -->
-			<dl class="controlDef">
-				<dt>{control:".ding"}</dt>
-				<dd>{hook:".ding", event:"click", action:"select", exclusive:"true"}</dd>
-				<dd>{hook:"#dong", event:"click", action:"show", toggle:"true"}</dd>				
-			</dl>
-			<ul id="classDingControls"> 				
-				<li class="ding">do</li>
-				<li class="ding">re</li>
-				<li class="ding">mi</li>
-				<li class="ding">fa</li>
-				<li class="ding">so</li>
-				<!-- if you dynamically add more class ding controls here (say, "la" and "ti") they will just work -->
-			</ul>
-		</div>
-		<h1 id="dong">DONG!</h1>
+		<!-- control definition -->
+		<!-- delegator element defaults to #classDingControls -->
+		<dl class='controlDef'>
+			<dt>{control:'.ding'}</dt>
+			<dd>{hook:'.ding', event:'click', action:'select', exclusive:true}</dd>
+			<dd>{hook:'#dong', event:'click', action:'select', toggle:true}</dd>				
+		</dl>
+		<ul id='classDingControls'> 				
+			<li class='ding'>do</li>
+			<li class='ding'>re</li>
+			<li class='ding'>mi</li>
+			<li class='ding'>fa</li>
+			<li class='ding'>so</li>
+			<!-- if you dynamically add more class ding controls here (say, "la" and "ti") they will just work -->
+		</ul>
+	
+		<h1 id='dong'>DONG!</h1>
 			
 		<!-- EXAMPLE 2: Setting up behavior for a stand-alone control -->
 		<!-- when the "boo" control is clicked, select it and show or hide the element with id="dong" -->
 		<!-- both control and delegator elements default to #boo -->
-		<dl class="controlDef">						
-			<dd>{hook:"#boo", event:"click", action:"select", toggle:"true"}</dd>
-			<dd>{hook:"#eek", event:"click", action:"show", toggle:"true"}</dd>				
+		<dl class='controlDef'>						
+			<dd>{hook:'#boo', event:'click', action:'select', toggle:true}</dd>
+			<dd>{hook:'#eek', event:'click', action:'show', toggle:true}</dd>				
 		</dl>
-		<h1 id="boo">BOO!</h1>
-		<p class="scare" id="eek">EEK!</p>
+		<h1 id='boo'>BOO!</h1>
+		<p class='scare' id='eek'>EEK!</p>
 
 		<!-- EXAMPLE 3: Tab control expample -->					
 		<!-- tab control definition -->
-		<dl class="controlDef">
+		<dl class='controlDef'>
 			<dt>{control:'.tab', delegator:'#tabs'}</dt>
-			<dd>{hook:".tab", event:"click", action:"select", toggle:"true", exclusive:"true"}</dd>			
-			<dd>{hook:"#panes .pane", event:"click", action:"show", exclusive:"true"}</dd>					
+			<dd>{hook:'.tab', event:'click', action:'select', toggle:false, exclusive:true}</dd>			
+			<dd>{hook:'#panes .pane', event:'click', action:'show', toggle:false, exclusive:true}</dd>					
 		</dl>
 		<!-- the tabs -->
-		<ul id="tabs">
-			<li class="tab">do
-				<!-- connect tab to a specific pane -->
-				<a class="directHook">#do</a>
-			</li>
-			<li class="tab">re
-				<a class="directHook">#re</a>
-			</li>
-			<li class="tab">mi
-				<a class="directHook">#mi</a>
-			</li>
-			<li class="tab">fa
-				<a class="directHook">#fa</a>
-			</li>
-			<li class="tab">so
-				<a class="directHook">#so</a>
-			</li>
-		</ul>		
+		<ol id='tabs'>
+			<li class='tab'>do</li>
+			<li class='tab'>re</li>
+			<li class='tab'>mi</li>
+			<li class='tab'>fa</li>
+			<li class='tab'>so<a class='directHook'>#so</a></li>
+		</ol>		
 
-		<div id="panes">
-			<div class="pane" id="do">DO!</div>
-			<div class="pane" id="re">RE!</div>
-			<div class="pane" id="mi">MI!</div>
-			<div class="pane" id="fa">FA!</div>
-			<div class="pane" id="so">SO!</div>
+		<div id='panes'>
+			<div class='pane' id='do'>DO!</div>
+			<div class='pane' id='re'>RE!</div>
+			<div class='pane' id='mi'>MI!</div>
+			<div class='pane' id='fa'>FA!</div>
+			<div class='pane' id='so'>SO!</div>
 		</div>		
 	</body>
 </html>
