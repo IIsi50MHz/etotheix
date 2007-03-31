@@ -198,20 +198,40 @@ var protoControl = {
 	init: function (context) {
 		console.log("protoControl.init() called!");
 		// gather all control definitions
-		var controlDefs = jQ("span[@control]", context || document);
+		//**OLD var controlDefs = jQ("span[@control]", context || document);
+		var controlDefs = jQ("dl.controlDef", context || document);
+		
 		// set up event handlers for each control
 		controlDefs.each(function () {
 			var controlDef = jQ(this);
-			var controlObj = protoControl.make(controlDef.attr("delegator") || controlDef.parent(), controlDef.attr("control"));
-			// get all the control anchors inside this control
-			var controlAnchors = jQ("a", this);
+			
+			//**NEW
+			var dt = jQ("dt:first-child", this).text() || "{}";
+			dt = eval("(" + dt + ")");					
+			var delegator = dt.delegator || controlDef.next();
+			var control = dt.control || "#" + jQ(delegator).attr("id");
+			console.log("delegator:", delegator, ", control:", control);
+			
+			//**OLD var controlObj = protoControl.make(controlDef.attr("delegator") || controlDef.parent(), controlDef.attr("control"));			
+			var controlObj = protoControl.make(delegator, control);
+			
+			// get all the control anchors inside this control			
+			//**OLD var controlAnchors = jQ("a", this);
+			var controlAnchors = jQ("dd", this);			
+			
 			// for each control anchor, hook the appropriate event handler to the delegator element
 			controlAnchors.each(function () {
 				var controlAnchor = jQ(this);				
 				var container;
 				var targetContainer;
-				// Check if container id was inclued as part of the hook
-				var hook = controlAnchor.attr("hook") || controlObj._control;
+				
+				//**NEW
+				var dd = eval("(" + controlAnchor.text() + ")");			
+				
+				// Check if container id was inclued as part of the hook				
+				//**OLD var hook = controlAnchor.attr("hook") || controlObj._control;
+				var hook = dd.hook || controlObj._control;
+				
 				hook = hook.split(/\s+/);
 				if (hook.length === 2) {
 					container = targetContainer = hook[0];
@@ -221,10 +241,17 @@ var protoControl = {
 					container = document;
 					hook = hook[0];
 				}
+				//**OLD
+				/*
 				var event = controlAnchor.attr("event") || "click";	//**user should be able set default event and action for page to something else		
 				var action = controlAnchor.attr("action") || "select";
 				var toggle = controlAnchor.attr("toggle") === "true";
 				var exclusive = controlAnchor.attr("exclusive") === "true";	
+				*/				
+				var event = dd.event || "click";	//**user should be able set default event and action for page to something else		
+				var action = dd.action || "select";
+				var toggle = dd.toggle || dd.toggle === "true"; // both true and "true" valid
+				var exclusive = dd.exclusive || dd.toggle === "true"; // both true and "true" valid
 				
 				var funcName;						
 				// check for custom version of action 
@@ -250,15 +277,19 @@ var protoControl = {
 				console.log(event, controlObj);
 				controlObj.bind(event, function() {					
 					// find any control anchors inside the target control
-					var innerAnchors = jQ("a[@hook]", controlObj.targetControl);
+					//**OLD var innerAnchors = jQ("a[@hook]", controlObj.targetControl);
+					var innerAnchors = jQ("a.directHook", controlObj.targetControl);										
 					// get elements hooked to by inner anchors
 					var hooks = [];
 					innerAnchors.each(function(i) {
 						// get hook values
-						hooks[i] = jQ(this).attr("hook");
+						//**OLD hooks[i] = jQ(this).attr("hook");
+						hooks[i] = jQ(this).text();
+						console.log(hooks[i]);
 					})
 					// get the actual elements associated with each hook... 
 					// ...keep only elements that match the control anchor's hook
+					//** Not sure how well this has been tested...
 					hooks = hooks.join();
 					var hookedElems = hooks ? jQ(hooks).filter(hook) : [];	
 								

@@ -8,13 +8,13 @@
 			.tab, .ding {
 				cursor: pointer;
 			}
-			span[control], a[hook] {
-				display: hidden !important;
+			dl.controlDef, a.directHook {
+				display: none !important;
 			}
 		</style>		
-		<script src="http://jquery.com/src/jquery-latest.js"></script>		
-		<script src="protoControl.js"></script>
-		<script>				
+		<script type="text/javascript" src="http://jquery.com/src/jquery-latest.js"></script>		
+		<script type="text/javascript" src="protoControl.js"></script>
+		<script type="text/javascript">				
 			protoControl.extend({
 				".ding select": function (expr) {
 					this.select(expr); 
@@ -26,72 +26,76 @@
 				protoControl.init();
 			});
 		</script>
+		<title>control example</title>
 	</head>
-	<title>control example</title>
+	
 	<body>
 		<!-- Use markup like this to define the behavior for a control or a class of controls. -->
 		<!-- NOTE: -->
-			<!-- If the definition markup is for a class of controls, they must be contained within the parent element of the definition -->
-			<!-- If the parent element of a control definition is destroyed, you're screwed... -->
-			<!-- ...You can, however, create and destroy the control elements themselves at will. -->
+			<!-- Both control and delegator elements default to the next sibling element after the control definition list  -->
+			<!-- The control element of a control definition must have an id -->
+			<!-- The delgator element of a control definition doesn't need an id -->
+			<!-- If the definition markup is for a class of controls, they must be contained within delegator element -->
+			<!-- If if a delegator element is destroyed, you're screwed... -->
+			<!-- ...You can, however, create and destroy any control elements you like (as long as they are not also delegator elements). -->			
 			
 		<!-- EXAMPLE 1: Setting up behavior for a class of controls -->		
 		<div id="controlContainerBlah">
-			<!-- this span cotains a control definition -->
-			<span control=".ding">  <!-- the control attribute refers to the control elements. Currently can be one of two forms: ".aClass", "#anId" -->
-				<!-- these anchors define how the control affects other elements -->
-				<!-- the hook attribute refers an element affected by the control -->
-				<!-- the event and action attributes define when and how the elements are affected  -->				
-				<a hook=".ding" event="click" action="select" exclusive="true"></a> <!-- when a class ding control is clicked, select it... -->
-				<a hook="#dong" event="click" action="show" toggle="true"></a> <!-- when a class ding control is clicked, show or hide the element with id="dong" -->
-			</span>			
+			<!-- control definition -->
+			<!-- delegator element defaults to #classDingControls -->
+			<dl class="controlDef">
+				<dt>{control:".ding"}</dt>
+				<dd>{hook:".ding", event:"click", action:"select", exclusive:"true"}</dd>
+				<dd>{hook:"#dong", event:"click", action:"show", toggle:"true"}</dd>				
+			</dl>
 			<ul id="classDingControls"> 				
 				<li class="ding">do</li>
 				<li class="ding">re</li>
 				<li class="ding">mi</li>
 				<li class="ding">fa</li>
 				<li class="ding">so</li>
-				<!-- if you dynamically add more class ding controls here -- say, "la" and "ti" -- they will just work -->
+				<!-- if you dynamically add more class ding controls here (say, "la" and "ti") they will just work -->
 			</ul>
 		</div>
 		<h1 id="dong">DONG!</h1>
 			
 		<!-- EXAMPLE 2: Setting up behavior for a stand-alone control -->
-		<h1 id="boo">BOO!
-			<!-- when the "boo" control is clicked, select it and show or hide the element with id="dong" -->
-			<span control="#boo"> 
-				<a hook="#boo" event="click" action="select" toggle="true"></a>
-				<a hook="#eek" event="click" action="show" toggle="true"></a>		
-			</span>						
-		</h1>
+		<!-- when the "boo" control is clicked, select it and show or hide the element with id="dong" -->
+		<!-- both control and delegator elements default to #boo -->
+		<dl class="controlDef">						
+			<dd>{hook:"#boo", event:"click", action:"select", toggle:"true"}</dd>
+			<dd>{hook:"#eek", event:"click", action:"show", toggle:"true"}</dd>				
+		</dl>
+		<h1 id="boo">BOO!</h1>
 		<p class="scare" id="eek">EEK!</p>
 
 		<!-- EXAMPLE 3: Tab control expample -->					
+		<!-- tab control definition -->
+		<dl class="controlDef">
+			<dt>{control:'.tab', delegator:'#tabs'}</dt>
+			<dd>{hook:".tab", event:"click", action:"select", toggle:"true", exclusive:"true"}</dd>			
+			<dd>{hook:"#panes .pane", event:"click", action:"show", exclusive:"true"}</dd>					
+		</dl>
+		<!-- the tabs -->
 		<ul id="tabs">
-			<!-- tab control definition -->
-			<span control=".tab">  
-				<a hook=".tab" event="click" action="select" toggle="true" exclusive="true"></a> 
-				<a hook="#panes .pane" event="click" action="show" exclusive="true"></a>
-			</span>
-			<!-- the tabs -->
 			<li class="tab">do
 				<!-- connect tab to a specific pane -->
-				<a hook="#do"></a>
+				<a class="directHook">#do</a>
 			</li>
 			<li class="tab">re
-				<a hook="#re"></a>
+				<a class="directHook">#re</a>
 			</li>
 			<li class="tab">mi
-				<a hook="#mi"></a>
+				<a class="directHook">#mi</a>
 			</li>
 			<li class="tab">fa
-				<a hook="#fa"></a>
+				<a class="directHook">#fa</a>
 			</li>
 			<li class="tab">so
-				<a hook="#so"></a>
-			</li>			
-		</ul>
-		
+				<a class="directHook">#so</a>
+			</li>
+		</ul>		
+
 		<div id="panes">
 			<div class="pane" id="do">DO!</div>
 			<div class="pane" id="re">RE!</div>
@@ -101,4 +105,3 @@
 		</div>		
 	</body>
 </html>
-	
