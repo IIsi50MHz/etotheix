@@ -186,12 +186,19 @@ var protoControl = {
 	// bind()
 	// binds a function to the delegator element
 	// used by init()
-	bind: function (type, data, func) {
+	bind: function (type, data, func) {		
 		var that = this;
 		func = func || data;		
 		// **need to add ability to use data parameter and make sure it works		
 		jQ(this._delegator).bind(type, data, function (e) {
-			that.event(e);
+			console.log("delegator:", that._delegator, "eventType:", type);
+			console.log("e:", e);
+			// don't call event() if custom event
+			//**need a better way to do this
+			if (e.currentTarget) {
+				that.event(e);
+			}
+			console.log("targetControl?", !!that.targetControl);
 			if (that.targetControl !== false) {
 				func();
 			}
@@ -256,13 +263,7 @@ var protoControl = {
 					container = document;
 					hook = hook[0];
 				}
-				//**OLD
-				/*
-				var event = controlAnchor.attr("event") || "click";	//**user should be able set default event and action for page to something else		
-				var action = controlAnchor.attr("action") || "select";
-				var toggle = controlAnchor.attr("toggle") === "true";
-				var exclusive = controlAnchor.attr("exclusive") === "true";	
-				*/				
+							
 				var event = dd.event || "click";	//**user should be able set default event and action for page to something else		
 				var action = dd.action || "select";
 				var toggle = dd.toggle || dd.toggle === "true"; // both true and "true" valid
@@ -281,15 +282,18 @@ var protoControl = {
 				
 				// toggle action? exclusive action? both?
 				var modFunc;								
+				//console.log("funcName:", funcName);
 				if (exclusive && toggle) {
 					modFunc = controlObj.exclusiveToggle(funcName); 
-				} else if (toggle) {
+				} else if (toggle) {					
 					modFunc = controlObj.toggle(funcName);				
 				} else if (exclusive) {						
-					modFunc = controlObj.exclusive(funcName); 				
-				} 			
+					modFunc = controlObj.exclusive(funcName);	//controlObj.exclusive(funcName); 				
+				}
+				//console.log(action);
 				
 				//**console.log(event, controlObj);
+				
 				controlObj.bind(event, function() {					
 					// find any control anchors inside the target control
 					//**OLD var innerAnchors = jQ("a[@hook]", controlObj.targetControl);
@@ -332,7 +336,7 @@ var protoControl = {
 						//**console.log(hook, container, index, " -- artificial hook:", hookedElems);
 					}
 					//**END NEW
-					
+			
 					// **We need to be able to apply the action to one element only...
 					// ** ...This could be a control, or it could be some other element that is part of a group of elements.
 					// All cases beleow use a modified function (modFunc) if available. 
@@ -349,9 +353,9 @@ var protoControl = {
 						//**console.log("hook");					
 						(modFunc || controlObj[funcName])(hook);						
 					}
-					//**console.log("done");
+					
 				});
-			});			
+			});		
 		});
 		return this;
 	},	
@@ -420,8 +424,9 @@ var protoControl = {
 			this[i] = obj[i];
 		}
 		// Attempt to pair new functions to make them usable by toggle() and exclusive()
-		var pairs = this.pairs;		
-		for (var i in obj) {
+		var pairs = this.pairs;
+		console.log("obj:", obj)
+		for (var i in obj) {			
 			// find out if action might be a custom version of an existing action (i == ".ding select", for example)
 			var arr = i.split(/\s+/);
 			var hook;
@@ -429,11 +434,13 @@ var protoControl = {
 			if (arr.length > 1) {
 				hook = arr[0];
 				action = arr[1];
-			} else
+			} else {
 				action = arr[0]
 			}
 			// check there is a default version of the custom action that is paired
 			// if there is, pair the new, custom action
+			console.log("obj[i]:", obj[i]);
+			console.log("default?", !!(hook && pairs[action]));
 			if (hook && pairs[action]) {
 				pairs[i] = {};
 				var potentialInv = hook + " " + pairs[action].inv;				
@@ -446,6 +453,7 @@ var protoControl = {
 				}
 				// use the same flag as the default action
 				pairs[i].flag = pairs[action].flag;
+			}
 		}
 		return this;
 	},
@@ -454,37 +462,52 @@ var protoControl = {
 	// similar elements.
 	// action is a string
 	exclusive: function (action) {
-		var that = this;		
-		var inv = this.pairs[action].inv;
-		var flag = this.pairs[action].flag;
-		return function (elem, hook, container) {		
-			that[action](elem);			
-			that[inv](jQ(hook, container).filter(flag).not(elem));
-			return that;
-		}		
+		var that = this;
+		console.log("exclusive called with:", action);
+		try {
+			var inv = this.pairs[action].inv;
+			var flag = this.pairs[action].flag;
+			return function (elem, hook, container) {		
+				that[action](elem);			
+				that[inv](jQ(hook, container).filter(flag).not(elem));
+				return that;
+			}
+		} catch (err) {
+			console.warn("can't use exclusive with action:", action);	
+		}
 	},
 	// toggle()
 	// returns function that toggles an action for elements
 	// action is a string
 	toggle: function (action) {				
 		var that = this;
-		var inv = this.pairs[action].inv;
-		var flag = this.pairs[action].flag;		
-		return function (elem, hook, container) {					
-			jQ(elem).is(flag) ? that[inv](elem, hook) : that[action](elem, hook);
-			return that;
+		console.log("toggle called with:", action);
+		try {
+			var inv = this.pairs[action].inv;
+			var flag = this.pairs[action].flag;		
+			return function (elem, hook, container) {					
+				jQ(elem).is(flag) ? that[inv](elem, hook) : that[action](elem, hook);
+				return that;
+			}
+		} catch (err) {
+			console.warn("can't use toggle with action:", action);			
 		}
 	},
 	// exclusiveToggle()
 	// action is a string
 	exclusiveToggle: function (action) {
 		var that = this;
-		var inv = this.pairs[action].inv;
-		var flag = this.pairs[action].flag;
-		return function (elem, hook, container) {						
-			that.toggle(action)(elem);			
-			that[inv](jQ(hook, container).filter(flag).not(elem));
-			return that;
+		console.log("ExclusiveToggle called with:", action);
+		try {
+			var inv = this.pairs[action].inv;
+			var flag = this.pairs[action].flag;
+			return function (elem, hook, container) {						
+				that.toggle(action)(elem);			
+				that[inv](jQ(hook, container).filter(flag).not(elem));
+				return that;
+			}
+		} catch (err) {
+			console.warn("can't use exclusiveToggle with action:", action);	
 		}
 	}	
 }

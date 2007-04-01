@@ -19,10 +19,17 @@
 		<script type='text/javascript' src='protoControl.js'></script>
 		<script type='text/javascript'>				
 			protoControl.extend({
-				'.ding select': function (expr) {
+				'.tab select': function (expr) {
 					this.select(expr); 
 					console.log('controlObj:', this);
+					jQ(this._delegator).trigger('selectTab');
 				},
+				blah: function (expr) {
+					alert("blahj!!!");
+				},
+				ding: function (expr) {
+					alert("adsfads");
+				}
 			});
 
 			jQ(function () {
@@ -75,12 +82,12 @@
 		<!-- tab control definition -->
 		<dl class='controlDef'>
 			<dt>{control:'.tab', delegator:'#tabs'}</dt>
-			<dd>{hook:'.tab', event:'click', action:'select', toggle:false, exclusive:true}</dd>			
-			<dd>{hook:'#panes .pane', event:'click', action:'show', toggle:false, exclusive:true}</dd>					
+			<dd>{hook:'.tab', event:'click', action:'select', toggle:true, exclusive:false}</dd>			
+			<dd>{hook:'#panes .pane', event:'selectTab', action:'show', toggle:true, exclusive:true}</dd>			
 		</dl>
 		<!-- the tabs -->
 		<ol id='tabs'>
-			<li class='tab'>do</li>
+			<li class='tab'><div>do</div></li>
 			<li class='tab'>re</li>
 			<li class='tab'>mi</li>
 			<li class='tab'>fa</li>
