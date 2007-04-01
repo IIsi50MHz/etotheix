@@ -7,12 +7,12 @@
  	**TO DO -- Add the following to comments:
 		explain toggle and exclusive attributes
 		explain use of anchors added directly inside controls instead of control definition
-		explain when hooks of the form "#id .class" are appropriate
+		explain when ties of the form "#id .class" are appropriate
 		explain structure of control definitions 
 			<dl class="controlDef">
 			<dt>
 			<dd>
-			<a class="directHook">
+			<a class="directTie">
 			JSON
  		add an more detailed overview of the use and consepts behinde the protoControl object
 			why was it written?
@@ -24,7 +24,7 @@
 			when should you use it?
 			when should you not use it?
 			describe what sorts of values each of the these attributes can have
-				hook
+				tie
 				action
 				event
 				toggle
@@ -54,8 +54,8 @@ How to automate control creation:
 			<!-- delegator element defaults to #classDingControls -->
 			<dl class="controlDef">
 				<dt>{control:".ding"}</dt>
-				<dd>{hook:".ding", event:"click", action:"select", exclusive:"true"}</dd>
-				<dd>{hook:"#dong", event:"click", action:"show", toggle:"true"}</dd>				
+				<dd>{tie:".ding", event:"click", action:"select", exclusive:"true"}</dd>
+				<dd>{tie:"#dong", event:"click", action:"show", toggle:"true"}</dd>				
 			</dl>
 			<ul id="classDingControls"> 				
 				<li class="ding">do</li>
@@ -72,8 +72,8 @@ How to automate control creation:
 		<!-- when the "boo" control is clicked, select it and show or hide the element with id="dong" -->
 		<!-- both control and delegator elements default to #boo -->
 		<dl class="controlDef">						
-			<dd>{hook:"#boo", event:"click", action:"select", toggle:"true"}</dd>
-			<dd>{hook:"#eek", event:"click", action:"show", toggle:"true"}</dd>				
+			<dd>{tie:"#boo", event:"click", action:"select", toggle:"true"}</dd>
+			<dd>{tie:"#eek", event:"click", action:"show", toggle:"true"}</dd>				
 		</dl>
 		<h1 id="boo">BOO!</h1>
 		<p class="scare" id="eek">EEK!</p>
@@ -82,26 +82,26 @@ How to automate control creation:
 		<!-- tab control definition -->
 		<dl class="controlDef">
 			<dt>{control:'.tab', delegator:'#tabs'}</dt>
-			<dd>{hook:".tab", event:"click", action:"select", toggle:"true", exclusive:"true"}</dd>			
-			<dd>{hook:"#panes .pane", event:"click", action:"show", exclusive:"true"}</dd>					
+			<dd>{tie:".tab", event:"click", action:"select", toggle:"true", exclusive:"true"}</dd>			
+			<dd>{tie:"#panes .pane", event:"click", action:"show", exclusive:"true"}</dd>					
 		</dl>
 		<!-- the tabs -->
 		<ul id="tabs">
 			<li class="tab">do
-				<!-- connect tab to a specific pane -->
-				<a class="directHook">#do</a>
+				<!-- tie tab to a specific pane -->
+				<a class="directTie">#do</a>
 			</li>
 			<li class="tab">re
-				<a class="directHook">#re</a>
+				<a class="directTie">#re</a>
 			</li>
 			<li class="tab">mi
-				<a class="directHook">#mi</a>
+				<a class="directTie">#mi</a>
 			</li>
 			<li class="tab">fa
-				<a class="directHook">#fa</a>
+				<a class="directTie">#fa</a>
 			</li>
 			<li class="tab">so
-				<a class="directHook">#so</a>
+				<a class="directTie">#so</a>
 			</li>
 		</ul>		
 
@@ -128,8 +128,8 @@ How to create custom actions that override default actions:
 	markup:
 		<!-- markup is same as before, but now clicking on a ding element sends up an alert -->
 		<span control=".ding">
-			<a hook=".ding" event="click" action="select"></a>
-			<a hook="#dong" event="click" action="toggleShow"></a>
+			<a tie=".ding" event="click" action="select"></a>
+			<a tie="#dong" event="click" action="toggleShow"></a>
 		</span>	
 */
 // Setup jQuery so it's $ function doesn't conflict with Mochikit's
@@ -146,9 +146,9 @@ function proto(o) {
 
 var protoControl = {
 	// jQuery object holding the delegator element. Events are bound to the delegator element.
-	_delegator: "",
+	delegator: "",
 	// jQuery expression that identifies the control element(s),
-	_control: "", 	
+	control: "", 	
 	// holds the moset recent event - updated by event()
 	e: "",	// **Should this be private -- provide an acces function?
 	// holds the target of the most recent event - updated by event()
@@ -168,13 +168,13 @@ var protoControl = {
 			this.eventTarget = e.target;
 			// calculate targetControl element
 			var eventTarget = jQ(e.target);
-			var targetControl = eventTarget.parents(this._control);			
-			if (eventTarget.is(this._control)) {
+			var targetControl = eventTarget.parents(this.control);			
+			if (eventTarget.is(this.control)) {
 				this.targetControl = jQ(eventTarget[0]);
-				this.otherControls = jQ(this._control, this._delegator).not(this.targetControl[0]); //** get rid of this?
+				this.otherControls = jQ(this.control, this.delegator).not(this.targetControl[0]); //** get rid of this?
 			} else if (targetControl.length > 0) {
 				this.targetControl = jQ(targetControl[0]);
-				this.otherControls = jQ(this._control, this._delegator).not(this.targetControl[0]); //** get rid of this?
+				this.otherControls = jQ(this.control, this.delegator).not(this.targetControl[0]); //** get rid of this?
 			} else {
 				this.targetControl = false;
 				this.otherControls = false;	//** get rid of this?	
@@ -184,23 +184,20 @@ var protoControl = {
 	},
 	
 	// bind()
-	// binds a function to the delegator element
+	// binds a action to the delegator element
 	// used by init()
-	bind: function (type, data, func) {		
+	bind: function (type, data, action) {		
 		var that = this;
-		func = func || data;		
+		action = action || data;		
 		// **need to add ability to use data parameter and make sure it works		
-		jQ(this._delegator).bind(type, data, function (e) {
-			console.log("delegator:", that._delegator, "eventType:", type);
-			console.log("e:", e);
+		jQ(this.delegator).bind(type, data, function (e) {			
 			// don't call event() if custom event
 			//**need a better way to do this
 			if (e.currentTarget) {
 				that.event(e);
-			}
-			console.log("targetControl?", !!that.targetControl);
+			}			
 			if (that.targetControl !== false) {
-				func();
+				action();
 			}
 		});
 		return this;
@@ -212,56 +209,45 @@ var protoControl = {
 	// used by init()
 	make: function (delegator, control) {
 		var obj = proto(this);
-		obj._delegator = jQ(delegator);
-		obj._control = control;
+		obj.delegator = jQ(delegator);
+		obj.control = control;
 		return obj;
 	},
 	// init()
 	// initializes all delegator controls that are within the context node (default is document)
-	init: function (context) {
-		//**console.log("protoControl.init() called!");
-		// gather all control definitions
-		//**OLD var controlDefs = jQ("span[@control]", context || document);
+	init: function (context) {		
+		// gather all control definitions		
 		var controlDefs = jQ("dl.controlDef", context || document);
 		
 		// set up event handlers for each control
 		controlDefs.each(function () {
-			var controlDef = jQ(this);
-			
-			//**NEW
+			var controlDef = jQ(this);		
 			var dt = jQ("dt:first-child", this).text() || "{}";
-			dt = eval("(" + dt + ")");					
-			var delegator = dt.delegator || controlDef.next();
-			var control = dt.control || "#" + jQ(delegator).attr("id");
-			//**console.log("delegator:", delegator, ", control:", control);
+			dt = eval("(" + dt + ")");
 			
-			//**OLD var controlObj = protoControl.make(controlDef.attr("delegator") || controlDef.parent(), controlDef.attr("control"));			
+			var delegator = dt.delegator || controlDef.next();
+			var control = dt.control || "#" + jQ(delegator).attr("id");			
 			var controlObj = protoControl.make(delegator, control);
 			
-			// get all the control anchors inside this control			
-			//**OLD var controlAnchors = jQ("a", this);
-			var controlAnchors = jQ("dd", this);			
-			
-			// for each control anchor, hook the appropriate event handler to the delegator element
-			controlAnchors.each(function () {
-				var controlAnchor = jQ(this);				
+			// get all the definitions inside this control definition list						
+			var dds = jQ("dd", this);					
+			// for each definition (<dd> element), bind the appropriate event handler to the delegator element
+			dds.each(function () {				
+				var dd = eval("(" + jQ(this).text() + ")");			
 				var container;
-				var targetContainer;
+				var targetContainer;					
 				
-				//**NEW
-				var dd = eval("(" + controlAnchor.text() + ")");			
-				
-				// Check if container id was inclued as part of the hook				
-				//**OLD var hook = controlAnchor.attr("hook") || controlObj._control;
-				var hook = dd.hook || controlObj._control;				
-				hook = hook.split(/\s+/);
-				if (hook.length === 2) {
-					container = targetContainer = hook[0];
-					hook = hook[1];
+				// Check if container id was inclued as part of the tie				
+				//**TODO: I think the "hook" attribute should be renamed to "connection"... how about "tie"?
+				var tie = dd.tie || controlObj.control;				
+				tie = tie.split(/\s+/);
+				if (tie.length === 2) {
+					container = targetContainer = tie[0];
+					tie = tie[1];
 				} else {
-					targetContainer = controlObj._delegator;
+					targetContainer = controlObj.delegator;
 					container = document;
-					hook = hook[0];
+					tie = tie[0];
 				}
 							
 				var event = dd.event || "click";	//**user should be able set default event and action for page to something else		
@@ -269,91 +255,65 @@ var protoControl = {
 				var toggle = dd.toggle || dd.toggle === "true"; // both true and "true" valid
 				var exclusive = dd.exclusive || dd.exclusive === "true"; // both true and "true" valid
 				
-				var funcName;						
 				// check for custom version of action 
-				// **not sure this is the best way to do custom actions
-				// **WHY? because it depends on hook being simple class or id selector. Might want more complex hooks at some point.
-				//	 ****UPDATE: this is not a problem anymore for hooks of the form "#id .class"
-				if (!controlObj[hook + " " + action]) {						
-					funcName = action;
+				var actionName;				
+				if (!controlObj[tie + " " + action]) {						
+					actionName = action;
 				} else {								
-					funcName = hook + " " + action;
+					actionName = tie + " " + action;
 				}
 				
-				// toggle action? exclusive action? both?
-				var modFunc;								
-				//console.log("funcName:", funcName);
+				// create action variation -- toggle/exclusive/both/none
+				var actionVary;								
 				if (exclusive && toggle) {
-					modFunc = controlObj.exclusiveToggle(funcName); 
+					actionVary = controlObj.exclusiveToggle(actionName); 
 				} else if (toggle) {					
-					modFunc = controlObj.toggle(funcName);				
+					actionVary = controlObj.toggle(actionName);				
 				} else if (exclusive) {						
-					modFunc = controlObj.exclusive(funcName);	//controlObj.exclusive(funcName); 				
-				}
-				//console.log(action);
+					actionVary = controlObj.exclusive(actionName);
+				} else {
+					actionVary = controlObj.identity(actionName);
+				}			
 				
-				//**console.log(event, controlObj);
-				
+				// bind the appropriate event handler to the delegator element
 				controlObj.bind(event, function() {					
-					// find any control anchors inside the target control
-					//**OLD var innerAnchors = jQ("a[@hook]", controlObj.targetControl);
-					var innerAnchors = jQ("a.directHook", controlObj.targetControl);										
-					// get elements hooked to by inner anchors
-					var hooks = [];
-					innerAnchors.each(function(i) {
-						// get hook values, (will be a list of id's)
-						//**OLD hooks[i] = jQ(this).attr("hook");
-						hooks[i] = jQ(this).text();
-						//**console.log(hooks[i]);
+					// find any control anchors inside the target control					
+					var directTies = jQ("a.directTie", controlObj.targetControl);										
+					// get elements tied to by inner anchors
+					var ties = [];
+					directTies.each(function(i) {
+						// get tie values, (will be a list of id's)
+						ties[i] = jQ(this).text();						
 					})
 					
-					//** Not sure how well this has been tested...
-					// get the actual elements associated with each hook... 
-					// ...keep only elements that match the control anchor's hook
-					hooks = hooks.join();
-					//** OLD var hookedElems = hooks ? jQ(hooks).filter(hook) : [];
-					//**NEW					
-					var hookedElems; 
-					if (hooks) {
-						// ...keep only elements that match the control anchor's hook						
-						hookedElems = jQ(hooks).filter(hook);
-					} else {
-						//**console.log("no direct hook");
-						// if there are no direct hooks, make one up						
+					// get the actual elements associated with each tie... 
+					// ...keep only elements that match the control anchor's tie
+					ties = ties.join();					
+					var tiedElems; 
+					if (ties) {
+						// ...keep only elements that match the control anchor's tie						
+						tiedElems = jQ(ties).filter(tie);
+					} else {						
+						// if there are no direct ties, make one up						
 						//	 get the index of the target control
-						var elem = controlObj.targetControl[0];
-						var index = false;
-						//** Not sure this makes sense if _control is an id selector. Should only do this if it's class selector?
-						//**console.log("control:", controlObj._control, "delegator:", controlObj._delegator);
-						jQ(controlObj._control, controlObj._delegator).each(function(i) {
-							//**console.log("this:", this, "targetControl:", elem);
-						    if (this === elem) {
-						        index = i;
-						    }
-						})
-						// 	get the element in container that matches hook and has the same index as the target control
-						hookedElems = jQ(hook, container).eq(index);
-						//**console.log(hook, container, index, " -- artificial hook:", hookedElems);
-					}
-					//**END NEW
-			
-					// **We need to be able to apply the action to one element only...
-					// ** ...This could be a control, or it could be some other element that is part of a group of elements.
-					// All cases beleow use a modified function (modFunc) if available. 
-					// case 1: action applies to target control itself					
-					if (controlObj.targetControl.filter(hook).length > 0) {						
-						//**console.log("target control itself");
-						(modFunc || controlObj[funcName])(controlObj.targetControl, hook, container);						
-					// case 2: action applies to an element refered to by an anchor inside the target control
-					} else if (hookedElems.length > 0) {
-						//**console.log("direct hook in control");					
-						(modFunc || controlObj[funcName])(hookedElems, hook, container);						
-					// case 3: action applies directly to hook element(s)
-					} else {	
-						//**console.log("hook");					
-						(modFunc || controlObj[funcName])(hook);						
-					}
+						//	** Not sure this makes sense if control is an id selector. Should only do this if it's class selector?						
+						var elem = controlObj.targetControl[0];												
+						var index = jQ(controlObj.control, controlObj.delegator).index(elem);
+						// 	get the element in container that matches tie and has the same index as the target control
+						tiedElems = jQ(tie, container).eq(index);						
+					}			
 					
+					// apply action to appropriate element(s)
+					// case 1: action applies to target control itself					
+					if (controlObj.targetControl.filter(tie).length > 0) {						
+						actionVary(controlObj.targetControl, tie, container);						
+					// case 2: action applies to an element refered to by an anchor inside the target control
+					} else if (tiedElems.length > 0) {
+						actionVary(tiedElems, tie, container);						
+					// case 3: action applies directly to tie element(s)
+					} else {							
+						actionVary(tie);						
+					}					
 				});
 			});		
 		});
@@ -363,26 +323,24 @@ var protoControl = {
 	// action functions
 	/////
 	// select elements -- expr is a jQuery expression
-	select: function (expr) {
-		//**console.log("called select");
+	select: function (expr) {		
 		jQ(expr).addClass("selected");		
 		return this;
 	},
 	// deselect elements
-	deselect: function (expr) {		
-		//**console.log("called deselect");
+	deselect: function (expr) {				
 		jQ(expr).removeClass("selected");
 		return this;
 	},
 	// show elements
-	show: function (expr) {
-		//**console.log("called show", expr);
+	show: function (expr) {		
 		jQ(expr).show();
+		return this;
 	},
 	// hide elements
-	hide: function (expr) {
-		//**console.log("called hide", expr);
+	hide: function (expr) {		
 		jQ(expr).hide();
+		return this;
 	},
 	/////
 	// action enhancement aids
@@ -424,29 +382,26 @@ var protoControl = {
 			this[i] = obj[i];
 		}
 		// Attempt to pair new functions to make them usable by toggle() and exclusive()
-		var pairs = this.pairs;
-		console.log("obj:", obj)
+		var pairs = this.pairs;		
 		for (var i in obj) {			
 			// find out if action might be a custom version of an existing action (i == ".ding select", for example)
 			var arr = i.split(/\s+/);
-			var hook;
+			var tie;
 			var action;
 			if (arr.length > 1) {
-				hook = arr[0];
+				tie = arr[0];
 				action = arr[1];
 			} else {
 				action = arr[0]
 			}
 			// check there is a default version of the custom action that is paired
-			// if there is, pair the new, custom action
-			console.log("obj[i]:", obj[i]);
-			console.log("default?", !!(hook && pairs[action]));
-			if (hook && pairs[action]) {
+			// if there is, pair the new action
+			if (tie && pairs[action]) {
 				pairs[i] = {};
-				var potentialInv = hook + " " + pairs[action].inv;				
+				var potentialInv = tie + " " + pairs[action].inv;				
 				// if there was an inverse action created to pair with the new action, use it.
 				if (obj[potentialInv]) {
-					pairs[i].inv = hook + " " + pairs[action].inv;					
+					pairs[i].inv = tie + " " + pairs[action].inv;					
 				// if there isn't a new inverse the action, use the default inverse action
 				} else {					
 					pairs[i].inv = pairs[action].inv;
@@ -457,57 +412,62 @@ var protoControl = {
 		}
 		return this;
 	},
+	// identity() -- used to make "this" operator work with action functions
+	identity: function (action) {
+		var that = this;
+		return function (elem) {
+			that[action](elem);
+			return that;
+		}
+	},	
 	// exclusive() -- takes an action makes it exclusive (by exlusive, I mean exclusive like XOR is exclusive)
 	// For example, passing the select function returns a function that selects one element and delselects all
 	// similar elements.
 	// action is a string
 	exclusive: function (action) {
-		var that = this;
-		console.log("exclusive called with:", action);
+		var that = this;		
 		try {
 			var inv = this.pairs[action].inv;
 			var flag = this.pairs[action].flag;
-			return function (elem, hook, container) {		
+			return function (elem, tie, container) {		
 				that[action](elem);			
-				that[inv](jQ(hook, container).filter(flag).not(elem));
+				that[inv](jQ(tie, container).filter(flag).not(elem));
 				return that;
 			}
 		} catch (err) {
-			console.warn("can't use exclusive with action:", action);	
+			//console.warn("can't use exclusive with action:", action);	
 		}
 	},
 	// toggle()
 	// returns function that toggles an action for elements
 	// action is a string
 	toggle: function (action) {				
-		var that = this;
-		console.log("toggle called with:", action);
+		var that = this;	
 		try {
 			var inv = this.pairs[action].inv;
 			var flag = this.pairs[action].flag;		
-			return function (elem, hook, container) {					
-				jQ(elem).is(flag) ? that[inv](elem, hook) : that[action](elem, hook);
+			return function (elem, tie, container) {					
+				jQ(elem).is(flag) ? that[inv](elem, tie) : that[action](elem, tie);
 				return that;
 			}
 		} catch (err) {
-			console.warn("can't use toggle with action:", action);			
+			//console.warn("can't use toggle with action:", action);			
 		}
 	},
 	// exclusiveToggle()
 	// action is a string
 	exclusiveToggle: function (action) {
-		var that = this;
-		console.log("ExclusiveToggle called with:", action);
+		var that = this;		
 		try {
 			var inv = this.pairs[action].inv;
 			var flag = this.pairs[action].flag;
-			return function (elem, hook, container) {						
+			return function (elem, tie, container) {						
 				that.toggle(action)(elem);			
-				that[inv](jQ(hook, container).filter(flag).not(elem));
+				that[inv](jQ(tie, container).filter(flag).not(elem));
 				return that;
 			}
 		} catch (err) {
-			console.warn("can't use exclusiveToggle with action:", action);	
+			//console.warn("can't use exclusiveToggle with action:", action);	
 		}
 	}	
 }
