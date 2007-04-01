@@ -8,7 +8,7 @@
 			.tab, .ding {
 				cursor: pointer;
 			}
-			dl.controlDef, a.directHook {
+			dl.controlDef, a.directTie {
 				display: none !important;
 			}
 			#panes .pane {
@@ -19,10 +19,17 @@
 		<script type='text/javascript' src='protoControl.js'></script>
 		<script type='text/javascript'>				
 			protoControl.extend({
-				'.tab select': function (expr) {
-					this.select(expr); 
-					console.log('controlObj:', this);
-					jQ(this._delegator).trigger('selectTab');
+				'chooseTab': function (expr) {
+					if (!jQ(this.targetControl).is(".selected")) {
+						jQ(this.delegator).trigger('tabSelect');
+					} else {
+						jQ(this.delegator).trigger('tabDeselect');						
+					}
+				},
+				'#tabs deselect': function (expr) {
+					//this.deselect(expr); 
+					//console.log("tab deselect");
+					jQ(this.delegator).trigger('tabDeselect');
 				},
 				blah: function (expr) {
 					alert("blahj!!!");
@@ -54,8 +61,8 @@
 		<!-- delegator element defaults to #classDingControls -->
 		<dl class='controlDef'>
 			<dt>{control:'.ding'}</dt>
-			<dd>{hook:'.ding', event:'click', action:'select', exclusive:true}</dd>
-			<dd>{hook:'#dong', event:'click', action:'select', toggle:true}</dd>				
+			<dd>{tie:'.ding', event:'click', action:'select', exclusive:true}</dd>
+			<dd>{tie:'#dong', event:'click', action:'select', toggle:true}</dd>				
 		</dl>
 		<ul id='classDingControls'> 				
 			<li class='ding'>do</li>
@@ -72,8 +79,8 @@
 		<!-- when the "boo" control is clicked, select it and show or hide the element with id="dong" -->
 		<!-- both control and delegator elements default to #boo -->
 		<dl class='controlDef'>						
-			<dd>{hook:'#boo', event:'click', action:'select', toggle:true}</dd>
-			<dd>{hook:'#eek', event:'click', action:'show', toggle:true}</dd>				
+			<dd>{tie:'#boo', event:'click', action:'select', toggle:true}</dd>
+			<dd>{tie:'#eek', event:'click', action:'show', toggle:true}</dd>				
 		</dl>
 		<h1 id='boo'>BOO!</h1>
 		<p class='scare' id='eek'>EEK!</p>
@@ -82,20 +89,21 @@
 		<!-- tab control definition -->
 		<dl class='controlDef'>
 			<dt>{control:'.tab', delegator:'#tabs'}</dt>
-			<dd>{hook:'.tab', event:'click', action:'select', toggle:true, exclusive:false}</dd>			
-			<dd>{hook:'#panes .pane', event:'selectTab', action:'show', toggle:true, exclusive:true}</dd>			
+			<dd>{tie:'#tabs', event:'click', action:'chooseTab'}</dd>			
+			<dd>{tie:'#tabs .tab', event:'tabSelect', action:'select', exclusive:true}</dd>											
+			<dd>{tie:'#panes .pane', event:'tabSelect', action:'show', exclusive:true}</dd>						
 		</dl>
 		<!-- the tabs -->
 		<ol id='tabs'>
-			<li class='tab'><div>do</div></li>
+			<li class='tab selected'>do</li>
 			<li class='tab'>re</li>
 			<li class='tab'>mi</li>
 			<li class='tab'>fa</li>
-			<li class='tab'>so<a class='directHook'>#so</a></li>
+			<li class='tab'>so<a class='directTie'>#so</a></li>
 		</ol>		
-
+		<!-- the panes -->
 		<div id='panes'>
-			<div class='pane' id='do'>DO!</div>
+			<div class='pane' style='display: block;' id='do'>DO!</div>
 			<div class='pane' id='re'>RE!</div>
 			<div class='pane' id='mi'>MI!</div>
 			<div class='pane' id='fa'>FA!</div>
