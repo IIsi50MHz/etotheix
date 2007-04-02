@@ -49,69 +49,58 @@ How to automate control creation:
 			<!-- ...You can, however, create and destroy any control elements you like (as long as they are not also delegator elements). -->			
 			
 		<!-- EXAMPLE 1: Setting up behavior for a class of controls -->		
-		<div id="controlContainerBlah">
-			<!-- control definition -->
-			<!-- delegator element defaults to #classDingControls -->
-			<dl class="controlDef">
-				<dt>{control:".ding"}</dt>
-				<dd>{tie:".ding", event:"click", action:"select", exclusive:"true"}</dd>
-				<dd>{tie:"#dong", event:"click", action:"show", toggle:"true"}</dd>				
-			</dl>
-			<ul id="classDingControls"> 				
-				<li class="ding">do</li>
-				<li class="ding">re</li>
-				<li class="ding">mi</li>
-				<li class="ding">fa</li>
-				<li class="ding">so</li>
-				<!-- if you dynamically add more class ding controls here (say, "la" and "ti") they will just work -->
-			</ul>
-		</div>
-		<h1 id="dong">DONG!</h1>
+		<!-- control definition -->
+		<!-- delegator element defaults to #classDingControls -->
+		<dl class='controlDef'>
+			<dt>{control:'.ding'}</dt>
+			<dd>{tie:'.ding', event:'click', action:'select', exclusive:true}</dd>
+			<dd>{tie:'#dong', event:'click', action:'select', toggle:true}</dd>				
+		</dl>
+		<ul id='classDingControls'> 				
+			<li class='ding'>do</li>
+			<li class='ding'>re</li>
+			<li class='ding'>mi</li>
+			<li class='ding'>fa</li>
+			<li class='ding'>so</li>
+			<!-- if you dynamically add more class ding controls here (say, "la" and "ti") they will just work -->
+		</ul>
+	
+		<h1 id='dong'>DONG!</h1>
 			
 		<!-- EXAMPLE 2: Setting up behavior for a stand-alone control -->
 		<!-- when the "boo" control is clicked, select it and show or hide the element with id="dong" -->
 		<!-- both control and delegator elements default to #boo -->
-		<dl class="controlDef">						
-			<dd>{tie:"#boo", event:"click", action:"select", toggle:"true"}</dd>
-			<dd>{tie:"#eek", event:"click", action:"show", toggle:"true"}</dd>				
+		<dl class='controlDef'>						
+			<dd>{tie:'#boo', event:'click', action:'select', toggle:true}</dd>
+			<dd>{tie:'#eek', event:'click', action:'show', toggle:true}</dd>				
 		</dl>
-		<h1 id="boo">BOO!</h1>
-		<p class="scare" id="eek">EEK!</p>
+		<h1 id='boo'>BOO!</h1>
+		<p class='scare' id='eek'>EEK!</p>
 
 		<!-- EXAMPLE 3: Tab control expample -->					
 		<!-- tab control definition -->
-		<dl class="controlDef">
+		<dl class='controlDef'>
 			<dt>{control:'.tab', delegator:'#tabs'}</dt>
-			<dd>{tie:".tab", event:"click", action:"select", toggle:"true", exclusive:"true"}</dd>			
-			<dd>{tie:"#panes .pane", event:"click", action:"show", exclusive:"true"}</dd>					
+			<dd>{tie:'#tabs', event:'click', action:'chooseTab'}</dd>			
+			<dd>{tie:'#tabs .tab', event:'tabSelect', action:'select', exclusive:true}</dd>											
+			<dd>{tie:'#panes .pane', event:'tabSelect', action:'show', exclusive:true}</dd>						
 		</dl>
 		<!-- the tabs -->
-		<ul id="tabs">
-			<li class="tab">do
-				<!-- tie tab to a specific pane -->
-				<a class="directTie">#do</a>
-			</li>
-			<li class="tab">re
-				<a class="directTie">#re</a>
-			</li>
-			<li class="tab">mi
-				<a class="directTie">#mi</a>
-			</li>
-			<li class="tab">fa
-				<a class="directTie">#fa</a>
-			</li>
-			<li class="tab">so
-				<a class="directTie">#so</a>
-			</li>
-		</ul>		
-
-		<div id="panes">
-			<div class="pane" id="do">DO!</div>
-			<div class="pane" id="re">RE!</div>
-			<div class="pane" id="mi">MI!</div>
-			<div class="pane" id="fa">FA!</div>
-			<div class="pane" id="so">SO!</div>
-		</div>	
+		<ol id='tabs'>
+			<li class='tab selected'>do</li>
+			<li class='tab'>re</li>
+			<li class='tab'>mi</li>
+			<li class='tab'>fa</li>
+			<li class='tab'>so<a class='directTie'>#so</a></li>
+		</ol>		
+		<!-- the panes -->
+		<div id='panes'>
+			<div class='pane' style='display: block;' id='do'>DO!</div>
+			<div class='pane' id='re'>RE!</div>
+			<div class='pane' id='mi'>MI!</div>
+			<div class='pane' id='fa'>FA!</div>
+			<div class='pane' id='so'>SO!</div>
+		</div>		
 
 How to create custom actions that override default actions:
 	javascript code:
