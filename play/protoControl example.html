@@ -3,13 +3,18 @@
 	<head>
 		<style type='text/css'>
 			.selected {
-				background-color: pink;
+				background-color: #f80 !important;
 			}			
-			.tab, .ding {
+			.tab, .note, #boo {
 				cursor: pointer;
+				background-color: lightblue;
+				border: solid grey 1px;
+				margin: 2px;
 			}
 			dl.controlDef, a.directTie {
-				display: none !important;
+				/*display: none !important;*/
+				font-family: monospace;
+				color: grey;
 			}
 			#panes .pane {
 				display: none;
@@ -27,16 +32,8 @@
 					}
 				},
 				'#tabs deselect': function (expr) {
-					//this.deselect(expr); 
-					//console.log("tab deselect");
 					jQ(this.delegator).trigger('tabDeselect');
 				},
-				blah: function (expr) {
-					alert("blahj!!!");
-				},
-				ding: function (expr) {
-					alert("adsfads");
-				}
 			});
 
 			jQ(function () {
@@ -59,55 +56,69 @@
 		<!-- EXAMPLE 1: Setting up behavior for a class of controls -->		
 		<!-- control definition -->
 		<!-- delegator element defaults to #classDingControls -->
+		<hr />
+		<h2>EXAMPLE 1: Setting up behavior for a class of controls</h2>
+		<p>When any control with class "note" is clicked, select the element with id "la".</p>
 		<dl class='controlDef'>
-			<dt>{control:'.ding'}</dt>
-			<dd>{tie:'.ding', event:'click', action:'select', exclusive:true}</dd>
-			<dd>{tie:'#dong', event:'click', action:'select', toggle:true}</dd>				
+			<dt>{control:'.note'}</dt>			
+			<dd>{tie:'#la', event:'click', action:'select', toggle:true}</dd>				
 		</dl>
-		<ul id='classDingControls'> 				
-			<li class='ding'>do</li>
-			<li class='ding'>re</li>
-			<li class='ding'>mi</li>
-			<li class='ding'>fa</li>
-			<li class='ding'>so</li>
+		<ul id='notes'> 				
+			<li class='note'>do</li>
+			<li class='note'>re</li>
+			<li class='note'>mi</li>
+			<li class='note'>fa</li>
+			<li class='note'>so</li>
 			<!-- if you dynamically add more class ding controls here (say, "la" and "ti") they will just work -->
 		</ul>
 	
-		<h1 id='dong'>DONG!</h1>
+		<h1 id='la'>LA!</h1>
 			
 		<!-- EXAMPLE 2: Setting up behavior for a stand-alone control -->
 		<!-- when the "boo" control is clicked, select it and show or hide the element with id="dong" -->
 		<!-- both control and delegator elements default to #boo -->
-		<dl class='controlDef'>						
+		<hr />
+		<h2>EXAMPLE 2: Setting up behavior for a stand-alone control</h2>
+		<p>When the "BOO!" control is clicked, select or deselect it and show or hide "EEK!" element</p>			
+		<dl class='controlDef'>		
+			<dt>{control:'#boo'}</dt>		
 			<dd>{tie:'#boo', event:'click', action:'select', toggle:true}</dd>
 			<dd>{tie:'#eek', event:'click', action:'show', toggle:true}</dd>				
-		</dl>
-		<h1 id='boo'>BOO!</h1>
-		<p class='scare' id='eek'>EEK!</p>
+		</dl>		
+		<p id='boo'>BOO!</p>
+		<h1 class='scare' id='eek'>EEK!</h1>
 
-		<!-- EXAMPLE 3: Tab control expample -->					
+		<!-- EXAMPLE 3: Tab control expample -->
+		<hr />
+		<h2> EXAMPLE 3: Tab control expample using custom event and action</h2>
+		<ol>
+			<li>When the tabs delegator is clicked, the 'chooseTab' action triggers a 'tabSelect' event.</li>
+			<li>When the tab clicked on gets the 'tabSelect' message, it selects itself.</li>
+			<li>When the cooresponding pane gets the 'tabSelect' message it shows itself.</li>			
+		</ol>
+		<p>In reality, the delegator is the element that gets all the messages and tells the proper elements what to do...</p>
 		<!-- tab control definition -->
 		<dl class='controlDef'>
 			<dt>{control:'.tab', delegator:'#tabs'}</dt>
 			<dd>{tie:'#tabs', event:'click', action:'chooseTab'}</dd>			
-			<dd>{tie:'#tabs .tab', event:'tabSelect', action:'select', exclusive:true}</dd>											
+			<dd>{tie:'.tab', event:'tabSelect', action:'select', exclusive:true}</dd>											
 			<dd>{tie:'#panes .pane', event:'tabSelect', action:'show', exclusive:true}</dd>						
 		</dl>
 		<!-- the tabs -->
 		<ol id='tabs'>
-			<li class='tab selected'>do</li>
-			<li class='tab'>re</li>
-			<li class='tab'>mi</li>
-			<li class='tab'>fa</li>
-			<li class='tab'>so<a class='directTie'>#so</a></li>
+			<li class='tab selected'>tab1</li>
+			<li class='tab'>tab2</li>
+			<li class='tab'>tab3</li>
+			<li class='tab'>tab4</li>
+			<li class='tab'>tab5<a class='directTie'>#pane5</a></li>
 		</ol>		
 		<!-- the panes -->
 		<div id='panes'>
-			<div class='pane' style='display: block;' id='do'>DO!</div>
-			<div class='pane' id='re'>RE!</div>
-			<div class='pane' id='mi'>MI!</div>
-			<div class='pane' id='fa'>FA!</div>
-			<div class='pane' id='so'>SO!</div>
+			<div class='pane' style='display: block;'>PANE1!</div>
+			<div class='pane'>PANE2!</div>
+			<div class='pane'>PANE3!</div>
+			<div class='pane'>PANE4!</div>
+			<div class='pane' id='pane5'>PANE5!</div>
 		</div>		
 	</body>
 </html>
