@@ -10,9 +10,11 @@
 		</style>	
 		<script type='text/javascript' src='http://jquery.com/src/jquery-latest.js'></script>				
 		<script type='text/javascript'>
-		<!-- PURPOSE: to make it easy to change styles for class of elements dynamically without javascript having to iterate over the elements. -->
-		<!-- This is done by modifying one or more style tags in the head of the page. -->
-		var style = function () {
+		/* protoStyle object
+		PURPOSE: To make it easy to change styles for class of elements dynamically without javascript having to iterate over the elements. 
+		This is done by modifying one or more style tags in the head of the page. 
+		*/		
+		var protoStyle = function () {
 			// proto() is an exact copy of Douglas Crockford's object() operator
 			function proto(o) {
 				var F = function F() {};
