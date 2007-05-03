@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>
+		<style type='text/css'>
+			ol {
+				margin: 0;
+				padding: 0;
+			}
+			.tab.selected {
+				background-color: pink !important;
+			}
+			.tab {
+				position: relative;
+				width: 10em;
+				cursor: pointer;
+				background-color: lightblue;
+				border-style: solid;
+				border-width: 0 1px 1px 1px;
+				list-style-position: inside;				
+			}
+			.tab:first-child {
+				border-width: 1px;
+			}
+			#tabs {
+				float: left;
+				position: relative;							
+			}
+			dl.controlDef, a.directTie {
+				display: none;
+			}
+			#panes {
+				float: left;
+				position: relative;
+				top: 5%;
+				border-style: solid;
+				border-width: 1px 1px 1px 1px;
+				margin: 10px;
+				padding: 40px;				
+				width: 40px;
+			}
+			#panes .pane {
+				position: relative;
+				display: none;
+				text-align: center;				
+			}
+		</style>		
+		<script type='text/javascript' src='http://jquery.com/src/jquery-latest.js'></script>		
+		<script type='text/javascript' src='protoControl.js'></script>
+		<script type='text/javascript'>				
+			protoControl.extend({
+				'chooseTab': function (expr) {
+					jQ(this.delegator).trigger('tabSelect');
+				}
+			});
+
+			jQ(function () {
+				protoControl.init();
+			});
+		</script>
+		<title>control example</title>
+	</head>
+	
+	<body>					
+		<!-- tab control definition -->
+		<dl class='controlDef'>
+			<dt>{control:'.tab', delegator:'#tabs'}</dt>
+			<dd>{tie:'#tabs', event:'click', action:'chooseTab'}</dd>			
+			<dd>{tie:'#tabs .tab', event:'tabSelect', action:'select', exclusive:true}</dd>											
+			<dd>{tie:'#panes .pane', event:'tabSelect', action:'show', exclusive:true}</dd>						
+		</dl>
+			<!-- the tabs -->		
+			<ol id='tabs'>
+				<li class='tab selected'>do</li>
+				<li class='tab'>re</li>
+				<li class='tab'>mi</li>
+				<li class='tab'>fa</li>
+				<li class='tab'>so<a class='directTie'>#so</a></li>
+			</ol>		
+			<!-- the panes -->
+			<div id='panes'>
+				<div class='pane' style='display: block;' id='do'>DO!</div>
+				<div class='pane' id='re'>RE!</div>
+				<div class='pane' id='mi'>MI!</div>
+				<div class='pane' id='fa'>FA!</div>
+				<div class='pane' id='so'>SO!</div>
+			</div>		
+		
+	</body>
+</html>
