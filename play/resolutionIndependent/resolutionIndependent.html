@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>					
+		<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.2/build/reset/reset-min.css"> 
+		<style type='text/css'>			
+			* {
+				font-size: 100%;
+			}
+			.half {
+				width: 50%;
+				background-color: pink;
+			}
+			#wrap {				
+				position: relative;				
+				background-color: orange;
+				margin: auto;
+				overflow: hidden;
+			}
+			#staticWrap {
+				width: 100%;
+				height: 50%;
+				background-color: pink;
+			}
+			span {
+				background-color: lightgreen;
+			}
+			img {
+				width: 25%;
+			}			
+			#wrap > div {
+				margin: 1% 1% 0 0;
+			}
+			#head {
+				position: absolute;
+											
+				top: 0%;
+				right: 0%;
+				bottom: 90%;
+				left: 20%;
+				
+				background-color: purple;
+			}
+			#foot {		
+				position: absolute;
+				margin-bottom: 1% !important;
+				margin-left: 1% !important;
+			
+				top: 80%;
+				right: 0%;
+				bottom: 0%;
+				left: 0%;
+				
+				background-color: lightgreen;
+			}
+			#navigate {
+				position: absolute;
+				margin-left: 1% !important;
+				
+				top: 0%;
+				right: 80%;
+				bottom: 20%;
+				left: 0%;
+				
+				background-color: lightblue;
+			}
+			#content {
+				position: absolute;				
+				top: 10%;
+				right: 0%;
+				bottom: 20%;
+				left: 20%;
+				
+				background-color: pink;
+			}
+			#blah {
+				position: absolute;
+				background-color: red;
+				top: 20%;
+				left: 50%;
+				bottom: 10%;
+				right: 10%;
+			}
+			
+		</style>
+		<script type='text/javascript' src='jquery-latest.js'></script>
+		<script type='text/javascript' src='dimensions.js'></script>
+		<script type='text/javascript'>
+			var aspectRatio = 16/9;
+			
+			function showWidth() {
+				var w = $(window).width();
+				var h = $(window).height();
+				var bw;
+				var bh;				
+				if (w/h > aspectRatio) {
+					bh = h; 
+					bw = aspectRatio*h;
+				} else {
+					bw = w;
+					bh = 1/aspectRatio*w;
+				}
+		
+				
+				var fontSize = bw*.03;
+				
+				$('h1').empty().append(w + 'x' + h + 'font-size:' + Math.round(fontSize*100)/100 + "px");
+				$('#wrap').css({'font-size': fontSize, 'width': bw, 'height': bh});				
+			}							
+			$(window).ready(function () {
+				showWidth();
+				$(window).resize(showWidth)
+			});
+		</script>
+		<title>Resolution independent html</title>
+	</head>		
+	<body>
+		<div id="wrap">		
+			<div id="head">head</div>
+			<div id="navigate">navigate <div id="blah">blah</div></div>
+			<div id="content">content <br /> <img src="17.jpg"></img></div>
+			<div id="foot">foot</div>		
+		</div>				
+	</body>
+</html>

@@ -226,8 +226,8 @@ var protoControl = {
 				var container;
 				var targetContainer;					
 				
-				// Check if container id was inclued as part of the tie				
-				//**TODO: I think the "hook" attribute should be renamed to "connection"... how about "tie"?
+				// Get all the attributes for each definition
+				// Check if a container id was inclued as part of the tie								
 				var tie = dd.tie || controlObj.control;				
 				tie = tie.split(/\s+/);
 				if (tie.length === 2) {
@@ -237,8 +237,7 @@ var protoControl = {
 					targetContainer = controlObj.delegator;
 					container = document;
 					tie = tie[0];
-				}
-							
+				}							
 				var event = dd.event || "click";	//**user should be able set default event and action for page to something else		
 				var action = dd.action || "select";
 				var toggle = dd.toggle || dd.toggle === "true"; // both true and "true" valid
@@ -283,7 +282,7 @@ var protoControl = {
 						// ...keep only elements that match the control anchor's tie						
 						tiedElems = jQ(ties).filter(tie);
 					} else {						
-						// if there are no direct ties, make one up						
+						// if there are no direct ties, make them up						
 						//	 get the index of the target control
 						//	** Not sure this makes sense if control is an id selector. Should only do this if it's class selector?						
 						var elem = controlObj.targetControl[0];												
