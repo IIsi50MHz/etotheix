@@ -133,6 +133,10 @@ $.o(obj).extend({})
 
 obj.o
 
+// Create a new object that can do most of the stuff an array can do
+//jQuery uses something like this [].push.apply(this, arguments);
+//... where "this" is a jQuery object. 
+//(Which jQuery function was this?)
 var am = [
 	"concat",
 	"join",
@@ -150,5 +154,22 @@ var am = [
 var o = {};
 o.length = 0;
 for (var i in am) {
-	o[am[i]] = function () {return [][am[i]].apply(this, arguments);};
+	o[am[i]] = function () {return };
 }
+
+// Create a function that can simulate somthing like a Mathematica's "pure" functions
+function pure (f) {
+	function () {
+		var $ = arguments;
+		f($);
+	}
+}
+
+{"1": 4, "4": 77}
+pure(func)([3, 66], [1, 77], [2])(b)
+
+(ding(#2, #1, 4)) & (3, 1)
+
+function () {}
+(function (x) {return x*Math.sin(x)})
+(function () {arguments[0]*Math.sin(arguments[0])})(3)
