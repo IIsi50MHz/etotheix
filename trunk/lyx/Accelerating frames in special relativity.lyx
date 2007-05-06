@@ -1,0 +1,401 @@
+#LyX 1.4.4 created this file. For more info see http://www.lyx.org/
+\lyxformat 245
+\begin_document
+\begin_header
+\textclass amsart
+\language english
+\inputencoding auto
+\fontscheme default
+\graphics default
+\paperfontsize default
+\spacing single
+\papersize default
+\use_geometry false
+\use_amsmath 2
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 2
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Accelerating frames in special relativity
+\end_layout
+
+\begin_layout Author
+Brent W.
+ Robinett
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Section
+The motion of a tiny clock with uniform acceleration
+\end_layout
+
+\begin_layout Standard
+The veleocity of a uniformly accelerating clock (starting from rest in some
+ inertial frame at 
+\begin_inset Formula $\tau=0$
+\end_inset
+
+) is given by 
+\begin_inset Formula \begin{equation}
+v=\tanh(a\tau)\label{eq:vel}\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $v$
+\end_inset
+
+ is the velocity of the clock, the constant 
+\begin_inset Formula $a$
+\end_inset
+
+ is the instantaneous accelaration of the clock measured from an inerial
+ frame with matching velocity, and 
+\begin_inset Formula $\tau$
+\end_inset
+
+ is the proper tim eof the clock (the time the clock reads).
+ The 
+\begin_inset Formula $t$
+\end_inset
+
+ and 
+\begin_inset Formula $x$
+\end_inset
+
+ compontent of the clock's four-velocity are given by,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{align}
+\frac{dt}{d\tau} & =\gamma=\cosh(a\tau)\label{eq:4 vel t}\\
+\frac{dx}{d\tau} & =\gamma v=\sinh(a\tau)\label{eq:4 vel x}\end{align}
+
+\end_inset
+
+where
+\begin_inset Formula \begin{equation}
+\gamma=\frac{1}{\sqrt{1-v^{2}}}\label{eq:gamma}\end{equation}
+
+\end_inset
+
+Integrating 
+\begin_inset LatexCommand \ref{eq:4 vel t}
+
+\end_inset
+
+ and 
+\begin_inset LatexCommand \ref{eq:4 vel x}
+
+\end_inset
+
+ we find equations relating the time 
+\begin_inset Formula $t$
+\end_inset
+
+ and position 
+\begin_inset Formula $x$
+\end_inset
+
+ of the clock as functions of the clock's proper time 
+\begin_inset Formula $\tau$
+\end_inset
+
+:
+\begin_inset Formula \begin{align}
+t & =\frac{1}{a}\sinh(a\tau)\label{eq:time}\\
+x & =\frac{1}{a}\cosh(a\tau)\label{eq:position}\end{align}
+
+\end_inset
+
+where the constans of integration have been chosen so that when 
+\begin_inset Formula $\tau=0$
+\end_inset
+
+, 
+\begin_inset Formula $t=0$
+\end_inset
+
+ and 
+\begin_inset Formula $x=1/a$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Now what we'd like to do is find an equation for the clock's position 
+\begin_inset Formula $x$
+\end_inset
+
+ as a function of 
+\begin_inset Formula $t$
+\end_inset
+
+ rather than 
+\begin_inset Formula $\tau$
+\end_inset
+
+.
+ Using the relation
+\begin_inset Formula \[
+\cosh^{2}x-\sinh^{2}x=1\]
+
+\end_inset
+
+we find
+\begin_inset Formula \begin{equation}
+\cosh(a\tau)=\sqrt{1-\sinh^{2}\lyxlock (a\tau)}\label{eq:cosh}\end{equation}
+
+\end_inset
+
+And since from 
+\begin_inset LatexCommand \ref{eq:time}
+
+\end_inset
+
+ 
+\begin_inset Formula $at=\sinh(a\tau)$
+\end_inset
+
+, we can substiute 
+\begin_inset Formula $at$
+\end_inset
+
+ for 
+\begin_inset Formula $\sinh(a\tau)$
+\end_inset
+
+ in 
+\begin_inset LatexCommand \ref{eq:cosh}
+
+\end_inset
+
+ to get, 
+\begin_inset Formula \[
+\cosh(a\tau)=\sqrt{1-(at)^{2}}\]
+
+\end_inset
+
+ Finally, substituting this into 
+\begin_inset LatexCommand \ref{eq:position}
+
+\end_inset
+
+, we find the eqution of motion for a uniformly accelerating clock: 
+\begin_inset Formula \[
+x=\frac{1}{a}\sqrt{1-(at)^{2}}\]
+
+\end_inset
+
+Now for 
+\begin_inset Formula $v$
+\end_inset
+
+ (using the same substitutions),
+\begin_inset Formula \begin{align*}
+v & =\tanh(a\tau)=\frac{\sinh(a\tau)}{\cosh(a\tau)}=\frac{\sinh(a\tau)}{\sqrt{1-\sinh^{2}(a\tau)}}\Rightarrow\\
+v & =\frac{at}{\sqrt{1-(at)^{2}}}\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+The motion of a pair of tiny clocks
+\end_layout
+
+\begin_layout Standard
+Next we consider a pair of clocks---let's call them clock A and clock B)---requi
+ring that they move in a way such that
+\end_layout
+
+\begin_layout Enumerate
+Clock A moves with uniform accelaration, as described in the previous section.
+\end_layout
+
+\begin_layout Enumerate
+For any inertial fram in which clock A is instantaneously at rest, clock
+ B will also be at rest.
+\end_layout
+
+\begin_layout Enumerate
+The distance between clocks A and B measured from any such fram is always
+ the same, 
+\begin_inset Formula $\Delta x$
+\end_inset
+
+.
+\backslash
+
+\end_layout
+
+\begin_layout Standard
+From the previous section, we know the equation of motion for clock A will
+ be
+\begin_inset Formula \[
+x_{A}=\frac{1}{a}\sqrt{1-(at_{A})^{2}}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We now wish to find th equation of motion for clock B.
+ The following relations, found from equations 
+\begin_inset LatexCommand \ref{eq:4 vel t}
+
+\end_inset
+
+, 
+\begin_inset LatexCommand \ref{eq:4 vel x}
+
+\end_inset
+
+, 
+\begin_inset LatexCommand \ref{eq:time}
+
+\end_inset
+
+, and 
+\begin_inset LatexCommand \ref{eq:position}
+
+\end_inset
+
+ in the previous section, will be useful:\SpecialChar \-
+
+\begin_inset Formula \begin{align*}
+at_{A} & =\sinh(a\tau)=\gamma v\\
+ax_{A} & =\cosh(a\tau)=\gamma=\sqrt{1-(at_{A})^{2}}\end{align*}
+
+\end_inset
+
+By the Lorentz transformation we find that at the instant clock A reaches
+ velocity 
+\begin_inset Formula $v$
+\end_inset
+
+
+\begin_inset Formula \begin{align*}
+t_{A}^{\prime} & =\gamma(t_{A}-vx_{A})=(\gamma)t_{A}-(\gamma v)x_{A}=(ax_{A})t_{A}-(at_{A})x_{A}=0\\
+x_{A}^{\prime} & =\gamma(x_{A}-vt_{A})=(\gamma)x_{A}-(\gamma v)t_{A}=(ax_{A})x_{A}-(at_{A})t_{A}\\
+ & =\frac{1}{a}((ax)_{A}^{2}-(at)_{A}^{2})=\frac{1}{a}(\cosh^{2}(a\tau)-\sinh^{2}(a\tau))=\frac{1}{a}\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+> Hold on a minute.
+ What's the purpose of this paper?
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+* To explain unirorm accelaration in special relativity.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+> Why?
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+* Because it's kind of confusing.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+> What's confusing about it? Uniform accelaration...
+ Sounds simple to me.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+* Actually, it's not that bad if you're looking at the accelaration of a
+ single point.
+ But if you've got a more realistic thing, it gets surprisingly wierd.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+> What do you mean by 
+\begin_inset Quotes eld
+\end_inset
+
+more realistic
+\begin_inset Quotes erd
+\end_inset
+
+? And what do you mean by 
+\begin_inset Quotes eld
+\end_inset
+
+wierd
+\begin_inset Quotes erd
+\end_inset
+
+?
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+* By 
+\emph on
+more realisitic
+\emph default
+, I mean something that isn't a single point---say a rocketship.
+ By 
+\emph on
+wierd
+\emph default
+, I mean specifically that clocks on this rocketship don't stay in sync
+ on this rocketship.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+> What? Why?
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+* That's the purpose of this paper---to explain why the clocks don't stay
+ in sync and, more precicely, the way they go out of sync.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+> The way they go out of sync?
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+* Yeah.
+\end_layout
+
+\end_body
+\end_document
