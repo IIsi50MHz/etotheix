@@ -82,7 +82,7 @@ function proto(o) {
 }
 // Extends an object "o" with members of object "obj"
 function extend(o, obj) {
-	for (var i in o) {
+	for (var i in obj) {
 		o[i] = obj[i];
 	}
 	return o;
