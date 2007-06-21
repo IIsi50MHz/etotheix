@@ -23,6 +23,16 @@ var func = function () {
 		ring: "wrong"
 	});
 }();
+**What about doing this??
+	var f = function (tempOpts) {
+		var opts = f.temp(tempOpts);
+		// do stuff using opts...
+		alert(opts.ding + " " + opts.ring);
+	};
+	f.makeOpts({
+		ding: "dong", 
+		ring: "wrong"
+	});
 //Options for func can now be used in three ways:
 	//1) Use default options: 
 		func(); //alerts "dong wrong"
@@ -70,11 +80,12 @@ function proto(o) {
 	F.prototype = o;
 	return new F();
 }
+// Extends an o
 function extend(o, obj) {
 	for (var i in o) {
-		obj[i] = o[i];
+		o[i] = obj[i];
 	}
-	return obj;
+	return o;
 }
 function copy(o) {
 	return extend({}, o);
@@ -104,13 +115,13 @@ function deepProto(o) {
 // go out to every leaf of o and add a cooresponding leaf in obj
 // You can change any leaf of obj without affecting o and vise-versa. 
 function deepExtend(o, obj) {
-	for (var i in o) {
-		if (typeof o[i] === 'object') {
-			deepExtend(obj[i], o[i]);	
+	for (var i in obj) {
+		if (typeof obj[i] === 'object') {
+			deepExtend(o[i], obj[i]);	
 		}
-		obj[i] = o[i];				
+		o[i] = obj[i];				
 	}
-	return obj;
+	return o;
 }
 function deepCopy(o) {
 	return deepExtend({}, o);	
