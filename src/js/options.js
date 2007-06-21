@@ -80,7 +80,7 @@ function proto(o) {
 	F.prototype = o;
 	return new F();
 }
-// Extends an o
+// Extends an object "o" with members of object "obj"
 function extend(o, obj) {
 	for (var i in o) {
 		o[i] = obj[i];
