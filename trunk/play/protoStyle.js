@@ -1,6 +1,11 @@
 /* protoStyle object
 PURPOSE: To make it easy to change styles for class of elements dynamically without javascript having to iterate over the elements. 
 This is done by modifying one or more style tags in the head of the page. 
+
+Example: 
+var hiddenThings = protoStyle("hiddenThings").css(".ding .dong {display: none;}")
+hiddenThings.selector
+
 */		
 var protoStyle = function () {
 	// proto() is an exact copy of Douglas Crockford's object() operator
@@ -11,19 +16,29 @@ var protoStyle = function () {
 	}
 	var protoObj = {
 		_elem: "",
+		//** Not sure we need _id...
 		_id: "",
-		_style: "",
+		_style: {},
+		//** Selector should be an object too (or an array)
 		_selector: "",
+		// Overwrites the style content (the selector is left untouched)
+		// **think about changing name to properties
 		style: function (style) {
 			this._style = this.styleAsObj(style);
 			return this.update();	
 		},
+		// Overwrites the selector only (the stuff in the curly brackets is left untouched)
+		// **Think about changing name to selectors... or have one function that smartly does both... 
+		// **update() to update selectors and properties
+		// **replace() to replace selectors and properties. Expamples: replace(".even", ".odd"); replace(".ding"); replace("{color: red;}"); **Shouldn't need curly braces... could be a problem telling psudo-selectors from properties without curly braces.
+		//**remove() to remove selectors and properties. Example: remove(".even");
 		selector: function (selector) {
 			this._selector = selector;
 			return this.update();
-		},
+		},		
+		// Overwrites everything in the style tag
 		css: function (css) {	
-			console.log(this);
+			firebug.log(this);
 			if (css) {					
 				var arr = css.replace(/\{/, "~~{").split('~~');
 				this._selector = arr[0];
@@ -34,6 +49,7 @@ var protoStyle = function () {
 			}
 			return this.update();
 		},
+		// Updates the style. Does not delete any properties--only overwrites ones included in styleString. If selector is included, selector is overwritten (**should thing about changing this).
 		update: function (styleString) {
 			if (styleString) {
 				var obj = this.styleAsObj(styleString);
@@ -52,7 +68,7 @@ var protoStyle = function () {
 			return this;
 		},
 		styleAsObj: function (styleString) {
-			console.log(styleString);
+			firebug.log(styleString);
 			var obj = styleString
 			.replace(/\s*;*\s*}\s*/g,";}")
 			.replace(/\s*{\s*/g, "{'")
@@ -60,7 +76,7 @@ var protoStyle = function () {
 			.replace(/\s*;\s*/g,"';'")
 			.replace(/;'}/g,"}")
 			.replace(/;/g,",");
-			console.log(obj);
+			firebug.log(obj);
 			return eval('(' + obj + ')');
 		},
 		styleAsString: function () {
@@ -92,13 +108,15 @@ var protoStyle = function () {
 		return proto(protoObj).make(id);		
 	}
 }();
-// Wrap firebug's console object so it doesn't break things when firebug is disabled
-var fbug = function (i) {
+// Wrap firebug's firebug object so it doesn't break things when firebug is disabled
+var firebug = function (i) {
 	try {
 		return console[i];
 	} catch (err) {	
 		return function () {}; //do nothing
 	}
 };
-fbug.debug = function () {return fbug('debug')};
-function hold(func) {return function () {return func};}
+for (var i in console) {
+	firebug[i] = firebug(i);
+}
+var f = firebug;
