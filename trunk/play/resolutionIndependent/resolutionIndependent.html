@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 	<head>					
-		<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.2/build/reset/reset-min.css"> 
+		<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.2/build/reset/reset-min.css" /> 
 		<style type='text/css'>			
 			* {
 				font-size: 100%;
@@ -112,13 +112,17 @@
 			});
 		</script>
 		<title>Resolution independent html</title>
+		<style type="text/css">body {background-color: yellow;}</style>
 	</head>		
-	<body>
+	<body>		
 		<div id="wrap">		
 			<div id="head">head</div>
 			<div id="navigate">navigate <div id="blah">blah</div></div>
-			<div id="content">content <br /> <img src="17.jpg"></img></div>
+			<div id="content">content <br /> <img src="17.jpg" alt="17!"></img></div>
+			<script type="text/javascript">alert('hey!')</script>
 			<div id="foot">foot</div>		
+			
 		</div>				
+		
 	</body>
 </html>
