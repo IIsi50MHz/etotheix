@@ -1,4 +1,5 @@
 var jObject;
+var OBJ;
 (function () {
 	// typeof functions
 	function isObject(x) {
@@ -73,7 +74,7 @@ var jObject;
 		}
 		return obj;
 	}
-	dc = deepClear;
+	
 	function deepEach(obj, f) {
 		each(obj, function (key, val) {
 			if (!isBasic(val)) {
@@ -146,5 +147,60 @@ var jObject;
 			return this;
 		}
 	});
+	OBJ = function (obj) {
+		if (obj) {
+			OBJ.obj = obj;
+			return OBJ;
+		}
+		return OBJ.obj;
+	}
+	OBJ.obj = {};
+	update(OBJ, {
+		// shallow functions
+		proto: function (obj) {
+			var F = function F() {};
+			F.prototype = this.obj;
+			return OBJ(new F()).update(obj || {});
+		},
+		update: function (obj) {		
+			update(this.obj, obj || {});
+			return this;
+		},
+		copy: function (obj) {
+			var copy = update({}, this.obj);
+			return OBJ(copy).update(obj || {});
+		},
+		clear: function (obj) {
+			clear(this.obj);
+			return update(this.obj, obj || {});
+		}, 			
+		each: function (f) {
+			each(this.obj, f);
+			return this;
+		},
+		//deep functions
+		deepProto: function (obj) {			
+			return OBJ(deepProto(this.obj)).deepUpdate(obj);
+		},
+		deepUpdate: function (obj) {
+			deepUpdate(this.obj, obj);
+			return this;
+		},
+		deepCopy: function (obj) {
+			var copy = deepUpdate({}, this.obj);					
+			return OBJ(copy).deepUpdate(obj);		
+		},
+		deepClear: function (obj) {
+			deepClear(this.obj);
+			return this.deepUpdate(obj || {});
+		},
+		deepEach: function (f) {
+			deepEach(this.obj, f);
+			return this;
+		}
+	});
 })();
+
+
+
 
