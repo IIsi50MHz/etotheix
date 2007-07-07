@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>					
+		<script type='text/javascript' src='jObject.js'></script>
+		<script type='text/javascript'>
+			var blah = {b: "b", c: "c", a: {aa: "aa", bb: {aaa: "aaa", bbb: "bbb", ccc: {dddd: "dddd"}}}};
+			var obj = jObject({b: "b", c: "c", a: {aa: "aa", bb: {aaa: "aaa", bbb: "bbb", ccc: {dddd: "dddd"}}}});
+			console.debug(obj.a.bb.ccc);
+			var up = {c: "new_c", a: {bb: {bbb: {dddd: "new_dddd", eeee: "added_eeeee"}}}};
+			var results = {};
+			console.debug("new jObject:", obj);
+			for (i in jObject.augment) {
+				if (!(i == "each" || i == "deepEach" || i === "prototype") && i.match(/deep/) !== null) {
+					console.debug("testing " + i + "()");
+					results[i] = obj[i]();
+					console.debug(i + "() result:", results[i]);
+					results[i+"_arg"] = obj[i](up);
+					console.debug(i + "(obj) result:", results[i]);
+				}
+			}			
+		</script>
+		<title>jObject</title>
+	</head>		
+	<body>		
+		Hello.
+	</body>
+</html>
