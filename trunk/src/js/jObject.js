@@ -1,4 +1,4 @@
-var jObject;
+var Jobby;
 (function () {	
 	// typeof functions
 	function isObject(x) {
@@ -10,25 +10,28 @@ var jObject;
 	function isBasic(x) {
 		return !(isObject(x) || isFunction(x));			
 	}
-	// shallow functions	
-	function proto(obj) {
-		var F = function F() {};
-		F.prototype = obj;
-		return new F();
-	}
-	function update(o, obj) {
-		each (obj, function (key, val) {
+	// shallow functions
+	function shallowUpdate(o, obj) {
+		shallowEach (obj, function (key, val) {
 			o[key] = val;
 		});		
 		return o;
 	}
-	function clear(obj) {
+	function shallowProto(obj) {
+		var F = function F() {};
+		F.prototype = obj;
+		return new F();
+	}	
+	function shallowCopy (obj) {
+		return shallowUpdate({}, obj);		
+	}
+	function shallowClear(obj) {
 		for (var i in obj) {
 			delete obj[i];
 		}
-		return update(this.obj, obj || {});
+		return obj;
 	}
-	function each(obj, f) {		
+	function shallowEach(obj, f) {		
 		for (var i in obj) {
 			if (!isBasic(obj)) {
 				if (Array.prototype[i] === undefined && Function.prototype[i] === undefined) {
@@ -39,15 +42,6 @@ var jObject;
 		return obj;
 	}
 	// deep functions
-	function deepProto(obj) {
-	    var o = proto(obj);
-	    for (var i in obj) {
-			if (isObject(obj[i])) { 
-	            o[i] = deepProto(obj[i]);
-	        }
-	    }
-	    return o;
-	}
 	function deepUpdate(o, obj) {		
 		for (var i in obj) {
 			//console.debug("obj is object?", obj[i], isObject(obj[i]))
@@ -63,6 +57,19 @@ var jObject;
 		}
 		return o;
 	}
+	function deepProto(obj) {
+	    var o = shallowProto(obj);
+	    for (var i in obj) {
+			if (isObject(obj[i])) { 
+	            o[i] = deepProto(obj[i]);
+	        }
+	    }
+	    return o;
+	}	
+	function deepCopy (obj) {
+		var deepCopy = deepUpdate({}, this.obj);					
+		return deepUpdate(deepCopy, obj);	
+	}
 	function deepClear(obj) {
 		for (var i in obj) {
 			if (!isObject(obj[i])) { 
@@ -72,37 +79,36 @@ var jObject;
 			}	
 		}
 		return obj;
-	}
-	
+	}	
 	function deepEach(obj, f) {
-		each(obj, function (key, val) {
+		shallowEach(obj, function (key, val) {
 			if (!isBasic(val)) {
 				deepEach(val, f);	
 			} 
 		});
 		return obj;
 	}
-	// make above functions above globally using Object as a namespace
-	Object.isObject = isObject;
-	Object.isFunction = isFunction;
-	Object.isBasic = isBasic;
+	// make above functions above globally using Jobby as a namespace
+	Jobby.isObject = isObject;
+	Jobby.isFunction = isFunction;
+	Jobby.isBasic = isBasic;
 	// shallow functions
-	Object.proto = proto;
-	Object.update = update;
-	Object.copy = copy;
-	Object.clear = clear;
-	Object.each = each;
+	Jobby.shallowUpdate = shallowUpdate;
+	Jobby.shallowProto = shallowProto;	
+	Jobby.shallowCopy = shallowCopy;
+	Jobby.shallowClear = shallowClear;
+	Jobby.each = shallowEach;
 	// deep functions
-	Object.deepProto = deepProto;
-	Object.deepUpdate = deepUpdate;
-	Object.deepCopy = deepCopy;
-	Object.deepClear = deepClear;
-	Object.deepEach = deepEach;
-	// The jObject function returns a function that wraps extra functionality around obj
-	jObject = (function () {
+	Jobby.update = deepUpdate;
+	Jobby.proto = deepProto;	
+	Jobby.copy = deepCopy;
+	Jobby.clear = deepClear;
+	Jobby.deepEach = deepEach;
+	// The Jobby function returns a function that wraps extra functionality around obj
+	Jobby = (function () {
 		// Updates the object and returns self if and object is passed
 		// If nothing passed, returns its object.
-		var jObject_instance = function (o) {
+		var Jobby_instance = function (o) {
 			if (o === undefined) {					
 				return this.obj; 									
 			} else {					
@@ -110,20 +116,20 @@ var jObject;
 				return this;
 			}
 		};
-		// create a new jObject		
-		var create_jObject = function (obj) {
-			var new_jObject;
-			new_jObject = function (o) {
-				return jObject_instance.call(new_jObject, o)
+		// create a new Jobby		
+		var create_Jobby = function (obj) {
+			var new_Jobby;
+			new_Jobby = function (o) {
+				return Jobby_instance.call(new_Jobby, o)
 			}
-			new_jObject.obj = obj || {};
-			return new_jObject;
+			new_Jobby.obj = obj || {};
+			return new_Jobby;
 		};
-		return create_jObject;
+		return create_Jobby;
 	})();	
 	
 	// add basic functionality to Function.protype	
-	update(Function.prototype, {
+	shallowUpdate(Function.prototype, {
 		obj: {},
 		isObject: function () {
 			return isObject(this.obj);
@@ -134,43 +140,55 @@ var jObject;
 		isBasic: function () {
 			return isBasic(this.obj);
 		},
-		// shallow functions		
-		proto: function (obj) {
-			var F = function F() {};
-			F.prototype = this.obj;
-			return jObject(new F()).update(obj || {});
-		},
-		update: function (obj) {		
-			update(this.obj, obj || {});
+		// shallow functions
+		shallowUpdate: function (obj) {		
+			shallowUpdate(this.obj, obj || {});
 			return this;
 		},
-		copy: function (obj) {
-			var copy = update({}, this.obj);
-			return jObject(copy).update(obj || {});
+		shallowProto: function (obj) {
+			var o = shallowProto(this.obj);
+			return obj? 
+				Jobby(shallowUpdate(o, obj)): 
+				Jobby(o);	
+		},		
+		shallowCopy: function (obj) {
+			var o = shallowCopy(this.obj);
+			return obj? 
+				Jobby(shallowUpdate(o, obj)): 
+				Jobby(o);	
 		},
-		clear: function (obj) {
-			clear(this.obj);
-			return this.update(obj || {});
+		shallowClear: function (obj) {
+			shallowClear(this.obj); 
+			return obj? 
+				shallowUpdate(o, obj): 
+				this;	
 		}, 			
 		each: function (f) {
-			each(this.obj, f);
+			shallowEach(this.obj, f);
 			return this;
 		},
 		//deep functions
-		deepProto: function (obj) {			
-			return jObject(deepProto(this.obj)).deepUpdate(obj);
-		},
-		deepUpdate: function (obj) {
+		update: function (obj) {
 			deepUpdate(this.obj, obj);
 			return this;
 		},
-		deepCopy: function (obj) {
-			var copy = deepUpdate({}, this.obj);					
-			return jObject(copy).deepUpdate(obj);		
+		proto: function (obj) {	
+			var o = deepProto(this.obj);
+			return obj? 
+				Jobby(deepUpdate(o, obj)): 
+				Jobby(o);						
+		},		
+		copy: function (obj) {
+			var o = deepCopy(this.obj);
+			return obj? 
+				Jobby(deepUpdate(o, obj)): 
+				Jobby(o);			
 		},
-		deepClear: function (obj) {
-			deepClear(this.obj);
-			return this.deepUpdate(obj || {});
+		clear: function (obj) {
+			deepClear(this.obj); 
+			return obj? 
+				deepUpdate(o, obj): 
+				this;	
 		},
 		deepEach: function (f) {
 			deepEach(this.obj, f);
