@@ -1,6 +1,5 @@
 var jObject;
-var OBJ;
-(function () {
+(function () {	
 	// typeof functions
 	function isObject(x) {
 		return x !== null && typeof x === "object";
@@ -82,29 +81,60 @@ var OBJ;
 			} 
 		});
 		return obj;
-	}	
+	}
+	// make above functions above globally using Object as a namespace
+	Object.isObject = isObject;
+	Object.isFunction = isFunction;
+	Object.isBasic = isBasic;
+	// shallow functions
+	Object.proto = proto;
+	Object.update = update;
+	Object.copy = copy;
+	Object.clear = clear;
+	Object.each = each;
+	// deep functions
+	Object.deepProto = deepProto;
+	Object.deepUpdate = deepUpdate;
+	Object.deepCopy = deepCopy;
+	Object.deepClear = deepClear;
+	Object.deepEach = deepEach;
 	// The jObject function returns a function that wraps extra functionality around obj
-	jObject = function (obj) {
+	jObject = (function () {
+		// Updates the object and returns self if and object is passed
+		// If nothing passed, returns its object.
+		var jObject_instance = function (o) {
+			if (o === undefined) {					
+				return this.obj; 									
+			} else {					
+				deepUpdate(this.obj, o)
+				return this;
+			}
+		};
 		// create a new jObject		
-		var new_jObject = proto(obj);
-		// add add wrapped object to new jObject
-		new_jObject.obj = obj;
-		// add jObject functionality ot new jObject
-		update(new_jObject, jObject.augment);		
-		return new_jObject;			
-	};	
+		var create_jObject = function (obj) {
+			var new_jObject;
+			new_jObject = function (o) {
+				return jObject_instance.call(new_jObject, o)
+			}
+			new_jObject.obj = obj || {};
+			return new_jObject;
+		};
+		return create_jObject;
+	})();	
 	
-	jObject.each = each;
-	jObject.update = update;
-	
-	// This function allows you to add functionality to all subsequently created jObjects
-	jObject.augment = function (obj) {				
-		update(jObject.augment, obj);					
-	};
-	
-	// add basic functionality to jObject
-	jObject.augment({
-		// shallow functions
+	// add basic functionality to Function.protype	
+	update(Function.prototype, {
+		obj: {},
+		isObject: function () {
+			return isObject(this.obj);
+		},
+		isFunction: function () {
+			return isFunction(this.obj);
+		},
+		isBasic: function () {
+			return isBasic(this.obj);
+		},
+		// shallow functions		
 		proto: function (obj) {
 			var F = function F() {};
 			F.prototype = this.obj;
@@ -120,7 +150,7 @@ var OBJ;
 		},
 		clear: function (obj) {
 			clear(this.obj);
-			return update(this.obj, obj || {});
+			return this.update(obj || {});
 		}, 			
 		each: function (f) {
 			each(this.obj, f);
@@ -146,60 +176,9 @@ var OBJ;
 			deepEach(this.obj, f);
 			return this;
 		}
-	});
-	OBJ = function (obj) {
-		if (obj) {
-			OBJ.obj = obj;
-			return OBJ;
-		}
-		return OBJ.obj;
-	}
-	OBJ.obj = {};
-	update(OBJ, {
-		// shallow functions
-		proto: function (obj) {
-			var F = function F() {};
-			F.prototype = this.obj;
-			return OBJ(new F()).update(obj || {});
-		},
-		update: function (obj) {		
-			update(this.obj, obj || {});
-			return this;
-		},
-		copy: function (obj) {
-			var copy = update({}, this.obj);
-			return OBJ(copy).update(obj || {});
-		},
-		clear: function (obj) {
-			clear(this.obj);
-			return update(this.obj, obj || {});
-		}, 			
-		each: function (f) {
-			each(this.obj, f);
-			return this;
-		},
-		//deep functions
-		deepProto: function (obj) {			
-			return OBJ(deepProto(this.obj)).deepUpdate(obj);
-		},
-		deepUpdate: function (obj) {
-			deepUpdate(this.obj, obj);
-			return this;
-		},
-		deepCopy: function (obj) {
-			var copy = deepUpdate({}, this.obj);					
-			return OBJ(copy).deepUpdate(obj);		
-		},
-		deepClear: function (obj) {
-			deepClear(this.obj);
-			return this.deepUpdate(obj || {});
-		},
-		deepEach: function (f) {
-			deepEach(this.obj, f);
-			return this;
-		}
-	});
+	});	
 })();
+
 
 
 
