@@ -1,0 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>					
+		<script type='text/javascript' src='Jobby.js'></script>
+		<script type='text/javascript'>
+			var blah = {b: "b", c: "c", a: {aa: "aa", bb: {aaa: "aaa", bbb: "bbb", ccc: {dddd: "dddd"}}}};
+			var job = Jobby({b: "b", c: "c", a: {aa: "aa", bb: {aaa: "aaa", bbb: "bbb", ccc: {dddd: "dddd"}}}});
+			console.debug(job().a.bb.ccc);
+			var up = {c: "new_c", a: {bb: {bbb: {dddd: "new_dddd", eeee: "added_eeeee"}}}};
+			var results = {};
+			console.debug("new Jobby:", job);			
+		</script>
+		<title>Jobby</title>
+	</head>		
+	<body>		
+		Hello.
+	</body>
+</html>
