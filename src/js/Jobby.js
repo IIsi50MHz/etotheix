@@ -10,34 +10,42 @@ var Jobby;
 	function isBasic(x) {
 		return !(isObject(x) || isFunction(x));			
 	}
-	// shallow functions 
-	function shallowUpdate(obj, up) {
+	// shallow functions
+	// <level> parameter specifies at what level of <obj> to apply the update --> Example: ".ding.dong.blah" or "['ding']['dong']['blah']"
+	function shallowUpdate(obj, up, level) {
+		if (level) {
+			// <level> should start with a "[" or a "." -- if both missing prepend a "."
+			if (level.search(/^\.|^\[/) === -1) {
+				level = "." + level;
+			}
+			obj = eval("obj" + level);
+		}
 		if (up) {
-			for (var i in up) {						
+			for (var i in up) {
 				obj[i] = up[i];
 			}
 		}
 		return obj;			
 	}
-	function shallowProto(obj, up) { 
+	function shallowProto(obj, up, level) { 
 		var F = function F() {};
 		F.prototype = obj;		
 		return up?
-			shallowUpdate(new F(), up):
+			shallowUpdate(new F(), up, level):
 			new F();
 	}	
-	function shallowCopy (obj, up) {		
+	function shallowCopy (obj, up, level) {		
 		var copy = shallowUpdate({}, obj);
 		return up?
-			shallowUpdate(copy, up):
+			shallowUpdate(copy, up, level):
 			copy;
 	}
-	function shallowClear(obj, up) {
+	function shallowClear(obj, up, level) {
 		for (var i in obj) {
 			delete obj[i];
 		}
 		return up?
-			shallowUpdate(obj, up):
+			shallowUpdate(obj, up, level):
 			obj;
 	}
 	function shallowEach(obj, f) {		
@@ -51,8 +59,15 @@ var Jobby;
 		return obj;
 	}
 	// deep functions
-	function deepUpdate(obj, up) {
-		console.debug("deepUpdate --", "obj:", obj, "up:", up || "NO! UP!");
+	// <level> parameter specifies at what level of <obj> to apply the update --> Example: ".ding.dong.blah" or "['ding']['dong']['blah']"
+	function deepUpdate(obj, up, level) {
+		if (level) {
+			// <level> should start with a "[" or a "." -- if both missing prepend a "."
+			if (level.search(/^\.|^\[/) === -1) {
+				level = "." + level;
+			}
+			obj = eval("obj" + level);
+		}
 		if (up) {
 			for (var i in up) {			
 				if (isObject(up[i])) {					
@@ -67,7 +82,7 @@ var Jobby;
 		}
 		return obj;
 	}
-	function deepProto(obj, up) {
+	function deepProto(obj, up, level) {
 	    var p = shallowProto(obj);
 	    for (var i in obj) {
 			if (isObject(obj[i])) { 
@@ -75,16 +90,16 @@ var Jobby;
 	        }
 	    }
 		return up?
-			deepUpdate(p, up):
+			deepUpdate(p, up, level):
 			p;	    
 	}	
-	function deepCopy (obj, up) {		
+	function deepCopy (obj, up, level) {		
 		var copy = deepUpdate({}, obj);		
 		return up?
-			deepUpdate(copy, up):
+			deepUpdate(copy, up, level):
 			copy;
 	}
-	function deepClear(obj, up) { 
+	function deepClear(obj, up, level) { 
 		for (var i in obj) {
 			if (!isObject(obj[i])) { 
 				delete obj[i];
@@ -93,7 +108,7 @@ var Jobby;
 			}	
 		}
 		return up?
-			deepUpdate(obj, up):
+			deepUpdate(obj, up, level):
 			obj;
 	}	
 	function deepEach(obj, f) {
@@ -104,30 +119,6 @@ var Jobby;
 		});
 		return obj;
 	}	
-	// The Jobby function returns a function that wraps extra functionality around obj
-	Jobby = (function () {
-		// Updates the object and returns self if and object is passed
-		// If nothing passed, returns its object.
-		var Jobby_instance = function (up) {
-			if (up === undefined) {					
-				return this.obj; 									
-			} else {					
-				deepUpdate(this.obj, up)
-				return this;
-			}
-		};
-		// create a new Jobby		
-		var create_Jobby = function (obj) {
-			var new_Jobby;
-			new_Jobby = function (up) {
-				return Jobby_instance.call(new_Jobby, up)
-			}
-			new_Jobby.obj = obj || {};
-			return new_Jobby;
-		};
-		return create_Jobby;
-	})();	
-	
 	// add basic functionality to Function.protype	
 	shallowUpdate(Function.prototype, {
 		obj: {},
@@ -141,63 +132,118 @@ var Jobby;
 			return isBasic(this.obj);
 		},
 		// shallow functions
-		shallowUpdate: function (up) {		
-			shallowUpdate(this.obj, up);
+		update: function (up, level) {		
+			shallowUpdate(this.obj, up, level);
 			return this;
 		},
-		shallowProto: function (up) {
-			return Jobby(shallowProto(this.obj, up));			
+		proto: function (up, level) {
+			return Jobby(shallowProto(this.obj, up, level));			
 		},		
-		shallowCopy: function (up) {
-			return Jobby(shallowCopy(this.obj), up);							
+		copy: function (up, level) {
+			return Jobby(shallowCopy(this.obj), up, level);							
 		},
-		shallowClear: function (up) {
-			shallowClear(this.obj, up); 
+		clear: function (up, level) {
+			shallowClear(this.obj, up, level); 
 			return this;	
 		}, 			
 		each: function (f) {
 			shallowEach(this.obj, f);
 			return this;
-		},
-		//deep functions
-		update: function (up) {
-			deepUpdate(this.obj, up);
-			return this;
-		},
-		proto: function (up) {	
-			return Jobby(deepProto(this.obj, up));
-		},		
-		copy: function (up) {
-			return Jobby(deepCopy(this.obj, up));			
-		},
-		clear: function (up) {
-			deepClear(this.obj, up); 
-			return this;
-		},
-		deepEach: function (f) {
-			deepEach(this.obj, f);
-			return this;
 		}
-	});	
+	});		
+	deepUpdate(Function.prototype, {
+		update: {
+			deep: function (up, level) {
+				deepUpdate(this.obj, up, level);
+				return this;
+			}
+		},
+		proto: {
+			deep: function (up, level) {
+				return Jobby(deepProto(this.obj, up, level));
+			}
+		},
+		copy: {
+			deep: function (up, level) {
+				deepUpdate(this.obj, up, level);
+				return this;
+			}
+		},
+		clear: {
+			deep: function (up, level) {
+				deepClear(this.obj, up, level); 
+				return this;
+			}
+		},
+		each: {
+			deep: function (up, level) {
+				deepEach(this.obj, f);
+				return this;
+			}
+		}		
+	});
+	// The Jobby function returns a function that wraps extra functionality around obj
+	Jobby = (function () {
+		// Updates the object and returns self if and object is passed
+		// If nothing passed, returns its object.
+		var Jobby_instance = function (up, level) {
+			if (up === undefined) {					
+				return this.obj; 									
+			} else {					
+				shallowUpdate(this.obj, up, level);
+				return this;
+			}
+		};
+		// create a new Jobby		
+		var create_Jobby = function (obj) {
+			var new_Jobby;
+			new_Jobby = function (up, level) {
+				return Jobby_instance.call(new_Jobby, up, level)
+			}
+			new_Jobby.obj = obj || {};
+			return new_Jobby;
+		};
+		return create_Jobby;
+	})();	
 	// make original functions globally available using Jobby as a namespace
 	Jobby.isObject = isObject;
 	Jobby.isFunction = isFunction;
 	Jobby.isBasic = isBasic;
 	// shallow functions
-	Jobby.shallowUpdate = shallowUpdate;
-	Jobby.shallowProto = shallowProto;	
-	Jobby.shallowCopy = shallowCopy;
-	Jobby.shallowClear = shallowClear;
+	Jobby.update = shallowUpdate;
+	Jobby.proto = shallowProto;	
+	Jobby.copy = shallowCopy;
+	Jobby.clear = shallowClear;
 	Jobby.each = shallowEach;
 	// deep functions
-	Jobby.update = deepUpdate;
-	Jobby.proto = deepProto;	
-	Jobby.copy = deepCopy;
-	Jobby.clear = deepClear;
-	Jobby.deepEach = deepEach;	
+	Jobby.update.deep = deepUpdate;
+	Jobby.proto.deep = deepProto;	
+	Jobby.copy.deep = deepCopy;
+	Jobby.clear.deep = deepClear;
+	Jobby.each.deep = deepEach;	
 })();
-
-
-
-
-
+/* Examples
+var SomeClass = Jobby({
+	func1: function (a, b) {
+		// do stuff
+	},
+	func2: function (a) {
+		// do stuff
+	}
+});
+var someInstance = SomeClass.proto.deep({
+	// initialize stuff specific to this instance
+	member1: "blah1",
+	member2: "blah2"
+});
+var SomeSubClass = SomeClass.proto({
+	// override a method
+	func1: function (a, b) {
+		// do different stuff
+	},
+	// add a new method
+	newMethod: function () {
+		// do new stuff
+	}
+}) 
+*/
