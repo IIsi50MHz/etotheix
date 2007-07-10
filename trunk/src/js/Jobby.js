@@ -1,16 +1,20 @@
 var Jobby;
-(function () {	
+(function () {
+	/////
 	// typeof functions
+	/////
 	function isObject(x) {
 		return x !== null && typeof x === "object";
 	}
 	function isFunction(x) {
 		return typeof x === "function";
-	}
-	function isBasic(x) {
+	}	
+	function isBasic(x) { //**Change name to assigmentYeildsCopy or make new function assignmentYeildsReference or something?
 		return !(isObject(x) || isFunction(x));			
 	}
+	/////
 	// shallow functions
+	/////
 	// <level> parameter specifies at what level of <obj> to apply the update --> Example: ".ding.dong.blah" or "['ding']['dong']['blah']"
 	function shallowUpdate(obj, up, level) {
 		if (level) {
@@ -58,8 +62,18 @@ var Jobby;
 		}
 		return obj;
 	}
+	/////
 	// deep functions
-	// <level> parameter specifies at what level of <obj> to apply the update --> Example: ".ding.dong.blah" or "['ding']['dong']['blah']"
+	/////
+	/*
+	Function: deepUpdate
+		Recursively updates <obj> with <up>
+	Arguments:
+		<obj> - object to update
+		<up> - object used to update <obj>
+		<level> - string specifying at what level of <obj> to apply the update (Example: ".ding.dong.blah" or "['ding']['dong']['blah']")
+	Returns: Altered object <obj>
+	*/
 	function deepUpdate(obj, up, level) {
 		if (level) {
 			// <level> should start with a "[" or a "." -- if both missing prepend a "."
@@ -72,7 +86,7 @@ var Jobby;
 			for (var i in up) {			
 				if (isObject(up[i])) {					
 					if (isBasic(obj[i])) {				
-						obj[i] = {};
+						obj[i] = new obj[i].constructor();
 					}
 					deepUpdate(obj[i], up[i]);
 				} else {
@@ -82,6 +96,18 @@ var Jobby;
 		}
 		return obj;
 	}
+	/*
+	Function: deepProto //**need to improve this desciption...
+		Creates a new object based on <obj>. Recursivly goes through <obj>,
+		and for each object in it creates a new object who's prototype is set to the original object in <obj>.
+		This object will appear to be identical to <obj> because every object in it directly refers to an an object in <obj>,
+		but if you change any element in the new object, <obj> is untouched. Nice? 		
+	Arguments:
+		<obj> - object to create new object from
+		<up> (optional) - object used to update resulting new object
+		<level> (optional) - string specifying at what level of to apply the update (Example: ".ding.dong.blah" or "['ding']['dong']['blah']")
+	Returns: a new object
+	*/
 	function deepProto(obj, up, level) {
 	    var p = shallowProto(obj);
 	    for (var i in obj) {
@@ -92,13 +118,33 @@ var Jobby;
 		return up?
 			deepUpdate(p, up, level):
 			p;	    
-	}	
+	}
+	/*
+	Function: deepCopy 
+		Creates a new object empty object, runs a deepUpdate on it, and returns the result
+	Arguments:
+		<obj> - object to create new object from
+		<up> (optional) - object used to update resulting new object
+		<level> (optional) - string specifying at what level of to apply the update (Example: ".ding.dong.blah" or "['ding']['dong']['blah']")
+	Returns: a new object
+	*/
 	function deepCopy (obj, up, level) {		
 		var copy = deepUpdate({}, obj);		
 		return up?
 			deepUpdate(copy, up, level):
 			copy;
 	}
+	/*
+	Function: deepClear
+		Recursively clears <obj>
+		All non-object properties are deleted so that all objects remain, but are empty.
+		If called with an object created using deepPrototype, deepClear will restore it to its original state.
+	Arguments:
+		<obj> - object to clear
+		<up> - object used to update <obj> after clear
+		<level> - string specifying at what level of <obj> to apply the update (Example: ".ding.dong.blah" or "['ding']['dong']['blah']")
+	Returns: Altered object <obj>
+	*/
 	function deepClear(obj, up, level) { 
 		for (var i in obj) {
 			if (!isObject(obj[i])) { 
