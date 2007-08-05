@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>					
+		<style type='text/css'>		
+		</style>	
+		<script type='text/javascript' src='http://code.jquery.com/jquery-latest.js'></script>
+		<script type='text/javascript' src='protoStyle.js'></script>
+		<script type='text/javascript'>	
+			// function for injecting and element into an iframe
+			jQuery.fn.toIframe = function (container /* optional */, src /* optional */, callback) {
+				// get the callback
+				if (!callback) {
+					if (typeof src === "function") {
+						callback = src;
+					} else if (typeof container === "function") {
+						callback = container;
+					} else {
+						callback = function () {};
+					}
+				}					
+				container = container || jQuery("body");
+				src = src || "";					
+				// create an new iframe	
+				var newIframe = jQuery("<iframe></iframe>")[0];					
+				jQuery(newIframe).attr("src", src);
+				// once the new iframe is loaded (it's important to wait till it's loaded), append a copy of the element to its body
+				var that = this;
+				jQuery(newIframe).one("load", function () {
+					// inject an element into the iframe
+					that.each(function () {
+						jQuery(newIframe.contentDocument.body).append(jQuery(this).clone());							
+					});
+					// do something after the iframe is loaded
+					callback(this);
+				})
+				container.append(newIframe);					
+				return this;
+			};
+			// function for injecting and element into an iframe
+			jQuery.fn.toIframes = (function () {				
+				//var motherIframe = jQuery("<iframe onload='"+jQuery.iframe.ready+"'></iframe>");				
+				return function (container /* optional */, src /* optional */, callback) {
+					// get the callback
+					if (!callback) {
+						if (typeof src === "function") {
+							callback = src;
+						} else if (typeof container === "function") {
+							callback = container;
+						} else {
+							callback = function () {};
+						}
+					}
+					// create iframes for everything
+					this.each(function () {						
+						container = container || jQuery("body");
+						src = src || "";						
+						// create an new iframe
+						var newIframe = jQuery("<iframe></iframe>")[0];
+						jQuery(newIframe).attr("src", src);
+						// once the new iframe is loaded (it's important to wait till it's loaded), append a copy of the element to its body
+						var that = this;
+						jQuery(newIframe).one("load", function () {
+							// inject an element into the iframe
+							jQuery(newIframe.contentDocument.body).append(jQuery(that).clone());							
+							callback(this);
+						})
+						// append the iframe to the container
+						container.append(newIframe);					
+					})
+					return this;
+				}
+			})();
+			jQuery.fn.print = (function () {				
+				return function (src) {										
+					// create or clear stuffToPrint container					
+					var stuffToPrint = jQuery("#stuffToPrint");					
+					if (stuffToPrint.length === 0) {
+						jQuery("body").append("<div id='stuffToPrint' style='height: 0px; width: 0px; overflow: hidden'></div>");
+						stuffToPrint = jQuery("#stuffToPrint");			
+					} else {
+						stuffToPrint.empty();
+					}										
+					// print things that are already in iframes
+					this.filter("iframe").each(function () {						
+						this.contentWindow.print();
+					})
+					// print stuff that's not already in iframes			
+					this.not("iframe").toIframes(stuffToPrint, src, function (that) {												
+						that.contentWindow.print();
+					});
+				}
+			})();
+			function ding() {alert("ding!")}
+		</script>
+		<title>iframe experiment</title>
+	</head>		
+	<body>
+		<div>hello</div>
+		<div>DING!</div>
+		<p>DONG!</p>
+		<iframe src="blankIframe.html" id="blah"></iframe>
+	</body>
+</html>
