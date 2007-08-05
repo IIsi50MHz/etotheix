@@ -6,40 +6,9 @@
 		<script type='text/javascript' src='http://code.jquery.com/jquery-latest.js'></script>
 		<script type='text/javascript' src='protoStyle.js'></script>
 		<script type='text/javascript'>	
-			// function for injecting and element into an iframe
-			jQuery.fn.toIframe = function (container /* optional */, src /* optional */, callback) {
-				// get the callback
-				if (!callback) {
-					if (typeof src === "function") {
-						callback = src;
-					} else if (typeof container === "function") {
-						callback = container;
-					} else {
-						callback = function () {};
-					}
-				}					
-				container = container || jQuery("body");
-				src = src || "";					
-				// create an new iframe	
-				var newIframe = jQuery("<iframe></iframe>")[0];					
-				jQuery(newIframe).attr("src", src);
-				// once the new iframe is loaded (it's important to wait till it's loaded), append a copy of the element to its body
-				var that = this;
-				jQuery(newIframe).one("load", function () {
-					// inject an element into the iframe
-					that.each(function () {
-						jQuery(newIframe.contentDocument.body).append(jQuery(this).clone());							
-					});
-					// do something after the iframe is loaded
-					callback(this);
-				})
-				container.append(newIframe);					
-				return this;
-			};
-			// function for injecting and element into an iframe
-			jQuery.fn.toIframes = (function () {				
-				//var motherIframe = jQuery("<iframe onload='"+jQuery.iframe.ready+"'></iframe>");				
-				return function (container /* optional */, src /* optional */, callback) {
+			jQuery.extend(jQuery.fn, {
+				// function for injecting and element into an iframe
+				toIframe: function (container /* optional */, src /* optional */, callback) {
 					// get the callback
 					if (!callback) {
 						if (typeof src === "function") {
@@ -49,29 +18,33 @@
 						} else {
 							callback = function () {};
 						}
-					}
-					// create iframes for everything
-					this.each(function () {						
-						container = container || jQuery("body");
-						src = src || "";						
-						// create an new iframe
-						var newIframe = jQuery("<iframe></iframe>")[0];
-						jQuery(newIframe).attr("src", src);
-						// once the new iframe is loaded (it's important to wait till it's loaded), append a copy of the element to its body
-						var that = this;
-						jQuery(newIframe).one("load", function () {
-							// inject an element into the iframe
-							jQuery(newIframe.contentDocument.body).append(jQuery(that).clone());							
-							callback(this);
-						})
-						// append the iframe to the container
-						container.append(newIframe);					
+					}					
+					container = container || jQuery("body");
+					src = src || "";					
+					// create an new iframe	
+					var newIframe = jQuery("<iframe></iframe>")[0];					
+					jQuery(newIframe).attr("src", src);
+					// once the new iframe is loaded (it's important to wait till it's loaded), append a copy of the element to its body
+					var that = this;
+					jQuery(newIframe).one("load", function () {
+						// inject an element into the iframe
+						that.each(function () {
+							jQuery(newIframe.contentDocument.body).append(jQuery(this).clone());							
+						});
+						// do something after the iframe is loaded
+						callback(this);
 					})
+					container.append(newIframe);					
 					return this;
-				}
-			})();
-			jQuery.fn.print = (function () {				
-				return function (src) {										
+				},
+				// function for injecting and element into an iframe
+				toIframes: function (container /* optional */, src /* optional */, callback) {
+					this.each(function () {
+						jQuery(this).toIframe(container, src, callback);
+					})				
+					return this;
+				},
+				print: function (src) {										
 					// create or clear stuffToPrint container					
 					var stuffToPrint = jQuery("#stuffToPrint");					
 					if (stuffToPrint.length === 0) {
@@ -89,7 +62,9 @@
 						that.contentWindow.print();
 					});
 				}
-			})();
+			});
+			
+			
 			function ding() {alert("ding!")}
 		</script>
 		<title>iframe experiment</title>
