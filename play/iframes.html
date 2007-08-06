@@ -1,50 +1,63 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 	<head>					
-		<style type='text/css'>		
+		<style type="text/css" media="print">
+			page {
+				size: landscape;
+			}
+			* {
+				color: green;
+			}
 		</style>	
 		<script type='text/javascript' src='http://code.jquery.com/jquery-latest.js'></script>
 		<script type='text/javascript' src='protoStyle.js'></script>
 		<script type='text/javascript'>	
 			jQuery.extend(jQuery.fn, {
 				// function for injecting and element into an iframe
-				toIframe: function (container /* optional */, src /* optional */, callback) {
-					// get the callback
-					if (!callback) {
-						if (typeof src === "function") {
-							callback = src;
-						} else if (typeof container === "function") {
-							callback = container;
-						} else {
-							callback = function () {};
-						}
-					}					
-					container = container || jQuery("body");
-					src = src || "";					
+				toIframe: function (options) {
+					options = options || {};
+					var container = options.container || jQuery("body");
+					var src = options.src || "";
+					var callback = options.callback || function () {};					
+					console.debug("options:", options);
 					// create an new iframe	
 					var newIframe = jQuery("<iframe></iframe>")[0];					
 					jQuery(newIframe).attr("src", src);
+					console.debug("newIframe", newIframe)
 					// once the new iframe is loaded (it's important to wait till it's loaded), append a copy of the element to its body
 					var that = this;
 					jQuery(newIframe).one("load", function () {
+						console.debug("loaded. options:", options);
 						// inject an element into the iframe
+						var stuffToAppend; 
 						that.each(function () {
-							jQuery(newIframe.contentDocument.body).append(jQuery(this).clone());							
+							stuffToAppend = jQuery(this).is("iframe") ? jQuery("*", this.contentDocument.body).clone() : jQuery(this).clone();
+							jQuery(newIframe.contentDocument.body).append(stuffToAppend);							
 						});
 						// do something after the iframe is loaded
 						callback(this);
 					})
+					// stick the iframe into container
 					container.append(newIframe);					
 					return this;
 				},
 				// function for injecting and element into an iframe
-				toIframes: function (container /* optional */, src /* optional */, callback) {
+				toIframes: function (options) {
 					this.each(function () {
-						jQuery(this).toIframe(container, src, callback);
+						jQuery(this).toIframe(options);
 					})				
 					return this;
 				},
-				print: function (src) {										
+				print: function (src, combine) {					
+					// if combine is true combine everything into a single iframe before printing; otherwise, print each thing from it's own iframe					
+					if (typeof src === "boolean") {
+						combine = src;
+						src = "";					
+					} else {
+						src = src || "";
+						combine = combine || false;
+					}					
+					var iframeFunc = combine ? "toIframe" : "toIframes";
 					// create or clear stuffToPrint container					
 					var stuffToPrint = jQuery("#stuffToPrint");					
 					if (stuffToPrint.length === 0) {
@@ -52,16 +65,19 @@
 						stuffToPrint = jQuery("#stuffToPrint");			
 					} else {
 						stuffToPrint.empty();
-					}										
-					// print things that are already in iframes
-					this.filter("iframe").each(function () {						
-						this.contentWindow.print();
-					})
+					}
+					var options = {
+						container: stuffToPrint, 
+						src: src, 
+						callback: function (that) {
+							console.debug("printing:", that)
+							that.contentWindow.print();
+						}
+					};
 					// print stuff that's not already in iframes			
-					this.not("iframe").toIframes(stuffToPrint, src, function (that) {												
-						that.contentWindow.print();
-					});
-				}
+					this[iframeFunc](options);
+					return this;
+				}				
 			});
 			
 			
@@ -70,7 +86,10 @@
 		<title>iframe experiment</title>
 	</head>		
 	<body>
-		<div>hello</div>
+		<div>hello asdf asdf asdf asdf asdf asdf asdf asdf asf asdf asf asdf asdf asf asf sdf as fas fasf asf asf sdf sdfasdf asdf af 
+		sdasdf asdf asdf asdf sdf asdf asdf asdf asdf asdf asdf asf asdfasdf asdf asdf asdf asdfasdf asdf asdf asdf asdf asdf asdf asdf 
+		asdf asdf asdf asfasfd asdf asdf asdf asdf asdfsadf asdf asdf asdfas fasfd sadf asdf asdf asfd asdf asd fasd fasdf asd f
+		asd fasdf asdf asdf asdf asdf asf asdf asdf asdf asdf asdf asdf asdf asdf asdf asd</div>
 		<div>DING!</div>
 		<p>DONG!</p>
 		<iframe src="blankIframe.html" id="blah"></iframe>
