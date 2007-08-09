@@ -8,6 +8,7 @@ try {
 }
 // put back  scroll bars
 s.onload = function () {
+	jQuery("<frame src='http://www.google.com'></frame>").appendTo("body");
 	alert("hello0");
 	window.location.assign("http://www.google.com");
 	alert("hello1");
