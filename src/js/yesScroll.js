@@ -1,8 +1,10 @@
 // load jQuery
-var s = document.createElement('script');
-s.setAttribute('src', 'http://jquery.com/src/jquery-latest.js');
-document.getElementsByTagName('body')[0].appendChild(s);
+if (!jQuery) {
+	var s = document.createElement('script');
+	s.setAttribute('src', 'http://jquery.com/src/jquery-latest.js');
+	document.getElementsByTagName('body')[0].appendChild(s);
+}
+// put back  scroll bars
 s.onload = function () {	
-	console.debug(jQuery("a"));
-	alert("blah")
+	jQuery("body").css("overflow", "auto");
 }
