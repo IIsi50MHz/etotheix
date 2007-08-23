@@ -7,7 +7,7 @@ var hiddenThings = protoStyle("hiddenThings").css(".ding .dong {display: none;}"
 hiddenThings.selector
 
 */		
-var protoStyle = function () {
+var protoStyle = (function () {
 	// proto() is an exact copy of Douglas Crockford's object() operator
 	function proto(o) {
 		var F = function F() {};
@@ -107,7 +107,7 @@ var protoStyle = function () {
 	return function (id) {				
 		return proto(protoObj).make(id);		
 	}
-}();
+})();
 // Wrap firebug's firebug object so it doesn't break things when firebug is disabled
 var firebug = function (i) {
 	try {
