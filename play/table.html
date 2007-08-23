@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>
+		<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.2/build/reset/reset-min.css">
+		<style type='text/css'>			
+			#wrap {
+				position: absolute;
+				background-color: lightblue;
+				height: 100%;
+				width: 100%;
+				
+			}
+			table {	
+				height: 100%;
+				width: 100%;
+				margin: auto;
+				border: solid red 1px;
+			}
+			td, th {
+				border: solid red 1px;
+				padding: 3px;
+				width: 100px;
+			}
+			#bottom {
+				height: 100px;
+			}
+		</style>		
+		<script type='text/javascript' src='http://jquery.com/src/jquery-latest.js'></script>		
+		<title>tables</title>
+	</head>
+
+	<body>					
+		<div id="wrap">
+			<table>
+				<tr>
+					<td  colspan="2">row 1, cell 1 asfd s asf as f asdf asdf as fasf as fasfd asdf as fasdf asd fasf asdf asf as fsadf as f</td>				
+				</tr>
+				<tr>
+					<td>row 2, cell 1</td>
+					<td>row 2, cell 2</td>
+				</tr>
+				<tr>
+					<td id="bottom" colspan="2">row 2, cell 1</td>				
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>

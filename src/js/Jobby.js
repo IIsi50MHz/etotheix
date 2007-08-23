@@ -83,9 +83,9 @@ var Jobby;
 			obj = eval("obj" + level);
 		}
 		if (up) {
-			for (var i in up) {			
-				if (isObject(up[i])) {					
-					obj[i] = deepProto(up[i]);					
+			for (var i in up) {
+				if (isObject(up[i])) {
+					obj[i] = deepProto(up[i]);			
 				} else {
 					obj[i] = up[i];
 				}
@@ -316,7 +316,7 @@ reference.proto // **similar to prototype.copy but without any updates ****there
 prototype.proto // deepProto **direct changes never affect original
 
 **************
-** use prototype.copy for all copies... this would be a deepProto of an object followed by an old deepUpdate of the new object using the original object.
+** use prototype.copy for all copies... this would be a deepProto of an object followed by an old deepUpdate of the new object using the original object. **This is so changing original won't effect the copy. ****But why bother with the proto then? So struture is kept intact????
 ** use prototype.proto for all proto's
 ** have a bunch of versions of update..
 **************
