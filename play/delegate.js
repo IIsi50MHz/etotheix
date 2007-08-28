@@ -12,7 +12,61 @@
 	2) use protoControl?
 */
 
-(function (jQuery, delegator, target) {	
+var complexSelectorMatch;
+(function (jQuery, delegator, target) {
+	$.fn.prevSiblings = function (selector) { // works only for first elements		
+		var results = $().filter();
+		var siblings;
+		this.each(function () {			
+			selector = selector || "*";			
+			siblings = $(this).parent().children();			
+			results = results.add(siblings.slice(0, siblings.index(this)).filter(selector));						
+		});
+		return results;
+	};
+	var selectorMap = {" ": "parents", ">": "parent", "+": "prev", "~": "prevSiblings"};
+	complexSelector = function (selector) {  // **this does not handle comma separated slectors yet!	
+		var splitSelector = selector.replace(/\s*([\s|>|\+])\s*/g, ",$1,").split(",");
+		var length = splitSelector.length;
+		var elem = $(this).filter(splitSelector[length - 1]);		
+		
+		if (!elem.length) return false; // not a match!
+		for (var i = length - 2; i > 0; i = i -= 2) {			
+			//console.debug(i, elem, elem[selectorMap[splitSelector[i]]](), "; op:", selectorMap[splitSelector[i]], "; sel:", splitSelector[i - 1]);
+			elem = elem[selectorMap[splitSelector[i]]](splitSelector[i - 1])
+			if (!elem.length) return false; // not a match!
+			//console.debug(i, elem);
+		}		
+		return elem.length > 0;
+	}
+	$.fn.delegate = function (selector, event, data, func) {				
+		// save a reference to the delegator (a jQuery object) to hang things on
+		delegator = this;		
+		// make sure we've got the right func
+		if (typeof data === 'function') func = data;		
+		
+		// hook up the delegator
+		return delegator.bind(event, data, function (e) {
+			hey = $(e.target).parents();
+			ding = selector;
+			console.debug("parents", selector, $(e.target).parents().filter(selector));
+			if (delegator.e !== e) { // make sure we have a new event **why? **** I think maybe we need this when we do custom events?
+				delegator.e = e;				
+				// e.target matches selector
+				if ($(e.target).is(selector)) {
+					delegator.target = e.target;												
+				// see if e.target is inside an element that matches selector 
+				} else {					
+					delegator.target = $(e.target).parents(selector).filter(complexSelector(selector))[0]; //** this only works for simple selectors. Need to come up with something better (use xpath???)				
+				}				
+				// delegate!
+				if (delegator.target) {					
+					func.call(delegator.target, e, delegator, data);
+				}
+			}
+		});	
+	}
+// EXPERIMENTING...
 	function trigger(type, elem) {
 		var e = document.createEvent("MouseEvents");
 		e.initEvent(type, true, true);
@@ -24,34 +78,6 @@
 		})
 		return this;
 	} 
-	$.fn.delegate = function (selector, event, data, func) {				
-		delegator = this;		
-		// make sure we've got the right func
-		if (typeof data === 'function') func = data;
-		
-		// hook up the delegator
-		return delegator.bind(event, data, function (e) {
-			if (delegator.e !== e) { // make sure we have a new event **why? **** I think maybe we need this when we do custom events?
-				delegator.e = e;
-				// calculate targetControl element				
-				target = $(e.target).parents(selector);
-				if ($(e.target).is(selector)) { // e.target matches selector
-					delegator.target = e.target;					
-				} else if (target.length > 0) { // e.target is inside an element that matches selector **how do you know we're still inside the delegator? ****doesn't matter? This could be a feature! Hmmmm...
-					delegator.target = target;				
-				} else { // no match
-					delegator.target = false;
-				}
-				console.debug('target', delegator.target);
-				
-				
-				if (delegator.target) {					
-					func.call(delegator.target, e, delegator, data);
-				}
-			}
-		});	
-	}
-	
 	// create a key event
 	$.fn.pressKey = function (key) {
 		
