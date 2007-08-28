@@ -8,17 +8,21 @@
 - bringing up a dialog involves an exclusive select of the dialog, and making the dialog contiainer visible
 - all children div's of dialog container are styled as dialogs...
 - How do you hook up buttons? 
-	1) Give buttons classes or attributes that say what they are for?
+	1) Give buttons classes or attributes that say what they are for? "hides"
 	2) use protoControl?
 */ 
 var controls = {
-	tab: {		
-		click: [
-			{actOn:'self', trigger: 'tabSelect'}
-		],
-		tabSelect: [
-			{actOn:'self, pane', actions:'select, yell', exclusive:true}			
-		]
-	}
+	".tab": [
+		{
+			events: "click", 
+			actOn: "self", 
+			trigger: "tabSelect"
+		},
+		{
+			events: "tabSelect", 
+			actOn: "self, pane", 
+			actions: "select",
+			exclusive: true
+		}
+	]
 }
-

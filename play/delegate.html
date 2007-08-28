@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>	
+		<script type='text/javascript' src='http://code.jquery.com/jquery-latest.js'></script>
+		<script type='text/javascript' src='delegate.js'></script>
+		<script type='text/javascript'>
+			jQuery(function () {				
+				jQuery('#ding').delegate('a, div', 'click', function (e, delegator) {
+					console.log("oooh", this, e, delegator);
+					jQuery(this).css('color', 'red');
+				});
+			});
+		</script>
+		<title>delegator</title>
+	</head>		
+	<body>
+		
+		<div id="ding">ding!!!<br />
+			<a id="dong">dong</a><br />
+			<div>--[(a)ding-dong] {<span>[(span)bling]<a>[(a)do]</a></span>}--</div><br />
+			<a>king</a><br />
+			<div>dong</div>
+			<input></input>
+		</div>				
+	</body>
+</html>
