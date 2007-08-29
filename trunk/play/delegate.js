@@ -28,11 +28,12 @@ delegate plugin for jQuery
 		}		
 		return results.length > 0;
 	}	
-	function trigger(type, elem) { //**this probably doesn't work in IE
-		var e = document.createEvent("MouseEvents");
-		e.initEvent(type, true, true);
-		elem.dispatchEvent(e);
-	}
+	function trigger(elem, eventType, options) { //**this probably works in firefox only
+		options = $.extend({canBubble: true, cancelable:true, eventTypeType: "Event"}, options);
+		var e = document.createEvent(options.eventTypeType);		
+		e.initEvent(eventType, options.canBubble, options.cancelable);	
+		elem.dispatchEvent(e);		
+	}	
 	// extending jQuery
 	$.fn.extend({
 		complexFilter: function (selector) {
@@ -49,14 +50,8 @@ delegate plugin for jQuery
 				results = results.add(siblings.slice(0, siblings.index(this)).filter(selector));						
 			});
 			return results;
-		}, 
-		dispatch: function (event) { //**this probably doesn't work in IE
-			this.each(function () {
-				trigger(event, this);
-			})
-			return this;
-		},
-		delegate: function (selector, event, data, func) {				
+		}, 		
+		delegate: function (selector, event, data, func) {
 			// save a reference to the delegator (a jQuery object) to hang things on
 			var delegator = this;		
 			// make sure we've got the right func
@@ -79,6 +74,13 @@ delegate plugin for jQuery
 				}
 			});
 			return this;
-		}	
+		},
+		// for triggering custom events that bubble. **don't try to use this with mouse or keyboard events yet! custom events only for now!
+		dispatch: function (eventType) { //**this probably doesn't work in IE						
+			this.each(function () {				
+				trigger(this, eventType);			
+			})
+			return this;
+		}
 	});	
 })($);
