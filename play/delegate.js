@@ -5,6 +5,7 @@ delegate plugin for jQuery
 	// local variables
 	selectorMap = {" ": "parents", ">": "parent", "+": "prev", "~": "prevSiblings"};
 	// local functions **need to comment these better
+	// Handle complex selectors (but not comma separated ones) like this: "#ding > a"
 	function complexSelector(that, selector) {  // **this does not handle comma separated selctors yet! ****created multiSelector() for this. See below.
 		var splitSelector = selector.replace(/\s*([\s|>|\+])\s*/g, ",$1,").split(",");		
 		var length = splitSelector.length;
@@ -15,7 +16,8 @@ delegate plugin for jQuery
 			if (!elem.length) return false; // not a match!			
 		}		
 		return elem.length > 0;
-	}	
+	}
+	// Handle comma separated selectors
 	function multiSelector(that, selector) {		
 		var splitSelector = selector.split(/\s*,\s*/);
 		var length = splitSelector.length;
@@ -36,6 +38,7 @@ delegate plugin for jQuery
 	}	
 	// extending jQuery
 	$.fn.extend({
+		// jQuery's filter() function only works with simple selectors. complexFilter() works with selectors likw this: "a, div > .blah, .ding + .dong"
 		complexFilter: function (selector) {
 			return this.filter(function () {
 				return multiSelector(this, selector);
@@ -76,7 +79,7 @@ delegate plugin for jQuery
 			return this;
 		},
 		// for triggering custom events that bubble. **don't try to use this with mouse or keyboard events yet! custom events only for now!
-		dispatch: function (eventType) { //**this probably doesn't work in IE						
+		dispatch: function (eventType) { //**this probably doesn't work in IE ****It shouldn't be to hard to make this work with IE... See Flanagan's Javascript book.			
 			this.each(function () {				
 				trigger(this, eventType);			
 			})
