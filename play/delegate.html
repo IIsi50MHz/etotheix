@@ -5,7 +5,7 @@
 		<script type='text/javascript' src='delegate.js'></script>
 		<script type='text/javascript'>
 			jQuery(function () {				
-				jQuery('#delegator').delegate('p > a', 'click', function (e, delegator) {
+				jQuery('#delegator').delegate('p > a', 'ding', function (e, delegator) {
 					console.debug("oooh", this, e, delegator);
 					jQuery(this).css('color', 'red');
 				});
