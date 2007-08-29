@@ -28,7 +28,7 @@ delegate plugin for jQuery
 		}		
 		return results.length > 0;
 	}	
-	function trigger(type, elem) {
+	function trigger(type, elem) { //**this probably doesn't work in IE
 		var e = document.createEvent("MouseEvents");
 		e.initEvent(type, true, true);
 		elem.dispatchEvent(e);
@@ -50,7 +50,7 @@ delegate plugin for jQuery
 			});
 			return results;
 		}, 
-		dispatch: function (event) {
+		dispatch: function (event) { //**this probably doesn't work in IE
 			this.each(function () {
 				trigger(event, this);
 			})
