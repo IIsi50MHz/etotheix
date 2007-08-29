@@ -5,8 +5,8 @@
 		<script type='text/javascript' src='delegate.js'></script>
 		<script type='text/javascript'>
 			jQuery(function () {				
-				jQuery('#ding').delegate('#ding > a', 'click', function (e, delegator) {
-					console.log("oooh", this, e, delegator);
+				jQuery('#delegator').delegate('p > a', 'click', function (e, delegator) {
+					console.debug("oooh", this, e, delegator);
 					jQuery(this).css('color', 'red');
 				});
 			});
@@ -14,16 +14,14 @@
 		<title>delegator</title>
 	</head>		
 	<body>
-		
-		<div id="ding">ding!!!<br />
-			<a id="dong"><div id="asdf">dong</div></a><br />
-			<div>--[(a)ding-dong] {
-				<span>[(span)bling]<a>[(a)do]</a></span>}--
-			</div><br />
-			<a>asdf</a>
-			<a>king</a><br />
-			<div>dong</div>
-			<input></input>
-		</div>				
+		<p><a>outside delegator</a></p>
+		<div id="delegator">
+			<a>zero(no)</a>
+			<p><a>one(yes)</a></p>
+			<p><span>[two(no)]</span><a>[two(yes)<span>{inside}</span>]</a></p>
+			<p>three</p>
+			<p>four</p>
+			<p>five</p>
+		</div>
 	</body>
 </html>
