@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>
+		<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.2/build/reset/reset-min.css">
+		<style type='text/css'>			
+			
+			
+			.dialog {
+				position: absolute;
+				top: 0%;
+				right: 0%;
+				bottom: 0%;
+				left: 0%;
+				padding: 10%;
+			}
+			.dialog .background {
+				position: absolute;
+				top: 0px;
+				right: 0px;
+				bottom: 0px;
+				left: 0px;								
+			}
+			.dialog .background {
+				background-color: black;
+				opacity: 0.4;
+			}
+			.dialog .main {	
+				position: relative;
+				width: 100%;
+				height: 100%;
+				border: 1px solid black;
+				background-color: red;				
+			}
+			.dialog .button {
+				position: absolute;
+				bottom: 0px;
+				text-align: center;
+				background-color: lightblue;
+				border: 4px solid pink;
+				margin: 10px;
+				cursor: pointer;
+			}
+			.dialog .button.left {
+				left: 0px;
+				width: 100px;
+			}
+			.dialog .button.right {
+				right: 0px;
+				width: 100px;
+			}	
+			/* 
+			 *************************************************** 
+			 */									
+			.dialog .main {
+				background-color:#8A8A74;
+				border:5px solid #786A58;				
+				padding:5px;
+				position:relative;				
+			}
+			.dialog .main > .title {
+				background-color:#7D7D69;
+				border-bottom:2px solid #6D6D5B;
+				color:#C6D8C2;
+				font-family:Arial,sans-serif;
+				font-size:15pt;			
+				font-weight:bold;				
+				margin:2px;
+				padding:5px;
+			}
+			.dialog .main > h2 {
+				color:#3E3E34;
+				font-family:Arial,sans-serif;
+				font-size:11pt;
+				font-size-adjust:none;
+				font-stretch:normal;
+				font-style:normal;
+				font-variant:normal;
+				font-weight:bold;
+				line-height:normal;
+				margin:10px 0pt 0pt 10px;
+				padding:0pt 0pt 0pt 5px;
+			}
+			.dialog .message {
+				background-color:#9A9A84;
+				border:1px solid #685A48;
+				color:#EAEAD4;
+				display:block;
+				font-size:125%;
+				font-weight:bold;
+				left:70%;
+				margin:30px;
+				outline-color:#786A58;
+				outline-style:solid;
+				outline-width:thick;
+				padding:1.25em;
+				right:0%;
+				text-align:center;
+			}
+			.dialog .button {
+				background-color:#AAAA94;
+				border:medium none;
+				color:#6A5A44;
+				cursor:pointer;
+				display:block;
+				font-size:125%;
+				font-weight:bold;
+				margin:10px;
+				padding:1.25em;
+				position:absolute;
+				text-align:center;
+			}
+			.dialog .button.down {
+				outline-color:#E1483B;
+				outline-style:solid;
+				outline-width:medium;
+			}
+			.dialog .button.selected {
+				outline-color:#E1483B;
+				outline-style:solid;
+				outline-width:medium;
+			}
+			.dialog.twoButton .button {
+				bottom:0%;
+			}
+			.dialog.twoButton .button1 {
+				left:0%;
+				right:50%;
+			}
+			.dialog.twoButton .button2 {
+				left:50%;
+				right:0%;
+			}
+			.dialog.oneButton .button {
+				bottom:0%;
+				left:auto;
+				right:0%;
+			}
+	
+		</style>		
+		<script type='text/javascript' src='http://jquery.com/src/jquery-latest.js'></script>
+		<script type='text/javascript' src='http://jqueryjs.googlecode.com/svn/trunk/plugins/livequery/jquery.livequery.js'></script>
+		<script type='text/javascript' src='delegate.js'></script>
+		<script type='text/javascript'>
+			$(function () {
+				var fadeTime = 300;				
+				$("#dialogs").
+					// hide dialog when anything with class "hideDialog" (or the background of a non-modal dialog)  is clicked
+					delegate(".hideDialog", "mousedown", function () {
+						$(this).parents(".dialog").dispatch("hide");
+					}).
+					// for non-modal dialogs, hide dialog when background is clicked
+					delegate(".dialog:not(.modal)", "mousedown", function (e) {						
+						if ($(e.target).is(".dialog, .background")) {						
+							$(this).dispatch("hide");
+						}
+					}).
+					delegate(".dialog", "show", function () {
+						$(this).fadeIn(fadeTime);
+					}).
+					delegate(".dialog", "hide", function () {
+						$(this).fadeOut(fadeTime);
+					}).
+					delegate(".dialog", "toggle", function () {
+						var dialog = $(this);
+						if (dialog.is(":visible")) {
+							dialog.dispatch("hide");
+						} else {
+							dialog.dispatch("show");
+						}
+					});
+				$(document).delegate("[@trigger]", "mousedown.trigger", function () {			
+					var elem = $($(this).attr("selector"));				
+					var eventType = $(this).attr("trigger");		
+					elem.dispatch(eventType);
+				});				
+				/*
+				$(document).delegate("[@showDialog], ", "click", function () {					
+					var dialogSelector = "#" + $(this).attr("showDialog");					
+					$(dialogSelector).fadeIn(fadeTime);
+				});
+				$(document).delegate("[@hideDialog]", "click", function () {
+					var dialogSelector = "#" + $(this).attr("hideDialog");					
+					$(dialogSelector).fadeOut(fadeTime);
+				});
+				$(document).delegate("[@toggleDialog]", "click", function () {						
+					var dialog = $("#" + $(this).attr("toggleDialog"));						
+					if (dialog.is(":visible")) {
+						dialog.fadeOut(fadeTime);
+					} else {
+						dialog.fadeIn(fadeTime);
+					}
+				});
+				*/
+				/*
+				var fadeTime = 300;
+				// hide dialog when anything with class "hideDialog" (or the background of a non-modal dialog)  is clicked
+				$(".hideDialog").livequery("click", function () {
+					$(this).parents(".dialog").fadeOut(fadeTime);
+				});
+				// for non-modal dialogs, hide dialog when background is clicked
+				$(".dialog:not(.modal)").livequery("click", function (e) {						
+					if ($(e.target).is(".dialog, .background")) {						
+						$(this).fadeOut(fadeTime);
+					}
+				});						
+				$("[@showDialog]").livequery("click", function () {					
+					var dialogSelector = "#" + $(this).attr("showDialog");					
+					$(dialogSelector).fadeIn(fadeTime);
+				});
+				$("[@hideDialog]").livequery("click", function () {
+					var dialogSelector = "#" + $(this).attr("hideDialog");					
+					$(dialogSelector).fadeOut(fadeTime);
+				});
+				$("[@toggleDialog]").livequery("click", function () {						
+					var dialog = $("#" + $(this).attr("toggleDialog"));						
+					if (dialog.is(":visible")) {
+						dialog.fadeOut(fadeTime);
+					} else {
+						dialog.fadeIn(fadeTime);
+					}
+				});
+				*/
+			});			
+		</script>
+		<title>tables</title>
+	</head>
+
+	<body>					
+		<div id="wrap">
+			<table>
+				<tr>
+					<td trigger="show" selector="#ding" colspan="2">row 1, cell 1 asfd s asf as f asdf asdf as fasf as fasfd asdf as fasdf asd fasf asdf asf as fsadf as f</td>				
+				</tr>
+				<tr>
+					<td trigger="hide" selector="#ding">row 2, cell 1</td>
+					<td trigger="toggle" selector="#ding">row 2, cell 2</td>
+				</tr>
+				<tr>
+					<td id="bottom" colspan="2">row 2, cell 1</td>				
+				</tr>
+			</table>
+		</div>
+		<div id="dialogs">
+			<div class="dialog " id="ding">									
+				<div class="background"></div>
+				<div class="main">
+					<h1 class="title">Hello</h1>
+					<div class="message">Hello</div>
+					<a class="button left hideDialog">close</a>
+					<a class="button right hideDialog">ok</a>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

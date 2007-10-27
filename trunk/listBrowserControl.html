@@ -1,0 +1,50 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>
+		<title>Mongoose</title>
+
+		<!-- import the stylesheet -->
+		<style type="text/css">
+			
+		</style>
+		
+		<!-- import the common scripts that we use with all of the pages -->
+		<script type="text/javascript" src="../js/jquery-latest.js"></script>
+		<script type="text/javascript" src="../js/transform.js"></script>
+		<script type="text/javascript">	
+		(function ($) {
+			var path = "../xsl/";
+			var browserExample = {
+				rootCategories: {
+					xsl: path+"rootCategories.xsl"
+				},
+				list: {
+					xsl: path+"browserList.xsl", 
+					xml: path+"listExample.xml"
+				}
+			}
+			$(function () {
+				$("body").append("asdfasdf");
+			})
+			$.get(browserExample.rootCategories.xsl, function (xslDoc) {
+				// get xsl for creating root category list
+				//browserExample.rootCategories.xsl = xslDoc;
+				// get xml categorized list
+				$.get(browserExample.list.xml, function (xmlDoc) {					
+					//browserExample.list.xml = $(xmlDoc);
+					$(function () {
+						console.debug(typeof xmlDoc, xmlDoc)
+						//browserExample.list.xml.transform({xsl: rootCategories}).appendTo("body");
+					});
+				})
+			})
+		})(jQuery)
+		</script>
+	</head>
+	
+	<body>
+		<p>hello</p>
+		
+	</body>
+</html>
