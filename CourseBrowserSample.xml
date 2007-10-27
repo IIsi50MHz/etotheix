@@ -1,0 +1,16 @@
+<!-- this is an xml description of data in a categorized list box (like those used with our "smart" controls
+
+) -->
+<ui:categorized_listbox xmlns:ui="http://www.ais-sim.com/mongoose/ns/ui-controls">
+	<ui:entry>
+		<ui:category>All Courses</ui:category>
+		<ui:category>User Courses</ui:category>
+		<ui:category>All Courses/User Courses</ui:category>
+		<ui:entry_data>
+			<name>ding</name>
+			<short_description>goes ding!</short_description>
+			<full_description>This thing goes: ding, dong! ding dong!</full_description>
+			<filename>C:/SVN/mongoose_content/Packs/UserDefinedCourses/two.course</filename>
+		</ui:entry_data>
+	</ui:entry>
+</ui:categorized_listbox>
