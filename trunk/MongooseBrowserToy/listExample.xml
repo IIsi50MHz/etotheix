@@ -3,6 +3,9 @@
 
 ) -->
 <ui:categorized_listbox xmlns:ui="http://www.ais-sim.com/mongoose/ns/ui-controls">
+	<ui:entry searchableItems="yes">
+		<ui:searchable>name</ui:searchable>		
+	</ui:entry>
 	<ui:entry ding='10'>
 	<!--	<ui:category>All Courses</ui:category>-->
 		<!--<ui:category>1</ui:category>-->
@@ -10,12 +13,32 @@
 		<ui:category>2/a/b/c/d</ui:category>
 		<ui:category>User Courses</ui:category>
 		<ui:category>DING</ui:category>
-		<ui:category   selected='yes'>All Courses/User Courses</ui:category>
+		<ui:category>All Courses/User Courses</ui:category>
 		<ui:category>All Courses/User Courses/three</ui:category>
 		<ui:category>All Courses/two</ui:category>
 		<ui:category>4444!</ui:category>
 		<ui:entry_data>
 			<name>ding</name>
+			<short_description>goes ding!</short_description>
+			<full_description>This thing goes: ding, dong! ding dong!</full_description>
+			<filename>C:/SVN/mongoose_content/Packs/UserDefinedCourses/two.course</filename>
+		</ui:entry_data>
+	</ui:entry>
+	<ui:entry dong='blah'>
+		<ui:category selected='yes'>a/b</ui:category>
+		<ui:category>a</ui:category>		
+		<ui:entry_data ding='hey'>
+			<name>hell o!</name>
+			<short_description>goes ding!</short_description>
+			<full_description>This thing goes: ding, dong! ding dong!</full_description>
+			<filename>C:/SVN/mongoose_content/Packs/UserDefinedCourses/two.course</filename>
+		</ui:entry_data>
+	</ui:entry>
+	<ui:entry>
+		<ui:category>a/b</ui:category>
+		<ui:category>a</ui:category>		
+		<ui:entry_data>
+			<name>hello2!</name>
 			<short_description>goes ding!</short_description>
 			<full_description>This thing goes: ding, dong! ding dong!</full_description>
 			<filename>C:/SVN/mongoose_content/Packs/UserDefinedCourses/two.course</filename>

@@ -6,8 +6,9 @@
 	xmlns:html="http://www.w3.org/1999/xhtml"
 >
 	<xsl:output method="html" indent="yes"/>	
-	<xsl:param name="category" />
+	<xsl:param name="category"/>
 	<xsl:key name="category" match="ui:categorized_listbox/ui:entry/ui:category" use="."/>	
+	<xsl:key name="entry_data" match="ui:categorized_listbox/ui:entry/ui:entry_data" use="./../ui:category"/>	
 	<xsl:key name="item" match="ui:categorized_listbox/ui:entry/ui:category" use="."/>
 	<!-- VARIABLES -->		
 	
@@ -28,22 +29,14 @@
 					</xsl:choose>
 				</xsl:for-each>	
 				<!--generate list of items-->
-				<xsl:for-each select="key('category', $category)">
-					<xsl:sort select="./../ui:entry_data/name"/>						
-						<xsl:if test="./../ui:entry_data">
-							<p class="item" category="{$category}">					
-								<xsl:if test="./@selected">
-									<xsl:attribute name="class">item selectMe</xsl:attribute>
-								</xsl:if>
-								<xsl:value-of select="./../ui:entry_data/name"/>
-								<td class="categorizedList itemInfo">
-									<div class="listWrapper">
-										<h1><xsl:value-of select="./../ui:entry_data/name"/></h1>
-										<span><xsl:value-of select="./../ui:entry_data/full_description"/></span>
-									</div>
-								</td>
-							</p>
-						</xsl:if>
+				<xsl:for-each select="key('entry_data', $category)">
+					<xsl:sort select="name"/>												
+						<p class="item" category="{$category}">					
+							<xsl:if test="../ui:category[. = $category]/@selected">
+								<xsl:attribute name="class">item selectMe</xsl:attribute>
+							</xsl:if>
+							<xsl:apply-templates select="."/>
+						</p>					
 				</xsl:for-each>
 			</div>
 		</td>		
@@ -51,7 +44,33 @@
 
 	<!-- TEMPLATES USED BY MAIN TEMPLATE -->
 	<!-- create text list items -->
-	<xsl:template name="createList">	
-	
+	<xsl:template match="ui:entry_data">	
+		<xsl:value-of select="name"/>
+			<td class="categorizedList itemInfo">
+				<div class="listWrapper">
+					<h1><xsl:value-of select="name"/></h1>
+					<span><xsl:value-of select="full_description"/></span>
+				</div>
+			</td>			
+	</xsl:template>		
+	<xsl:template match="ui:entry_data[../@dong]">	
+		<xsl:value-of select="name"/><br/>
+		<xsl:value-of select="full_description"/>
+			<td class="categorizedList itemInfo">
+				<div class="listWrapper">
+					<h1><xsl:value-of select="name"/></h1>
+					<span><xsl:value-of select="full_description"/></span>
+				</div>
+			</td>			
+	</xsl:template>	
+	<xsl:template match="ui:entry_data[@ding]">	
+		<i><xsl:value-of select="name"/></i><br/>
+		<b><xsl:value-of select="full_description"/></b>
+			<td class="categorizedList itemInfo">
+				<div class="listWrapper">
+					<h3><xsl:value-of select="name"/></h3>
+					<span><xsl:value-of select="full_description"/></span>
+				</div>
+			</td>			
 	</xsl:template>	
 </xsl:stylesheet>
