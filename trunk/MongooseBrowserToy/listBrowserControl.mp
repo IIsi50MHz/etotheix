@@ -35,7 +35,7 @@
 				background-color: red;
 			}
 			.listWrapper > p.item {
-				background-color: lightblue;
+				background-color: lightgreen;
 			}
 			.listWrapper > p.item .itemInfo {
 				display: none;
@@ -141,7 +141,7 @@
 										categoryElem = catagoryList.find("[@category="+leadingPath+"]");
 										chooseCategory.apply(categoryElem);										
 									});									
-									chooseItem.call(catagoryList.next().find('.selected'));
+									chooseItem.call(catagoryList.next().find('.selectMe'));
 								}
 								var thePath = list.find('category[@selected]').text();
 								console.debug(thePath);

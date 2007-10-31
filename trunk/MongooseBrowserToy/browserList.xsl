@@ -29,11 +29,11 @@
 				</xsl:for-each>	
 				<!--generate list of items-->
 				<xsl:for-each select="key('category', $category)">
-					<xsl:sort/>						
+					<xsl:sort select="./../ui:entry_data/name"/>						
 						<xsl:if test="./../ui:entry_data">
 							<p class="item" category="{$category}">					
 								<xsl:if test="./@selected">
-									<xsl:attribute name="class">item selected</xsl:attribute>
+									<xsl:attribute name="class">item selectMe</xsl:attribute>
 								</xsl:if>
 								<xsl:value-of select="./../ui:entry_data/name"/>
 								<td class="categorizedList itemInfo">
