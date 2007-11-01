@@ -4,7 +4,9 @@
 ) -->
 <ui:categorized_listbox xmlns:ui="http://www.ais-sim.com/mongoose/ns/ui-controls">
 	<ui:entry searchableItems="yes">
-		<ui:searchable>name</ui:searchable>		
+		<ui:searchable field="Name">name</ui:searchable>
+		<ui:searchable field="Short Description">short_description</ui:searchable>
+		<ui:searchable field="Full Description">full_description</ui:searchable>
 	</ui:entry>
 	<ui:entry ding='10'>
 	<!--	<ui:category>All Courses</ui:category>-->
@@ -18,8 +20,8 @@
 		<ui:category>All Courses/two</ui:category>
 		<ui:category>4444!</ui:category>
 		<ui:entry_data>
-			<name>ding</name>
-			<short_description>goes ding!</short_description>
+			<name>wding</name>
+			<short_description>blah goes ding!</short_description>
 			<full_description>This thing goes: ding, dong! ding dong!</full_description>
 			<filename>C:/SVN/mongoose_content/Packs/UserDefinedCourses/two.course</filename>
 		</ui:entry_data>
@@ -30,7 +32,7 @@
 		<ui:entry_data ding='hey'>
 			<name>hell o!</name>
 			<short_description>goes ding!</short_description>
-			<full_description>This thing goes: ding, dong! ding dong!</full_description>
+			<full_description>wdThis thing goes: ding, dong! ding dong!</full_description>
 			<filename>C:/SVN/mongoose_content/Packs/UserDefinedCourses/two.course</filename>
 		</ui:entry_data>
 	</ui:entry>

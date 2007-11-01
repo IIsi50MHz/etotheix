@@ -43,6 +43,12 @@
 			.listWrapper > p.item.selected {
 				background-color: green;
 			}
+			input {
+				border: solid grey 4px;
+				margin: 3px 0px 0px 3px;
+				padding: 2px 4px;
+				font-weight: bold;
+			}
 		</style>
 		
 		<!-- import the common scripts that we use with all of the pages -->
@@ -59,7 +65,7 @@
 					xsl: path+"rootCategories.xsl"
 				},
 				list: {
-					xsl: path+"browserList.xsl", 
+					xsl: path+"browserList(search).xsl", 
 					xml: path+"listExample.xml"
 				}
 			}				
@@ -128,8 +134,20 @@
 									subList.nextAll().remove();
 									$(this).find(".itemInfo").clone().insertAfter(subList);						
 								};
+								searchList = function () {
+									var subList = $("input").parent('.browser').find('.root');																
+									subList.nextAll().remove();
+									// do search																	
+									list.transform({
+										xsl: browserExample.list.xsl, 
+										params: {
+											searchTerm: $(this).val()
+										}
+									}).insertAfter(subList);	
+								}
+								$(".listSearch").keyup(searchList);
 								$("body > div.browser").delegate("p[@category]:not(.item)", "mousedown", chooseCategory);
-								$("body > div.browser").delegate("p.item", "mousedown", chooseItem);								
+								$("body > div.browser").delegate("p.item", "mousedown", chooseItem);					
 								setSelectionPath = function (path) {
 									// create a path
 									var leadingPath, categoryList, categoryElem,
@@ -161,10 +179,11 @@
 		</script>
 	</head>
 	
-	<body>
+	<body>		
 		<div id="aBrowser" class="browser">
+			<input class="listSearch" type="text"/>
 			<table>
-				<tr class="browserGroup">
+				<tr class="browserGroup">				
 					<td id="root" class="root categorizedList">
 						<div class="listWrapper"></div>
 					</td>	
