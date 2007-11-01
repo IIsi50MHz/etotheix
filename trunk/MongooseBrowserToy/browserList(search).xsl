@@ -6,13 +6,17 @@
 	xmlns:html="http://www.w3.org/1999/xhtml"
 >
 	<xsl:output method="html" indent="yes"/>	
+	<!-- VARIABLES, KEYS, PARAMETERS -->
 	<xsl:param name="category"/>
-	<xsl:param name="searchTerm" select="''"/>  <!-- **change this to "searchTerm". Make it a parameter -->
+	<xsl:param name="searchTerm" select="''"/>  <!-- **change this to "searchTerm". Make it a parameter -->		
+	<xsl:variable name="upperCase" select="'abcdefghijklmnopqrstuvwxyz'"/>
+	<xsl:variable name="lowerCase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
 	<xsl:key name="category" match="ui:categorized_listbox/ui:entry/ui:category" use="."/>	
 	<xsl:key name="entry_data" match="ui:categorized_listbox/ui:entry/ui:entry_data" use="./../ui:category"/>	
 	<xsl:key name="item" match="ui:categorized_listbox/ui:entry/ui:category" use="."/>
 	<xsl:key name="searchable" match="ui:categorized_listbox/ui:entry/ui:searchable" use="."/>
-	<!-- VARIABLES -->		
+	<xsl:key name="field" match="ui:categorized_listbox/ui:entry/ui:searchable" use="."/>
+			
 	
 	<!-- MAIN TEMPLATE -->
 	<xsl:template match="/ui:categorized_listbox">				
@@ -61,7 +65,7 @@
 	<xsl:template name="search">
 		<xsl:param name="searchField"/>
 		<div style="border-bottom: solid grey 1px; margin-bottom: 5px;"><xsl:value-of select="$searchField/@field"/></div>
-		<xsl:for-each select="/ui:categorized_listbox/ui:entry//*[name() = $searchField][contains(., $searchTerm)]/ancestor::ui:entry/ui:entry_data">
+		<xsl:for-each select="/ui:categorized_listbox/ui:entry//*[name() = $searchField][contains(translate(., $upperCase, $lowerCase), translate($searchTerm, $upperCase, $lowerCase))]/ancestor::ui:entry/ui:entry_data">
 			<xsl:sort select="name"/>												
 				<p class="item" category="{$category}">							
 					<xsl:apply-templates select="."/>

@@ -58,7 +58,19 @@
 		<script type="text/javascript" src="/js/transform.js"></script>
 		<script type="text/javascript" src="/js/global.js"></script>
 		<script type="text/javascript">	
-		(function ($) {
+		//** put this in gobal.js?
+		(function ($) {	
+			$.wait = function (func, waitTime) {
+				var that = this;
+				waitTime = waitTime || 500;
+				clearTimeout(this.timeout);
+				this.timeout = setTimeout(function () {
+					// stuff to do if it's been long enough since last call
+					func.call(that);
+				}, waitTime);
+			};			
+		}) (jQuery);
+		(function ($) {			
 			path = "/xsl/";
 			browserExample = {
 				rootCategories: {
@@ -134,17 +146,19 @@
 									subList.nextAll().remove();
 									$(this).find(".itemInfo").clone().insertAfter(subList);						
 								};
-								searchList = function () {
-									var subList = $("input").parent('.browser').find('.root');																
-									subList.nextAll().remove();
-									// do search																	
-									list.transform({
-										xsl: browserExample.list.xsl, 
-										params: {
-											searchTerm: $(this).val()
-										}
-									}).insertAfter(subList);	
-								}
+								searchList = function () {									
+									$.wait.call(this, function () {
+										var subList = $("input").parent('.browser').find('.root');																
+										subList.nextAll().remove();
+										// do search																	
+										list.transform({
+											xsl: browserExample.list.xsl, 
+											params: {
+												searchTerm: $(this).val()
+											}
+										}).insertAfter(subList);			
+									}, 500);					
+								};
 								$(".listSearch").keyup(searchList);
 								$("body > div.browser").delegate("p[@category]:not(.item)", "mousedown", chooseCategory);
 								$("body > div.browser").delegate("p.item", "mousedown", chooseItem);					
