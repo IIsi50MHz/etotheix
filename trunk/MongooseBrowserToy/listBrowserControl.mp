@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 	<head>
-		<title>Mongoose</title>
+		<title>list browser</title>
 
 		<!-- import the stylesheet -->
 		<style type="text/css">
@@ -22,25 +22,25 @@
 				margin: 0px;
 				padding: 5px;
 			}
-			.listWrapper > p {
+			.listWrapper p {
 				cursor: pointer;
 				border: 2px solid grey;
 				padding: 5px;
 				margin: 0px 0px 3px 0px;
 			}
-			.listWrapper > p[category] {
+			.listWrapper p[category] {
 				background-color: pink;
 			}
-			.listWrapper > p[category].selected {
+			.listWrapper p[category].selected {
 				background-color: red;
 			}
-			.listWrapper > p.item {
+			.listWrapper p.item {
 				background-color: lightgreen;
 			}
-			.listWrapper > p.item .itemInfo {
+			.listWrapper p.item .itemInfo {
 				display: none;
 			}
-			.listWrapper > p.item.selected {
+			.listWrapper p.item.selected {
 				background-color: green;
 			}
 			input {
@@ -48,6 +48,12 @@
 				margin: 3px 0px 0px 3px;
 				padding: 2px 4px;
 				font-weight: bold;
+			}
+			.browser table {
+				display: none;
+			}
+			.browser table.selected {
+				display: table;
 			}
 		</style>
 		
@@ -133,7 +139,8 @@
 									list.transform({
 										xsl: browserExample.list.xsl, 
 										params: {
-											category: $(this).attr('category')
+											category: $(this).attr('category'),
+											searchTerm: ''
 										}
 									}).insertAfter(subList);								
 								};
@@ -146,17 +153,25 @@
 									subList.nextAll().remove();
 									$(this).find(".itemInfo").clone().insertAfter(subList);						
 								};
-								searchList = function () {									
+								searchList = function () {						
 									$.wait.call(this, function () {
-										var subList = $("input").parent('.browser').find('.root');																
-										subList.nextAll().remove();
-										// do search																	
-										list.transform({
-											xsl: browserExample.list.xsl, 
-											params: {
-												searchTerm: $(this).val()
-											}
-										}).insertAfter(subList);			
+										var input = $(this);
+										var searchTerm = input.val();
+										console.debug(searchTerm)
+										var listContainer = $(this).parent('.browser').find('.browseByFieldSearch .root').parent();
+										if (!searchTerm) {											
+											input.parent('.browser').find(".browseByCategory").addClass("selected").siblings("table").removeClass("selected");											
+										} else {											
+											input.parent('.browser').find(".browseByFieldSearch").addClass("selected").siblings("table").removeClass("selected");																						
+											// do search																	
+											var results = list.transform({
+												xsl: browserExample.list.xsl, 
+												params: {												
+													searchTerm: searchTerm												
+												}
+											});
+											listContainer.empty().append(results);
+										}
 									}, 500);					
 								};
 								$(".listSearch").keyup(searchList);
@@ -196,7 +211,14 @@
 	<body>		
 		<div id="aBrowser" class="browser">
 			<input class="listSearch" type="text"/>
-			<table>
+			<table class="browseByCategory selected">
+				<tr class="browserGroup">				
+					<td id="root" class="root categorizedList">
+						<div class="listWrapper"></div>
+					</td>	
+				</tr>
+			</table>
+			<table class="browseByFieldSearch">
 				<tr class="browserGroup">				
 					<td id="root" class="root categorizedList">
 						<div class="listWrapper"></div>
