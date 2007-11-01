@@ -20,11 +20,11 @@
 	
 	<!-- MAIN TEMPLATE -->
 	<xsl:template match="/ui:categorized_listbox">				
-		<!-- make a list of unique categories, but leave out all subcategories -->
-		<td  class="categorizedList">
-			<div class="listWrapper">
-				<xsl:choose>
-					<xsl:when test="$searchTerm = ''">
+		<!-- make a list of unique categories, but leave out all subcategories -->		
+		<xsl:choose>
+			<xsl:when test="$searchTerm = ''">
+				<td  class="categorizedList">
+					<div class="listWrapper">
 						<!--generate list of subcategories-->
 						<xsl:for-each select="ui:entry/ui:category[generate-id(.)=generate-id(key('category', .))]">			
 							<xsl:sort/>						
@@ -46,34 +46,54 @@
 									<xsl:apply-templates select="."/>
 								</p>					
 						</xsl:for-each>
-					</xsl:when>
-					<xsl:otherwise>
-						<!--generate searched items-->
-						<xsl:for-each select="ui:entry/ui:searchable[generate-id(.)=generate-id(key('searchable', .))]">					
-							<xsl:call-template name="search">
-								<xsl:with-param name="searchField" select="."/>
-							</xsl:call-template>					
-						</xsl:for-each>
-					</xsl:otherwise>
-				</xsl:choose>				
-			</div>
-		</td>		
+					</div>
+				</td>
+			</xsl:when>
+			<xsl:otherwise>
+				<!--generate list of searched fields -->
+				<td  class="root categorizedList">
+					<div class="listWrapper">								
+						<div class="fieldList">
+							<xsl:for-each select="ui:entry/ui:searchable[generate-id(.)=generate-id(key('searchable', .))]">					
+								<p class="field" field="{.}">							
+									<xsl:value-of select="@field"/>
+								</p>					
+							</xsl:for-each>
+						</div>
+					</div>
+				</td>
+				<!--generate list of searched items-->
+				<td  class="categorizedList">
+					<div class="listWrapper">				
+						<div id="itemList">
+							<xsl:for-each select="ui:entry/ui:searchable[generate-id(.)=generate-id(key('searchable', .))]">					
+								<xsl:call-template name="search">
+									<xsl:with-param name="searchField" select="."/>
+								</xsl:call-template>							
+							</xsl:for-each>
+						</div>
+					</div>
+				</td>				
+			</xsl:otherwise>
+		</xsl:choose>								
 	</xsl:template>
 
 	<!-- TEMPLATES USED BY MAIN TEMPLATE -->
 	<!-- search -->
 	<xsl:template name="search">
-		<xsl:param name="searchField"/>
-		<div style="border-bottom: solid grey 1px; margin-bottom: 5px;"><xsl:value-of select="$searchField/@field"/></div>
-		<xsl:for-each select="/ui:categorized_listbox/ui:entry//*[name() = $searchField][contains(translate(., $upperCase, $lowerCase), translate($searchTerm, $upperCase, $lowerCase))]/ancestor::ui:entry/ui:entry_data">
-			<xsl:sort select="name"/>												
-				<p class="item" category="{$category}">							
-					<xsl:apply-templates select="."/>
-					<!--<h3><xsl:value-of select="name"/></h3>
-					<xsl:value-of select="short_description"/><br/>
-					<xsl:value-of select="full_description"/>-->
-				</p>					
-		</xsl:for-each>
+		<xsl:param name="searchField"/>		
+		<div field="{$searchField}">
+			<div style="border-bottom: solid grey 1px; margin-bottom: 5px;"><xsl:value-of select="$searchField/@field"/></div>
+			<xsl:for-each select="/ui:categorized_listbox/ui:entry//*[name() = $searchField][contains(translate(., $upperCase, $lowerCase), translate($searchTerm, $upperCase, $lowerCase))]/ancestor::ui:entry/ui:entry_data">
+				<xsl:sort select="name"/>												
+					<p class="item" category="{$category}">							
+						<xsl:apply-templates select="."/>
+						<!--<h3><xsl:value-of select="name"/></h3>
+						<xsl:value-of select="short_description"/><br/>
+						<xsl:value-of select="full_description"/>-->
+					</p>					
+			</xsl:for-each>
+		</div>
 	</xsl:template>	
 	<!-- create text list items -->
 	<xsl:template match="ui:entry_data">	

@@ -7,6 +7,7 @@
 		<ui:searchable field="Name">name</ui:searchable>
 		<ui:searchable field="Short Description">short_description</ui:searchable>
 		<ui:searchable field="Full Description">full_description</ui:searchable>
+		<ui:searchable field="Category">ui:category</ui:searchable>
 	</ui:entry>
 	<ui:entry ding='10'>
 	<!--	<ui:category>All Courses</ui:category>-->
