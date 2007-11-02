@@ -45,7 +45,7 @@
 			}
 			input {
 				border: solid grey 4px;
-				margin: 3px 0px 0px 3px;
+				margin: 3px 5px 0px 3px;
 				padding: 2px 4px;
 				font-weight: bold;
 			}
@@ -54,6 +54,12 @@
 			}
 			.browser table.selected {
 				display: table;
+			}
+			div[num_results="0"], p[num_results="0"] {
+				display: none;
+			}
+			.field.selected {
+				background-color: #5895BB;				
 			}
 		</style>
 		
@@ -97,38 +103,10 @@
 						$.get(browserExample.list.xml, function (xmlDoc) {					
 							browserExample.list.xml = $(xmlDoc);
 							$(function () {
-								list = browserExample.list.xml;
-								
-								//** use jQuery to create missing categores
-								/*
-								// create category document
-								catDoc = jQuery(browserExample.list.xml).transformToDoc({xsl: allCategories});
-								catDocRoot = catDoc.find('entry').eq(0);
-								// missing categories to document
-								catDoc.find('category').each(function () {
-								    var that = jQuery(this);
-								    var parentCategory = that.text();
-								    function addMissing (parentCat) {
-								        if (parentCat) {
-								            console.debug(parentCat)
-								            parentCat = parentCat.match(/.*[/]/) || [''];
-								            parentCat = parentCat[0].replace(/^(.*)[/]$/, '$1') || '';            
-								            //console.debug(parentCat)
-								            addMissing(parentCat);
-								            if (parentCat) that.clone().text(parentCat).appendTo(catDocRoot);
-								        }
-								    }
-								    addMissing(parentCategory);
-								});
-								*/
-								// stick all this categories into main document
-								//list.find('categorized_listbox').prepend(catDocRoot);								
+								list = browserExample.list.xml;																					
 								missingCats = $(browserExample.list.xml).transform({xsl: missingCategories});
-								list.find('categorized_listbox').prepend(missingCats);
-								
-								
-								list.transform({xsl: xslDoc}).appendTo(".root .listWrapper");
-								//list.transform({xsl: browserExample.list.xsl});
+								list.find('categorized_listbox').prepend(missingCats);								
+								list.transform({xsl: xslDoc}).appendTo(".root .listWrapper");								
 								chooseCategory = function () {									
 									var subList = $(this).parents(".categorizedList").eq(0);																
 									// select chosen category
@@ -153,16 +131,18 @@
 									subList.nextAll().remove();
 									$(this).find(".itemInfo").clone().insertAfter(subList);						
 								};
-								searchList = function () {						
-									$.wait.call(this, function () {
-										var input = $(this);
-										var searchTerm = input.val();
-										console.debug(searchTerm)
-										var listContainer = $(this).parent('.browser').find('.browseByFieldSearch .root').parent();
+								searchList = function () {		
+									$.wait.call(this, function () {	
+										var searchTerm, listContainer, input;
+										input = $(this);
+										//if (!document.getElementById("searchingMessage")) $(this).after("<span id='searchingMessage'>searching...</span>");
+										//$("#searchingMessage").show();	
+										searchTerm = input.val();										
+										listContainer = $(this).parent('.browser').find('.browseByFieldSearch .root').parent();
 										if (!searchTerm) {											
-											input.parent('.browser').find(".browseByCategory").addClass("selected").siblings("table").removeClass("selected");											
+											input.parent('.browser').find(">table.browseByCategory").show().siblings("table").hide();											
 										} else {											
-											input.parent('.browser').find(".browseByFieldSearch").addClass("selected").siblings("table").removeClass("selected");																						
+											input.parent('.browser').find(">table.browseByFieldSearch").show().siblings("table").hide();																						
 											// do search																	
 											var results = list.transform({
 												xsl: browserExample.list.xsl, 
@@ -170,13 +150,24 @@
 													searchTerm: searchTerm												
 												}
 											});
-											listContainer.empty().append(results);
+											listContainer.html(results);											
 										}
+										//$("#searchingMessage").hide();
 									}, 500);					
 								};
+								filterFields = function (e, delegator) {
+									var field = $(this).attr("field");
+									if (field === "all") {
+										delegator.find("table.browseByFieldSearch div[@field]").show();										
+									} else {
+										delegator.find("table.browseByFieldSearch div[@field="+field+"]").show().siblings().hide();
+									}
+									$(this).addClass("selected").siblings().removeClass("selected");
+								}								
 								$(".listSearch").keyup(searchList);
 								$("body > div.browser").delegate("p[@category]:not(.item)", "mousedown", chooseCategory);
-								$("body > div.browser").delegate("p.item", "mousedown", chooseItem);					
+								$("body > div.browser").delegate("p.item", "mousedown", chooseItem);
+								$("body > div.browser").delegate("td.root p.field", "mousedown", filterFields);
 								setSelectionPath = function (path) {
 									// create a path
 									var leadingPath, categoryList, categoryElem,
