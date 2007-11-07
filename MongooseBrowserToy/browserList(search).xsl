@@ -60,6 +60,7 @@
 							<xsl:for-each select="ui:entry/ui:searchable[generate-id(.)=generate-id(key('searchable', .))]">													
 								<xsl:call-template name="searchedFields">
 									<xsl:with-param name="searchField" select="."/>
+									<xsl:with-param name="searchMatch" select="/ui:categorized_listbox/ui:entry//*[name() = .][contains(translate(., $upperCase, $lowerCase), translate($searchTerm, $upperCase, $lowerCase))]/ancestor::ui:entry/ui:entry_data"/>
 								</xsl:call-template>																		
 							</xsl:for-each>
 						</div>
@@ -72,6 +73,7 @@
 							<xsl:for-each select="ui:entry/ui:searchable[generate-id(.)=generate-id(key('searchable', .))]">
 								<xsl:call-template name="searchedItems">
 									<xsl:with-param name="searchField" select="."/>
+									<xsl:with-param name="searchMatch" select="/ui:categorized_listbox/ui:entry//*[name() = current()][contains(translate(., $upperCase, $lowerCase), translate($searchTerm, $upperCase, $lowerCase))]/ancestor::ui:entry/ui:entry_data"/>
 								</xsl:call-template>							
 							</xsl:for-each>
 						</div>
@@ -86,14 +88,22 @@
 	<!--searched Items-->
 	<xsl:template name="searchedItems">
 		<xsl:param name="searchField"/>		
+		<xsl:param name="searchMatch"/>
+		<xsl:variable name="searchMatch2" select="/ui:categorized_listbox/ui:entry//*[name() = current()][contains(translate(., $upperCase, $lowerCase), translate($searchTerm, $upperCase, $lowerCase))]/ancestor::ui:entry"/>
+		<xsl:variable name="count" select="count($searchMatch2)"/>
 		<div field="{$searchField}">
-			<div style="border-bottom: solid grey 1px; margin-bottom: 5px;" num_results="{count(/ui:categorized_listbox/ui:entry//*[name() = $searchField][contains(concat(' ', translate(., $upperCase, $lowerCase)), concat(' ', translate($searchTerm, $upperCase, $lowerCase)))]/ancestor::ui:entry/ui:entry_data)}">
-				<xsl:value-of select="$searchField/@field"/>			
-			<!--	(<xsl:value-of select="count(/ui:categorized_listbox/ui:entry//*[name() = $searchField][contains(translate(., $upperCase, $lowerCase), translate($searchTerm, $upperCase, $lowerCase))]/ancestor::ui:entry/ui:entry_data)"/>)-->
+			<div style="border-bottom: solid grey 1px; margin-bottom: 5px;">				
+				<xsl:variable name="asdf" select="current()"/>				
+				<!--<xsl:variable name="count" select="count($seachMatch)"/>-->
+				<xsl:value-of select="@field"/>	
+				(<xsl:value-of select="$count"/>)
+				-<xsl:value-of select="count($searchMatch2)"/>
+			<!--	(<xsl:value-of select="$count"/>)-->
 			</div>
-			<xsl:for-each select="/ui:categorized_listbox/ui:entry//*[name() = $searchField][contains(concat(' ', translate(., $upperCase, $lowerCase)), concat(' ', translate($searchTerm, $upperCase, $lowerCase)))]/ancestor::ui:entry/ui:entry_data">
+			<xsl:for-each select="$searchMatch2/ui:entry_data">
 				<xsl:sort select="name"/>												
-					<p class="item" category="{$category}">							
+					<p class="item" category="{$category}">	
+						
 						<xsl:apply-templates select="."/>						
 					</p>					
 			</xsl:for-each>
@@ -102,8 +112,8 @@
 	<!--searched fields-->
 	<xsl:template name="searchedFields">
 		<xsl:param name="searchField"/>								
-		<p class="field" field="{.}" num_results="{count(/ui:categorized_listbox/ui:entry//*[name() = $searchField][contains(concat(' ', translate(., $upperCase, $lowerCase)), concat(' ', translate($searchTerm, $upperCase, $lowerCase)))]/ancestor::ui:entry/ui:entry_data)}">
-			<xsl:value-of select="@field"/> (<xsl:value-of select="count(/ui:categorized_listbox/ui:entry//*[name() = $searchField][contains(concat(' ', translate(., $upperCase, $lowerCase)), concat(' ', translate($searchTerm, $upperCase, $lowerCase)))]/ancestor::ui:entry/ui:entry_data)"/>)
+		<p class="field" field="{.}">
+			<xsl:value-of select="@field"/>
 		</p>
 	</xsl:template>	
 	<!-- create text list items -->

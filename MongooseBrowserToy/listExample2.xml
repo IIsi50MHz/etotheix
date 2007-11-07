@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- this is an xml description of data in a categorized list box (like those used with our "smart" controls
+
+) -->
+<ui:categorized_listbox xmlns:ui="http://www.ais-sim.com/mongoose/ns/ui-controls">
+	<ui:selection>
+		<ui:category_selection>a/b</ui:category_selection>
+		<ui:search_term></ui:search_term>
+		<ui:entry_uuid>id-3</ui:entry_uuid>
+		<ui:selected_field>all</ui:selected_field>
+	</ui:selection>
+	<ui:entry ding='10' uuid="id-1">
+		<ui:category>all</ui:category>
+		<ui:category>1/2/3/4/5</ui:category>
+		<ui:category>2/a/b/c/d</ui:category>
+		<ui:category>User Courses</ui:category>
+		<ui:category>DING</ui:category>
+		<ui:category>All Courses/User Courses</ui:category>
+		<ui:category>All Courses/User Courses/three</ui:category>
+		<ui:category>All Courses/two</ui:category>
+		<ui:category>xxx</ui:category>
+		<ui:entry_data>
+			<name ui:searchable="Name">wding xxx</name>
+			<short_description ui:searchable="Short Description">blah goes ding!</short_description>
+			<full_description ui:searchable="Full Description">This thing goes: ding, dong! ding dong!</full_description>
+			<filename>C:/SVN/mongoose_content/Packs/UserDefinedCourses/two.course</filename>
+		</ui:entry_data>
+	</ui:entry>
+	<ui:entry dong='blah' uuid="id-2">
+		<ui:category>all</ui:category>
+		<ui:category>a/b</ui:category>
+		<ui:category>a</ui:category>		
+		<ui:entry_data ding='hey'>
+			<name ui:searchable="Name">hell o! xxx</name>
+			<short_description ui:searchable="Short Description">goes ding!</short_description>
+			<full_description ui:searchable="Full Description">wdThis thing goes: ding, dong! ding dong!</full_description>
+			<filename>C:/SVN/mongoose_content/Packs/UserDefinedCourses/two.course</filename>
+		</ui:entry_data>
+	</ui:entry>
+	<ui:entry uuid="id-3">
+		<ui:category>all</ui:category>
+		<ui:category>a/b</ui:category>
+		<ui:category>a</ui:category>		
+		<ui:entry_data>
+			<name ui:searchable="Name">hello2!</name>
+			<short_description ui:searchable="Short Description">goes ding!</short_description>
+			<full_description ui:searchable="Full Description">This thing goes: ding, dong! ding dong!</full_description>
+			<filename>C:/SVN/mongoose_content/Packs/UserDefinedCourses/two.course</filename>
+		</ui:entry_data>
+	</ui:entry>
+	<ui:entry uuid="id-4">
+		<ui:category>all</ui:category>
+		<ui:category>1/2/3/4</ui:category>
+		<ui:category>All Courses</ui:category>
+		<ui:category>User Courses</ui:category>
+		<ui:category>All Courses/User Courses</ui:category>
+		<ui:entry_data>
+			<name ui:searchable="Name">ding2</name>
+			<short_description ui:searchable="Short Description">goes ding!</short_description>
+			<full_description ui:searchable="Full Description">This thing goes: ding, dong! ding dong!</full_description>
+			<filename>C:/SVN/mongoose_content/Packs/UserDefinedCourses/two.course</filename>
+		</ui:entry_data>
+	</ui:entry>
+	<ui:entry uuid="id-5">
+		<ui:category>all</ui:category>
+		<ui:category>All Courses</ui:category>
+		<ui:category>User Courses</ui:category>
+		<ui:category>All Courses/User Courses</ui:category>
+		<ui:entry_data>
+			<name ui:searchable="Name">ding3</name>
+			<short_description ui:searchable="Short Description">goes ding!</short_description>
+			<full_description ui:searchable="Full Description">This thing goes: ding, dong! ding dong!</full_description>
+			<filename>C:/SVN/mongoose_content/Packs/UserDefinedCourses/two.course</filename>
+		</ui:entry_data>
+	</ui:entry>	
+</ui:categorized_listbox>
