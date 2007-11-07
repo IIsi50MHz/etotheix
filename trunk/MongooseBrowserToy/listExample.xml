@@ -3,15 +3,22 @@
 
 ) -->
 <ui:categorized_listbox xmlns:ui="http://www.ais-sim.com/mongoose/ns/ui-controls">
+	<!--**get rid of this-->
 	<ui:entry searchableItems="yes">
 		<ui:searchable field="Name">name</ui:searchable>
 		<ui:searchable field="Short Description">short_description</ui:searchable>
 		<ui:searchable field="Full Description">full_description</ui:searchable>
 		<ui:searchable field="Category">ui:category</ui:searchable>
 	</ui:entry>
+	<!--**use this instead of above-->
+	<ui:searchableFields>
+		<ui:field path="ui:entry_data/name">Name</ui:field>
+		<ui:field path="ui:entry_data/short_description">Short Description</ui:field>
+		<ui:field path="ui:entry_data/full_description">Full Description</ui:field>
+		<ui:field path="ui:entry_data/ui:category">Category</ui:field>
+	</ui:searchableFields>
+	
 	<ui:entry ding='10'>
-	<!--	<ui:category>All Courses</ui:category>-->
-		<!--<ui:category>1</ui:category>-->
 		<ui:category>1/2/3/4/5</ui:category>
 		<ui:category>2/a/b/c/d</ui:category>
 		<ui:category>User Courses</ui:category>
