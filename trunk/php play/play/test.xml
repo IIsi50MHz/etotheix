@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!-- ranges -->
+<ranges>
+	<range>	
+		<name>++++xxx$$$$ +++++</name>
+		<description>this is a test range 1</description>
+		<thumbnail_small>/img/ranges/rangeTest1_small.png</thumbnail_small>
+		<thumbnail_large>/img/ranges/rangeTest1_big.png</thumbnail_large>	
+	</range>
+	<range>	
+		<name>rangeTest2</name>
+		<description>this is a test range 2</description>
+		<thumbnail_small>/img/ranges/rangeTest2_small.png</thumbnail_small>
+		<thumbnail_large>/img/ranges/rangeTest3_big.png</thumbnail_large>	
+	</range>
+	<range>	
+		<name>++++asdfasdfasfd +++++</name>
+		<description>this is a test range 3</description>
+		<thumbnail_small>/img/ranges/rangeTest3_small.png</thumbnail_small>
+		<thumbnail_large>/img/ranges/rangeTest3_big.png</thumbnail_large>	
+	</range>
+	<range>	
+		<name>###ding! 2222###</name>
+		<description>this is a test range 4</description>
+		<thumbnail_small>/img/ranges/rangeTest4_small.png</thumbnail_small>
+		<thumbnail_large>/img/ranges/rangeTest4_big.png</thumbnail_large>	
+	</range>
+	<range>	
+		<name>###ding! 2222###</name>
+		<description>this is a test range 5</description>
+		<thumbnail_small>/img/ranges/rangeTest5_small.png</thumbnail_small>
+		<thumbnail_large>/img/ranges/rangeTest5_big.png</thumbnail_large>	
+	</range>
+</ranges>
