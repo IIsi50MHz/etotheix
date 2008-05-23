@@ -11,8 +11,8 @@ jQuery.noConflict();
 	var jobId = "#txtTG_WORKEDJOBID_";
 	
 	for (var i = 4; i <= 12; i += 2) {
-		$(hoursId+i).focus().val(8.00).keydown().keypress().change().blur();		
-		$(departmentId+i).val(100011).focus().val(8.00).keydown().keypress().change().blur();
-		$(jobId+i).val("AIS-ENG-1422").focus().val(8.00).keydown().keypress().change().blur();
+		$(hoursId+i).val(8.00).focus().change().blur();		
+		$(departmentId+i).val(100011).focus().change().blur();	
+		$(jobId+i).val("AIS-ENG-1422").focus().change().blur();	
 	}	
 })(jQuery);
