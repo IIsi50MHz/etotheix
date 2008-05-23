@@ -1,5 +1,4 @@
 // laad jQuery
-var s=document.createElement('script');s.setAttribute('src', 'http://jquery.com/src/jquery-latest.js');document.getElementsByTagName('body')[0].appendChild(s);void(s);
 (function ($) {
 	var hoursId = "#TG_TOTALHOURS_";
 	var earningsCodeId = "#txtTG_PAYCODEID_";
