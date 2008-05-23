@@ -10,10 +10,8 @@ jQuery.noConflict();
 	var jobId = "#txtTG_WORKEDJOBID_";
 	
 	for (var i = 4; i <= 12; i += 2) {
-		$(hoursId+i).val(8);
-		$(earningsCodeId+i).focus().val(8).keypress().change().blur();
-		$(departmentId+i).val(8);
-		$(jobId+i).val(8);
-		console.debug("adfasdf")
+		$(hoursId+i).focus().val(8.00).keydown().keypress().change().blur();		
+		$(departmentId+i).val(100011).focus().val(8.00).keydown().keypress().change().blur();
+		$(jobId+i).val("AIS-ENG-1422").focus().val(8.00).keydown().keypress().change().blur();
 	}	
 })(jQuery);
