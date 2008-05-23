@@ -11,6 +11,9 @@ jQuery.noConflict();
 	
 	for (var i = 4; i <= 12; i += 2) {
 		$(hoursId+i).val(8);
+		$(earningsCodeId+i).focus().val(8).keypress().change().blur();
+		$(departmentId+i).val(8);
+		$(jobId+i).val(8);
 		console.debug("adfasdf")
 	}	
 })(jQuery);
