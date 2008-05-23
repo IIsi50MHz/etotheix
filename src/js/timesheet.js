@@ -8,9 +8,9 @@ setTimeout(function () {
 		var jobId = "#txtTG_WORKEDJOBID_";
 		
 		for (var i = 4; i <= 12; i += 2) {
-			$(hoursId+i).val(8.00).focus().change().blur();		
-			$(departmentId+i).val(100011).focus().change().blur();	
-			$(jobId+i).val("AIS-ENG-1422").focus().change().blur();	
+			$(hoursId+i).val(8.00);
+			$(departmentId+i).val(100011);
+			$(jobId+i).val("AIS-ENG-1422");
 		}	
 	})(jQuery);
 }, 4000)
