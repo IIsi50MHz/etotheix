@@ -12,7 +12,5 @@ for (var i = 4; i <= 12; i += 2) {
 	earningsCode.value = "100011";
 	department.value = "AIS-ENG-1422";	
 	
-	hours.onchange();
-	earningsCode.onchange();
-	department.onchange();
+	hours.onchange();	
 }	
