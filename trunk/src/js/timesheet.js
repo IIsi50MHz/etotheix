@@ -13,5 +13,5 @@ setTimeout(function () {
 			$(jobId+i).val("AIS-ENG-1422").focus().change().blur();	
 		}	
 	})(jQuery);
-}, 4000)
+}, 1000)
 
