@@ -8,7 +8,7 @@ setTimeout(function () {
 		var jobId = "#txtTG_WORKEDJOBID_";
 		
 		for (var i = 2; i <= 6; i++) {
-			$(hoursId+i).val(8.00);			
+			$(hoursId+i).val("8.00");			
 			$(jobId+i).val("AIS-ENG-1422");
 		}	
 	})(jQuery);
