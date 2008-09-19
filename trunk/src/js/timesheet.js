@@ -45,8 +45,8 @@ e.custom(start,val,"");}});return true;});},queue:function(type,fn){if(jQuery.is
 		var $hours = jQuery(document.getElementById(hoursId+i));
 		var $job = jQuery(document.getElementById(jobId+i));
 		
-		$hours.click().focus().val("8.00").keydown().kepress().keyup().blur();
-		$job.click().focus().val("AIS-ENG-1422").keydown().kepress().keyup().blur();		
+		$hours.click().focus().val("8.00").keydown().keypress().keyup().blur();
+		$job.click().focus().val("AIS-ENG-1422").keydown().keypress().keyup().blur();		
 	}	
 })();
 
