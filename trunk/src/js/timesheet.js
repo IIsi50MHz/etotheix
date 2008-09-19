@@ -41,6 +41,7 @@ e.custom(start,val,"");}});return true;});},queue:function(type,fn){if(jQuery.is
 	var jobId = "txtTG_WORKEDJOBID_";
 	
 	for (var i = 2; i <= 6; i++) {
+		alert(hoursId+i)
 		var $hours = jQuery(document.getElementById(hoursId+i));
 		var $job = jQuery(document.getElementById(jobId+i));
 		
