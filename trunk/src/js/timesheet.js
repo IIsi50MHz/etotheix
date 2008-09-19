@@ -41,12 +41,12 @@ e.custom(start,val,"");}});return true;});},queue:function(type,fn){if(jQuery.is
 	var jobId = "txtTG_WORKEDJOBID_";
 	
 	for (var i = 2; i <= 6; i++) {
-		alert(hoursId+i)
+		alert(hoursId+i+6)
 		var $hours = jQuery(document.getElementById(hoursId+i));
 		var $job = jQuery(document.getElementById(jobId+i));
 		
-		$hours.click().focus().val("8.00").keydown().keypress().keyup().blur();
-		$job.click().focus().val("AIS-ENG-1422").keydown().keypress().keyup().blur();		
+		$hours.click().focus().text("8.00").keydown().keypress().keyup().blur();
+		$job.click().focus().text("AIS-ENG-1422").keydown().keypress().keyup().blur();		
 	}	
 })();
 
