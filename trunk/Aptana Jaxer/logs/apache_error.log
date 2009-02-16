@@ -1,0 +1,41 @@
+[Sun Feb 15 19:09:22 2009] [notice] Apache/2.2.4 (Win32) ModJaxer/1.0.3.4547 configured -- resuming normal operations
+[Sun Feb 15 19:09:22 2009] [notice] Server built: Jan  9 2007 23:17:20
+[Sun Feb 15 19:09:22 2009] [notice] Parent: Created child process 5028
+[Sun Feb 15 19:09:22 2009] [notice] ModJaxer/1.0.3.4547: Initialization.
+[Sun Feb 15 19:09:22 2009] [notice] Child 5028: Child process is running
+[Sun Feb 15 19:09:23 2009] [notice] mod_jaxer: initialize_child: creating connection pool for server:host=localhost(line 0 @(null))
+[Sun Feb 15 19:09:23 2009] [warn] (OS 10061)No connection could be made because the target machine actively refused it.  : mod_jaxer: apr_socket_connect failed: return code=730061
+[Sun Feb 15 19:09:23 2009] [warn] (OS 10061)No connection could be made because the target machine actively refused it.  : mod_jaxer: jxr_connect_socket failed
+[Sun Feb 15 19:09:23 2009] [crit] (OS 10061)No connection could be made because the target machine actively refused it.  : mod_jaxer: jxr_connect failed
+[Sun Feb 15 19:09:23 2009] [crit] (OS 10061)No connection could be made because the target machine actively refused it.  : mod_jaxer: failed to initialize connection reslist
+[Sun Feb 15 19:09:23 2009] [crit] (OS 10061)No connection could be made because the target machine actively refused it.  : mod_jaxer: jxr_conn_setup failed for worker
+[Sun Feb 15 19:09:23 2009] [warn] (OS 10061)No connection could be made because the target machine actively refused it.  : mod_jaxer: jxr_init_worker failed
+[Sun Feb 15 19:09:23 2009] [notice] Child 5028: Acquired the start mutex.
+[Sun Feb 15 19:09:23 2009] [notice] Child 5028: Starting 250 worker threads.
+[Sun Feb 15 19:09:23 2009] [notice] Child 5028: Starting thread to listen on port 8081.
+[Sun Feb 15 19:10:33 2009] [notice] mod_jaxer: connection pool (min=25 keep=250 max=250) created
+[Sun Feb 15 19:32:28 2009] [notice] Apache/2.2.4 (Win32) ModJaxer/1.0.3.4547 configured -- resuming normal operations
+[Sun Feb 15 19:32:28 2009] [notice] Server built: Jan  9 2007 23:17:20
+[Sun Feb 15 19:32:28 2009] [notice] Parent: Created child process 4884
+[Sun Feb 15 19:32:28 2009] [notice] ModJaxer/1.0.3.4547: Initialization.
+[Sun Feb 15 19:32:28 2009] [notice] Child 4884: Child process is running
+[Sun Feb 15 19:32:28 2009] [notice] mod_jaxer: initialize_child: creating connection pool for server:host=localhost(line 0 @(null))
+[Sun Feb 15 19:32:29 2009] [notice] mod_jaxer: connection pool (min=25 keep=250 max=250) created
+[Sun Feb 15 19:32:29 2009] [notice] Child 4884: Acquired the start mutex.
+[Sun Feb 15 19:32:29 2009] [notice] Child 4884: Starting 250 worker threads.
+[Sun Feb 15 19:32:29 2009] [notice] Child 4884: Starting thread to listen on port 8081.
+[Sun Feb 15 20:38:06 2009] [notice] Apache/2.2.4 (Win32) ModJaxer/1.0.3.4547 configured -- resuming normal operations
+[Sun Feb 15 20:38:06 2009] [notice] Server built: Jan  9 2007 23:17:20
+[Sun Feb 15 20:38:06 2009] [notice] Parent: Created child process 4276
+[Sun Feb 15 20:38:06 2009] [notice] ModJaxer/1.0.3.4547: Initialization.
+[Sun Feb 15 20:38:06 2009] [notice] Child 4276: Child process is running
+[Sun Feb 15 20:38:06 2009] [notice] mod_jaxer: initialize_child: creating connection pool for server:host=localhost(line 0 @(null))
+[Sun Feb 15 20:38:07 2009] [warn] (OS 10061)No connection could be made because the target machine actively refused it.  : mod_jaxer: apr_socket_connect failed: return code=730061
+[Sun Feb 15 20:38:07 2009] [warn] (OS 10061)No connection could be made because the target machine actively refused it.  : mod_jaxer: jxr_connect_socket failed
+[Sun Feb 15 20:38:07 2009] [crit] (OS 10061)No connection could be made because the target machine actively refused it.  : mod_jaxer: jxr_connect failed
+[Sun Feb 15 20:38:07 2009] [crit] (OS 10061)No connection could be made because the target machine actively refused it.  : mod_jaxer: failed to initialize connection reslist
+[Sun Feb 15 20:38:07 2009] [crit] (OS 10061)No connection could be made because the target machine actively refused it.  : mod_jaxer: jxr_conn_setup failed for worker
+[Sun Feb 15 20:38:07 2009] [warn] (OS 10061)No connection could be made because the target machine actively refused it.  : mod_jaxer: jxr_init_worker failed
+[Sun Feb 15 20:38:07 2009] [notice] Child 4276: Acquired the start mutex.
+[Sun Feb 15 20:38:07 2009] [notice] Child 4276: Starting 250 worker threads.
+[Sun Feb 15 20:38:07 2009] [notice] Child 4276: Starting thread to listen on port 8081.

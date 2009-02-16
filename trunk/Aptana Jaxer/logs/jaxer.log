@@ -1,0 +1,27 @@
+19:09:26 02/15/2009 [  3980] [INFO] [JaxerManager] JaxerManager 1.0.3.4547 (web 4327, command 4328)
+19:09:27 02/15/2009 [  6040] [INFO] [Jaxer/1.0.3.4547 -- starting] Community Edition, licensed by Aptana, Inc. under GPL/APL (see LICENSE.TXT)
+19:09:28 02/15/2009 [  4684] [INFO] [Jaxer/1.0.3.4547 -- starting] Community Edition, licensed by Aptana, Inc. under GPL/APL (see LICENSE.TXT)
+19:09:28 02/15/2009 [  5976] [INFO] [Jaxer/1.0.3.4547 -- starting] Community Edition, licensed by Aptana, Inc. under GPL/APL (see LICENSE.TXT)
+19:32:17 02/15/2009 [  4684] [INFO] Received exit message from manager.  Exiting...
+19:32:17 02/15/2009 [  6040] [INFO] Received exit message from manager.  Exiting...
+19:32:17 02/15/2009 [  5976] [INFO] Received exit message from manager.  Exiting...
+19:32:17 02/15/2009 [  3980] [INFO] [JaxerManager] Terminating all jaxers per stop request.
+19:32:29 02/15/2009 [  6044] [INFO] [JaxerManager] JaxerManager 1.0.3.4547 (web 4327, command 4328)
+19:32:29 02/15/2009 [  1496] [INFO] [Jaxer/1.0.3.4547 -- starting] Community Edition, licensed by Aptana, Inc. under GPL/APL (see LICENSE.TXT)
+19:32:29 02/15/2009 [  4676] [INFO] [Jaxer/1.0.3.4547 -- starting] Community Edition, licensed by Aptana, Inc. under GPL/APL (see LICENSE.TXT)
+19:32:29 02/15/2009 [  2400] [INFO] [Jaxer/1.0.3.4547 -- starting] Community Edition, licensed by Aptana, Inc. under GPL/APL (see LICENSE.TXT)
+19:33:52 02/15/2009 [  1496] [INFO] [JS Framework] [framework.] jQuery unit Test failure - core module: noConflict>> (1, 5, 6)
+19:33:52 02/15/2009 [  1496] [INFO] [JS Framework] [framework.] jQuery unit Test failure - core module: attr(String)>> (4, 16, 20)
+19:33:52 02/15/2009 [  1496] [INFO] [JS Framework] [framework.] jQuery unit Test failure - core module: css(String|Hash)>> (6, 13, 19)
+19:33:52 02/15/2009 [  1496] [INFO] [JS Framework] [framework.] jQuery unit Test failure - core module: css(String, Object)>> (5, 13, 18)
+19:33:54 02/15/2009 [  1496] [INFO] [JS Framework] [framework.] jQuery unit Test failure - core module: $.extend(Object, Object)>> (2, 12, 14)
+19:33:54 02/15/2009 [  1496] [INFO] [JS Framework] [framework.] jQuery unit Test failure - core module: show()>> (1, 0, 1)
+19:33:55 02/15/2009 [  1496] [INFO] [JS Framework] [framework.] jQuery unit Test failure - selector module: child and adjacent>> (6, 31, 37)
+19:33:55 02/15/2009 [  1496] [INFO] [JS Framework] [framework.] jQuery unit Test failure - selector module: pseudo (:) selectors>> (3, 29, 32)
+20:28:00 02/15/2009 [  4648] [INFO] [JaxerManager] JaxerManager 1.0.3.4547 (web 4327, command 4328)
+20:28:02 02/15/2009 [  4676] [INFO] Received exit message from manager.  Exiting...
+20:28:02 02/15/2009 [  6044] [INFO] [JaxerManager] Terminating all jaxers per stop request.
+20:28:02 02/15/2009 [  6044] [WARN] [JaxerManager]  WSARecv returns rc=-1 err=10054: failed with error 10054: An existing connection was forcibly closed by the remote host.
+
+20:28:02 02/15/2009 [  2400] [INFO] Received exit message from manager.  Exiting...
+20:28:02 02/15/2009 [  1496] [INFO] Received exit message from manager.  Exiting...
