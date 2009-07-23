@@ -4,8 +4,10 @@
 		<title>bent</title>		
 	</head>
 	<body>
-		<div>string 1</div>
-		<div>string 2</div>
-		<div>string 3</div>
+		<div>string 1</div>		
+		<span>string 2</span>		
+		<span>string 3</span>
+		<span>   string 4 </span>
+		<hey></hey>
 	</body>
 </html>
