@@ -1,0 +1,47 @@
+<?xml-stylesheet type="text/xsl" href="bent2.xsl"?>
+<html>
+	<head>
+		<title>bent</title>
+		<!--<link rel="stylesheet" type="text/css" href="bent.css" />-->
+	</head>
+	<body>
+		<div widget="ding" id="hell">xsadf asfasfxxx</div>
+		<b class="blah" struc="area" dim="max" skin="skin2">
+			<b struc="row">
+				<b struc="col" dim="min">
+					<div skin="skin1" dim="max">
+						<tag attr="attr">hello. I'm a ttt!</tag>
+					</div>
+				</b>
+				<b struc="col" dim="max">
+					<b struc="area" dim="max">
+						<b struc="row">
+							<b struc="col" dim="min">
+								<div skin="skin1" dim="max">hello</div>
+							</b>
+							<b struc="col" dim="max">
+								<div skin="skin1" dim="max">hello</div>
+							</b>
+						</b>
+						<b struc="row">
+							<b struc="col">
+								<div skin="skin1">heccccllo</div>
+							</b>
+							<b struc="col">
+								<div skin="skin1">hello</div>
+							</b>
+						</b>
+					</b>
+				</b>
+			</b>
+			<b struc="row">
+				<b struc="col">
+					<div skin="skin1">heccccllo</div>
+				</b>
+				<b struc="col">
+					<div skin="skin1">hello</div>
+				</b>
+			</b>
+		</b>
+	</body>
+</html>

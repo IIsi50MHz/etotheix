@@ -1,0 +1,11 @@
+<?xml-stylesheet type="text/xsl" href="translate.xsl"?>
+<html>
+	<head>
+		<title>bent</title>		
+	</head>
+	<body>
+		<div>string 1</div>
+		<div>string 2</div>
+		<div>string 3</div>
+	</body>
+</html>
