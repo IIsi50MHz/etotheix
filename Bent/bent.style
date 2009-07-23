@@ -1,0 +1,125 @@
+<style>
+html{height:100%; overflow:hidden}
+body{margin:0px; height:100%}
+tt{font-family:inherit}
+b,div{font-weight:normal; display:block; -moz-box-sizing:border-box}
+table{table-layout:fixed; border-spacing:0px; -moz-box-sizing:border-box}
+td{vertical-align:top}
+
+/* structure (s)*/
+/* VARIABLES 
+	<var name="dir">ltr</var>
+	<var name="start">left</var>
+	<var name="end">right</var>
+*/
+.s-expand,[skin2nd~='s-expand'].s2{position:absolute; top:0; right:0; bottom:0; left:0}
+.s-w0,[skin2nd~='s-w0'].s2{width:0}
+.s-w100,[skin2nd~='s-w100'].s2{width:100%}
+.s-h0,[skin2nd~='s-h0'].s2{height:0}
+.s-h100,[skin2nd~='s-h100'].s2{height:100%}
+.s-di,[skin2nd~='s-di'].s2{display:inline}
+.s-db,[skin2nd~='s-db'].s2{display:block}
+.s-dib,[skin2nd~='s-dib'].s2{display:inline-block}
+.s-dt,[skin2nd~='s-dt'].s2{display:table}
+.s-dtr,[skin2nd~='s-dtr'].s2{display:table-row}
+.s-dtc,[skin2nd~='s-dtc'].s2{display:table-cell}
+.s-pr,[skin2nd~='s-pr'].s2{position:relative}
+.s-pa,[skin2nd~='s-pa'].s2{position:absolute}
+.s-vat,[skin2nd~='s-vat'].s2{vertical-align:top}
+.s-vam,[skin2nd~='s-vam'].s2{vertical-align:middle}
+.s-vab,[skin2nd~='s-vab'].s2{vertical-align:bottom}
+.s-tas,[skin2nd~='s-tas'].s2{text-align:<val name="start"/>}
+.s-tam,[skin2nd~='s-tam'].s2{text-align:center}
+.s-tae,[skin2nd~='s-tae'].s2{text-align:<val name="end"/>}
+.s-fs,[skin2nd~='s-fs'].s2{float:<val name="start"/>}
+.s-fe,[skin2nd~='s-fe'].s2{float:<val name="end"/>}
+.s-cs,[skin2nd~='s-cs'].s2{clear:<val name="start"/>}
+.s-ce,[skin2nd~='s-ce'].s2{clear:<val name="end"/>}
+.s-cb,[skin2nd~='s-cb'].s2{clear:both}
+
+/*use for containers that need to grow to surround floats*/
+.s-cfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+.area{display:table; direction:<val name="dir"/>}
+.area>.row{display:table-row}
+.area>.col,.area>.row>.col{display:table-cell; float:none;}
+
+.area>.minCol{width:0}
+.max{position:absolute; top:0; right:0; bottom:0; left:0}
+.area>.minRow{height:0}
+
+/* trim (t) */
+.t-bA,[skin2nd~='t-bA'].s2{border:solid 1px}
+.t-bB,[skin2nd~='t-bB'].s2{border:solid 2px}
+.t-bC,[skin2nd~='t-bC'].s2{border:solid 3px}
+.t-brA,[skin2nd~='t-brA'].s2{-moz-border-radius:5px}
+.t-brInf,[skin2nd~='t-brInf'].s2{-moz-border-radius:1000px}
+.t-bsA,[skin2nd~='t-bsA'].s2{-moz-box-shadow:0 1px 7px rgba(0,0,0,.5)}
+.t-bsB,[skin2nd~='t-bsB'].s2{-moz-box-shadow:0 1px 12px rgba(0, 0, 0, 0.6)}
+/* gap (g) */
+.g-m0,[skin2nd~='g-m0'].s2{margin:0}
+.g-mA,[skin2nd~='g-mA'].s2{margin:1px}
+.g-mB,[skin2nd~='g-mB'].s2{margin:2px}
+.g-mC,[skin2nd~='g-mC'].s2{margin:3px}
+.g-mD,[skin2nd~='g-mD'].s2{margin:4px}
+.g-mE,[skin2nd~='g-mE'].s2{margin:5px}
+.g-p0,[skin2nd~='g-p0'].s2{padding:0}
+.g-pA,[skin2nd~='g-pA'].s2{padding:1px}
+.g-pB,[skin2nd~='g-pB'].s2{padding:2px}
+.g-pC,[skin2nd~='g-pC'].s2{padding:3px}
+.g-pD,[skin2nd~='g-pD'].s2{padding:4px}
+.g-pE,[skin2nd~='g-pE'].s2{padding:5px}
+/* face (f) */
+.f-fsA,[skin2nd~='f-fsA'].s2{font-size:15px}
+.f-fsB,[skin2nd~='f-fsB'].s2{font-size:20px}
+.f-ffA,[skin2nd~='f-ffA'].s2{font-family:sans-serif}
+.f-ffB,[skin2nd~='f-ffB'].s2{font-family:serif}
+.f-i,[skin2nd~='f-i'].s2{font-style:italic}
+.f-b,[skin2nd~='f-b'].s2{font-weight:bold}
+.f-bi,[skin2nd~='f-bi'].s2{font-weight:bold; font-style:italic}
+.f-n,[skin2nd~='f-n'].s2{font-weight:normal; font-style:normal}
+/* paint (p) */
+/* VARIABLES	
+	[color name]1 = value of 25
+	[color name]2 = value of 50 
+	...
+	[color name]10 = value of 250	
+	
+	// grayish green (like background)
+	<var name="colorA1" desc="grayish green">#191915</var>
+	<var name="colorA2" desc="grayish green">#32322A</var>
+	<var name="colorA3" desc="grayish green">#4B4B3F</var>	
+	<var name="colorA4" desc="grayish green">#646454</var>	
+	<var name="colorA5" desc="grayish green">#7D7D69</var>	
+	<var name="colorA6" desc="grayish green">#96967E</var>	
+	<var name="colorA7" desc="grayish green">#AFAF93</var>	
+	<var name="colorA8" desc="grayish green">#C8C8A8</var>	
+	<var name="colorA9" desc="grayish green">#E1E1BD</var>
+	<var name="colorA10" desc="grayish green">#FAFAD2</var>
+	// tan (like standard buttons)
+	<var name="colorB1" desc="tan">#191610</var>
+	<var name="colorB2" desc="tan">#322B21</var>
+	<var name="colorB3" desc="tan">#4B4131</var>
+	<var name="colorB4" desc="tan">#645741</var>
+	<var name="colorB5" desc="tan">#7D6C52</var>
+	<var name="colorB6" desc="tan">#968262</var>
+	<var name="colorB7" desc="tan">#AF9773</var>
+	<var name="colorB8" desc="tan">#C8AD83</var>
+	<var name="colorB9" desc="tan">#E1C393</var>
+	<var name="colorB10" desc="tan">#FAD8A4</var>
+
+	<var name="colorC1">red</var>
+	<var name="colorC2">pink</var>
+*/
+.p-cA,[skin2nd~='p-cA'].s2{color:<val name="colorA9"/>}
+.p-bcA,[skin2nd~='p-bcA'].s2{border-color:<val name="colorA7"/>}
+.p-bgcA,[skin2nd~='p-bgcA'].s2{background-color:<val name="colorA6"/>}
+.p-cB,[skin2nd~='p-cB'].s2{color:<val name="colorC2"/>}
+.p-bcB,[skin2nd~='p-bcB'].s2{border-color:<val name="colorA7"/>}
+.p-bgcB,[skin2nd~='p-bgcB'].s2{background-color:<val name="colorA1"/>}
+</style>

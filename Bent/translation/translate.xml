@@ -1,0 +1,14 @@
+<translations>
+	<translate>
+		<from>string 1</from>
+		<to>blah 1 translated!!!!</to>
+	</translate>
+	<translate>
+		<from>string 2</from>
+		<to>blah 2!!!</to>
+	</translate>
+	<translate>
+		<from>string 3</from>
+		<to>hey?</to>
+	</translate>
+</translations>

@@ -1,0 +1,86 @@
+html{height:100%; overflow:hidden}
+body{margin:0px; height:100%}
+tt{font-family:inherit}
+b,div{font-weight:normal; display:block; -moz-box-sizing:border-box}
+table{table-layout:fixed; border-spacing:0px; -moz-box-sizing:border-box}
+td{vertical-align:top}
+
+/* structure (s)*/
+.s-expand{position:absolute; top:0; right:0; bottom:0; left:0}
+.s-w0{width:0}
+.s-w100{width:100%}
+.s-h0{height:0}
+.s-h100{height:100%}
+.s-di{display:inline}
+.s-db{display:block}
+.s-dib{display:inline-block}
+.s-dt{display:table}
+.s-dtr{display:table-row}
+.s-dtc{display:table-cell}
+.s-pr{position:relative}
+.s-pa{position:absolute}
+.s-vat{vertical-align:top}
+.s-vam{vertical-align:middle}
+.s-vab{vertical-align:bottom}
+.s-tas{text-align:left}/*start*/
+.s-tam{text-align:center}/*middle*/
+.s-tae{text-align:right}/*end*/
+.s-fs{float:left}/*start*/
+.s-fe{float:right}/*end*/
+.s-cs{clear:left}/*start*/
+.s-ce{clear:right}/*end*/
+.s-cb{clear:both}
+
+/*use for containers that need to grow to surround floats*/
+.s-cfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+.area{display:table; margin:0 !important}
+.area>.row{display:table-row}
+.area>.col,.area>.row>.col{display:table-cell; float:none;}
+
+.area>.minCol{width:0}
+.max{position:absolute; top:0; right:0; bottom:0; left:0}
+.area>.minRow{height:0}
+
+/* trim (t) */
+.t-bA{border:solid 1px}
+.t-bB{border:solid 2px}
+.t-bC{border:solid 3px}
+.t-brA{-moz-border-radius:5px}
+.t-brInf{-moz-border-radius:1000px}
+.t-bsA{-moz-box-shadow:0 1px 7px rgba(0,0,0,.5)}
+.t-bsB{-moz-box-shadow:0 1px 12px rgba(0, 0, 0, 0.6)}
+/* gap (g) */
+.g-m0{margin:0}
+.g-mA{margin:1px}
+.g-mB{margin:2px}
+.g-mC{margin:3px}
+.g-mD{margin:4px}
+.g-mE{margin:5px}
+.g-p0{padding:0}
+.g-pA{padding:1px}
+.g-pB{padding:2px}
+.g-pC{padding:3px}
+.g-pD{padding:4px}
+.g-pE{padding:5px}
+/* face (f) */
+.f-fsA{font-size:15px}
+.f-fsB{font-size:20px}
+.f-ffA{font-family:sans-serif}
+.f-ffB{font-family:serif}
+.f-i{font-style:italic}
+.f-b{font-weight:bold}
+.f-bi{font-weight:bold; font-style:italic}
+.f-n{font-weight:normal; font-style:normal}
+/* paint (p) */
+.p-cA{color:grey}
+.p-bgcA{background-color:lightblue}
+.p-bcA{border-color:black}
+.p-cB{color:black}
+.p-bgcB{background-color:pink}
+.p-bcB{border-color:red}
