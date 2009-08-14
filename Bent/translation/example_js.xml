@@ -1,0 +1,26 @@
+<!--
+To use xslt for translations, we need to make sure all
+strings that need translating contained withing valid xml
+files. 
+
+This meens that for every js file with strings that need 
+translating, there should be a file containing xml for generating
+an object that holds all those strings.
+
+This is an example xml file to be used for generating
+strings for an js file.
+
+Strings accessed from the js file like so:
+	js_strings.example_js.stringName1
+		or
+	js_strings.example_js['stringName1']
+	
+For short strings it might make sense to just use the string as the key:
+	js_strings.example_js['string 4']
+-->
+<js_strings key="example_js">
+	<js_string key="stringName1">this is a string named \&quot;stringName1\&quot;</js_string>
+	<js_string key="stringName2">this is a string named stringName2</js_string>	
+	<js_string key="stringName3">this is a string named stringName3</js_string>
+	<js_string key="string 4">string 4</js_string>
+</js_strings>
