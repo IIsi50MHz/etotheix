@@ -1,5 +1,4 @@
 <files>
 	<file>example_file.xml</file>
-	<file>file_list.xml</file>
-	<blah>string 1</blah>
+	<file>file_list.xml</file>	
 </files>
