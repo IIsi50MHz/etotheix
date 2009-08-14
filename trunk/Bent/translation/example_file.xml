@@ -1,7 +1,8 @@
 <?xml-stylesheet type="text/xsl" href="translate.xsl"?>
 <html>
 	<head>
-		<title>bent</title>		
+		<title>bent</title>
+		<script src="../js/example_js.js"></script>
 	</head>
 	<body>
 		<div>string 1</div>		
