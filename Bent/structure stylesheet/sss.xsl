@@ -12,7 +12,7 @@
 	<xsl:variable name="structure_stylesheet_filename" select="/h:html/h:head/h:link[@type='xml/sss']/@href"/>
 	<xsl:variable name="structure_stylesheet" select="document($structure_stylesheet_filename)/*"/>
 	<!--grab all structure stylesheet rules-->
-	<xsl:variable name="rules" select="$structure_stylesheet/s:rule"/>
+	<xsl:variable name="rules" select="$structure_stylesheet/s:rule/s:sel"/>
 	<xsl:variable name="last_rule_id" select="generate-id($rules[last()])"/>
 	<xsl:variable name="count_rules" select="count($rules)"/>
 	<!--key for grabbing all structure_rules that have a given id (key('id', 'anIdName')/..)-->
@@ -227,7 +227,7 @@
 			<xsl:otherwise>
 <!--<h1 style="color:brown"><xsl:value-of select="concat('RULE WAS APPLIED = ', count($matching_rules))"/></h1>	-->
 				<!--most specific rule found (yay!); apply it to the current node-->
-				<xsl:apply-templates select="$matching_rules/s:struc" mode="structure_stylesheet">			
+				<xsl:apply-templates select="$matching_rules/../s:struc" mode="structure_stylesheet">			
 					<xsl:with-param name="current_node" select="$current_node"/>
 				</xsl:apply-templates>	
 				
