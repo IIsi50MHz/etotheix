@@ -7,18 +7,12 @@
 >  
 	<xsl:output method="html" indent="yes"/>
 
-	<!--grab all structure stylesheets-->
-	<!--<xsl:variable name="structure_stylesheet_filename" select="/*/*/s:use_structure_stylesheet"/>-->
+	<!--grab all structure stylesheets-->	
 	<xsl:variable name="structure_stylesheet_filename" select="/h:html/h:head/h:link[@type='xml/sss']/@href"/>
 	<xsl:variable name="structure_stylesheet" select="document($structure_stylesheet_filename)/*"/>
 	<!--grab all structure stylesheet rules-->
 	<xsl:variable name="rules" select="$structure_stylesheet/s:rule/s:sel"/>
-	<xsl:variable name="last_rule_id" select="generate-id($rules[last()])"/>
-	<xsl:variable name="count_rules" select="count($rules)"/>
-	<!--key for grabbing all structure_rules that have a given id (key('id', 'anIdName')/..)-->
-	<xsl:key name="rule_id" match="s:id" use="."/>
-	<!--key for grabbing all structure_rules that have a given class (key('class', 'aClassName')/..)-->
-	<xsl:key name="rule_class" match="s:class" use="."/>
+	<xsl:variable name="last_rule_id" select="generate-id($rules[last()])"/>	
 		
 	<!--
 		Identity transform (what comes in goes out)
@@ -55,7 +49,6 @@
 			* apply the rule to the element				
 	-->
 	
-	<!--**TODO?: add match for tag name in addition to id and class-->	
 	<!--for each element in the main doc (with class or id)-->	
 	<xsl:template match="*[@id|@class]">
 		<!--* for each rule, check for match-->	
@@ -322,6 +315,7 @@
 	<xsl:template match="@*" mode="non_updated_attributes">
 		<xsl:param name="attribute_updates"/>
 		<xsl:variable name="current_attribute_name" select="name()"/>
+		
 		<!--copy attribute if it wasn't updated-->
 		<xsl:if test="not($attribute_updates[name() = $current_attribute_name])">
 			<xsl:attribute name="{$current_attribute_name}"><xsl:value-of select="."/></xsl:attribute>		
@@ -330,19 +324,17 @@
 	
 	<!--update attrubutes (context should be an s:elem node)-->
 	<xsl:template name="update_attributes">		
-		<xsl:param name="element"/>
+		<xsl:param name="element"/>		
 		
 		<!--update classes-->
-		<xsl:variable name="updated_class" select="normalize-space(concat(@class, ' ', $element/@s:add_classes))"/>	
-	
+		<xsl:variable name="updated_class" select="normalize-space(concat(@class, ' ', $element/@s:add_classes))"/>		
 		<xsl:if test="$updated_class">
 			<xsl:attribute name="class"><xsl:value-of select="$updated_class"/></xsl:attribute>				
 		</xsl:if>				
 		
 		<!--update other attributes-->
 		<xsl:variable name="original_attributes" select="@*"/>
-		<xsl:variable name="attribute_updates" select="$element/@*"/>
-		
+		<xsl:variable name="attribute_updates" select="$element/@*"/>		
 		<!--create new and update existing attributes-->			
 		<xsl:apply-templates select="$attribute_updates" mode="update_attributes"/>
 			
@@ -353,5 +345,3 @@
 	</xsl:template>
 		
 </xsl:stylesheet>
-
-
