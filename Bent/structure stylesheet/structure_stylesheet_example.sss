@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<s:structure_stylesheet xmlns:s="structure_stylesheet" xmlns="http://www.w3.org/1999/xhtml">
+	<!--**TODO: add ability to use multiple selector sets (match class A or class B)-->
+	<s:rule>
+		<s:id>ding</s:id>
+		<s:class>blah</s:class>		
+		<s:struc>			
+			<div class="wrapper">
+				<h1>before</h1>			
+				<s:elem s:add_classes="ding dong" title="THIS IS A TITLE 2">					
+					<h2>prepend</h2>					
+					<s:inner/>
+					<h2>append</h2>
+				</s:elem>
+				<h1>after</h1>
+			</div>
+		</s:struc>		
+	</s:rule>
+
+	<s:rule>		
+		<s:tag>div</s:tag>		
+		<s:struc>
+			<h1 style="color:red">
+				<!--<script>alert("!!!!!!!")</script>-->
+				<s:elem s:tag_name="i"/>			
+			</h1>				
+		</s:struc>		
+	</s:rule>
+	
+	<s:rule>		
+		<s:class>blah</s:class>		
+		<s:struc>
+			<h1 style="color:blue">
+				<!--<script>alert("!!!!!!!")</script>-->
+				<s:elem s:tag_name="i"/>			
+			</h1>				
+		</s:struc>		
+	</s:rule>
+
+	<s:rule>
+		<s:id>dong</s:id>
+		<s:class>blah</s:class>
+		<s:class>foo</s:class>
+		<s:tag>span</s:tag>		
+		<s:struc>
+			<div class="wrapper">
+				<div>before</div>				
+				<s:elem s:tag_name="i" s:add_classes="ding dong" title="THIS IS A TITLE">						
+					<div>prepend</div>					
+					<s:inner/>
+					<div>append</div>
+				</s:elem>
+				<div>after</div>
+			</div>
+		</s:struc>		
+	</s:rule>
+
+	<s:rule>
+		<s:id>dong</s:id>
+		<s:class>blah</s:class>
+		<s:class>foo</s:class>
+		<s:tag>span</s:tag>		
+		<s:struc>
+			<div class="wrapper">
+				<div>before</div>				
+				<s:elem s:tag_name="b" s:add_classes="ding dong" title="THIS IS A TITLE">						
+					[<s:inner/>]
+				</s:elem>
+				<div>after</div>
+			</div>
+		</s:struc>		
+	</s:rule>
+
+</s:structure_stylesheet>
