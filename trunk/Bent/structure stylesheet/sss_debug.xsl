@@ -99,8 +99,9 @@
 			count($rule_classes) = count($matching_rule_classes) and
 			count($rule_tag) = count($matching_rule_tag)
 		]"/>
-
+<!--<h1 style="color:red"><xsl:value-of select="concat($tag_string, '[', $rule_tag, ']')"/></h1>-->
 		<!--keep gathering rules until we reach the last one-->
+<!--<h1 style="color:orange"><xsl:value-of select="concat($current_rule_index,  '[current_rule_id = ', $current_rule/s:id, ']', '[current_node = ', $current_node, ']', 'count more_gathered_rules = ', count($more_gathered_rules), '{count matching_rule_id = ', count($matching_rule_id),'}', $rule_id, $id_string)"/></h1>		-->				
 		<xsl:choose>
 			<xsl:when test="generate-id($current_rule) != $last_rule_id">
 				<xsl:variable name="next_rule_index" select="$current_rule_index + 1"/>
@@ -116,6 +117,7 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<!--once we've got all the matching rules, find most specific matching rule-->
+<!--<h1 style="color:brown"><xsl:value-of select="concat($current_rule_index,  '[', $current_rule/s:id, ']', '[', $current_node, ']', 'NUM MATCHES = ', count($more_gathered_rules))"/></h1>-->		
 				<xsl:call-template name="find_most_specific_rule">
 					<xsl:with-param name="matching_rules" select="$more_gathered_rules"/>			
 					<xsl:with-param name="current_node" select="$current_node"/>
@@ -129,6 +131,7 @@
 	<xsl:template name="find_most_specific_rule">		
 		<xsl:param name="matching_rules"/>		
 		<xsl:param name="current_node"/>			
+<!--<h1 style="color:red"><xsl:value-of select="concat(count(matching_rules), '[', $current_node, ']')"/></h1>-->
 		
 		<!--see if there's more than one rule--> 
 		<xsl:choose>
@@ -148,8 +151,11 @@
 				<!--see if first two rules have a tag-->
 				<xsl:variable name="first_rule_tag_count" select="count($first_rule[s:tag])"/>
 				<xsl:variable name="second_rule_tag_count" select="count($second_rule[s:tag])"/>	
+
 				
 				<!--figure out which of the first two rules has the highest precedence-->
+				
+				
 				<xsl:choose>
 					<!--get rid of the first rule if only second rule has id-->
 					<xsl:when test="$first_rule_id_count &lt; $second_rule_id_count">
@@ -208,7 +214,8 @@
 					</xsl:when>					
 					
 					<!--if number of id's, classes, and tags match, use rule's position in structure stylesheet document to determine precedence-->
-					<xsl:when test="$first_rule_class_count = $second_rule_class_count">						
+					<xsl:when test="$first_rule_class_count = $second_rule_class_count">
+						<!--<h3 style="color:darkgreen">$first_rule_class_count = $second_rule_class_count</h3>-->
 						<!--use second rule-->
 						<xsl:call-template name="find_most_specific_rule">
 							<xsl:with-param name="matching_rules" select="$matching_rules[position() > 1]"/>
@@ -218,6 +225,7 @@
 				</xsl:choose>
 			</xsl:when>
 			<xsl:otherwise>
+<!--<h1 style="color:brown"><xsl:value-of select="concat('RULE WAS APPLIED = ', count($matching_rules))"/></h1>	-->
 				<!--most specific rule found (yay!); apply it to the current node-->
 				<xsl:apply-templates select="$matching_rules/../s:struc" mode="structure_stylesheet">			
 					<xsl:with-param name="current_node" select="$current_node"/>
@@ -238,12 +246,18 @@
 	
 	<xsl:template match="@*|node()" mode="structure_stylesheet">
 		<xsl:param name="current_node"/>
+<!--	<h1 style="color:brown"><xsl:value-of select="concat('node name = ', name($current_node))"/></h1>	-->		
 		<xsl:copy>			
 			<xsl:apply-templates select="@*|node()" mode="structure_stylesheet">
 				<xsl:with-param name="current_node" select="$current_node"/>
 			</xsl:apply-templates>
 		</xsl:copy>		
 	</xsl:template>	
+	
+	<!--<xsl:template match="s:*" mode="structure_stylesheet">
+		<b style="color:brown;font-size:24px;font-famiy:courier new">invalid structure tag: [<xsl:value-of select="name()"/>]</b>
+	</xsl:template>
+	<xsl:template match="s:rule|s:id|s:class|s:struc" mode="structure_stylesheet"/>-->	
 	
 	<!--s:struc-->
 	<xsl:template match="s:struc" mode="structure_stylesheet">			
@@ -274,6 +288,7 @@
 			<xsl:with-param name="element" select="."/>
 			<xsl:with-param name="tag_name" select="@s:tag_name"/>
 		</xsl:apply-templates>		
+<!--<h1 style="color:green"><xsl:value-of select="concat('NEW TAG NAME!!!!! = ', @s:tag_name)"/></h1>-->	
 	</xsl:template>	
 	
 	<!--restructure node-->
@@ -298,6 +313,7 @@
 			</xsl:if>
 			
 		</xsl:element>
+<!--<h1 style="color:green"><xsl:value-of select="concat('TAG NAME USED!!!!! = ', $tag_name)"/></h1>-->
 	</xsl:template>
 	
 	<!--s:inner-->
@@ -350,6 +366,7 @@
 		<xsl:apply-templates select="$original_attributes" mode="non_updated_attributes">
 			<xsl:with-param name="attribute_updates" select="$attribute_updates"/>
 		</xsl:apply-templates>			
+<!--<h1 style="color:brown"><xsl:value-of select="concat('original_attributes = ', $original_attributes)"/></h1>	-->
 	</xsl:template>
 		
 </xsl:stylesheet>
