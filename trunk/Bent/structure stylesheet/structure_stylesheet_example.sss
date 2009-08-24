@@ -2,8 +2,10 @@
 <s:structure_stylesheet xmlns:s="structure_stylesheet" xmlns="http://www.w3.org/1999/xhtml">
 	<!--**TODO: add ability to use multiple selector sets (match class A or class B)-->
 	<s:rule>
-		<s:id>ding</s:id>
-		<s:class>blah</s:class>		
+		<s:sel>
+			<s:id>ding</s:id>
+			<s:class>blah</s:class>		
+		</s:sel>
 		<s:struc>			
 			<div class="wrapper">
 				<h1>before</h1>			
@@ -17,8 +19,10 @@
 		</s:struc>		
 	</s:rule>
 
-	<s:rule>		
-		<s:tag>div</s:tag>		
+	<s:rule>
+		<s:sel>
+			<s:tag>div</s:tag>
+		</s:sel>
 		<s:struc>
 			<h1 style="color:red">
 				<!--<script>alert("!!!!!!!")</script>-->
@@ -27,8 +31,10 @@
 		</s:struc>		
 	</s:rule>
 	
-	<s:rule>		
-		<s:class>blah</s:class>		
+	<s:rule>
+		<s:sel>
+			<s:class>blah</s:class>		
+		</s:sel>
 		<s:struc>
 			<h1 style="color:blue">
 				<!--<script>alert("!!!!!!!")</script>-->
@@ -38,10 +44,12 @@
 	</s:rule>
 
 	<s:rule>
-		<s:id>dong</s:id>
-		<s:class>blah</s:class>
-		<s:class>foo</s:class>
-		<s:tag>span</s:tag>		
+		<s:sel>
+			<s:id>dong</s:id>
+			<s:class>blah</s:class>
+			<s:class>foo</s:class>
+			<s:tag>span</s:tag>		
+		</s:sel>
 		<s:struc>
 			<div class="wrapper">
 				<div>before</div>				
@@ -56,10 +64,15 @@
 	</s:rule>
 
 	<s:rule>
-		<s:id>dong</s:id>
-		<s:class>blah</s:class>
-		<s:class>foo</s:class>
-		<s:tag>span</s:tag>		
+		<s:sel>
+			<s:id>dong</s:id>
+			<s:class>blah</s:class>
+			<s:class>foo</s:class>
+			<s:tag>span</s:tag>		
+		</s:sel>
+		<s:sel>
+			<s:class>blah</s:class>		
+		</s:sel>
 		<s:struc>
 			<div class="wrapper">
 				<div>before</div>				
