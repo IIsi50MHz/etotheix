@@ -4,9 +4,11 @@
 	<s:rule>
 		<s:sel>
 			<s:id>ding</s:id>
-			<s:class>blah</s:class>		
+			<s:class>blah</s:class>	
+			<s:attr name="title">hello</s:attr>	
 		</s:sel>
 		<s:struc>			
+			<!--<script>alert("!!!!!!!")</script>-->
 			<div class="wrapper">
 				<h1>before</h1>			
 				<s:elem s:add_classes="ding dong" title="THIS IS A TITLE 2">					
