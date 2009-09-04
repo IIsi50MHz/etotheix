@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<s:structure_stylesheet xmlns:s="structure_stylesheet" xmlns="http://www.w3.org/1999/xhtml">
+	<s:rule match="#ding.blah[title=hello]" set:title="blah">
+		<div class="wrapper">
+			<h1>before</h1>			
+			<s:elem>			
+				<h2>prepend</h2>					
+				<s:inner/>
+				<h2>append</h2>
+			</s:elem>
+			<h1>after</h1>
+		</div>
+	</s:rule>
+	
+	<s:rule name="blah" sel="ul.blah">		
+		<div>prepend</div>
+		<s:elem title="list">			
+			<div>prepend</div>
+			<s:inner>
+				<s:use_rule name="dong" match=".ding"/>					
+				<s:use_rule name="ding" match=".blah"/>
+				<s:local_rule match=".king" add:class="ding">					
+					<li>
+						<s:elem>						
+							<s:inner>
+								<s:use_rule id="dong" sel=".ding"/>								
+							</s:inner>						
+						</s:elem>
+					</li>
+				</s:local_rule>
+				<s:copy href="#dong" remove:attr="id" change:tag="h1">					
+					<s:elem>
+						<p><s:inner/></p>
+					</s:elem>					
+				</s:copy>
+			</s:inner>			
+		</s:elem>
+	</s:rule>
+	
+	<s:rule match="#dong">
+	</s:rule>
+	
+	<s:rule match=".ding" name="dong" add:class="ding">					
+		<div>prepend</div>
+		<s:elem>						
+			<s:inner/>
+			<p>after</p>	
+		</s:elem>
+	</s:rule>
+	
+</s:structure_stylesheet>
