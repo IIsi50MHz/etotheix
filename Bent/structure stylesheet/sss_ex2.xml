@@ -62,7 +62,7 @@
 	<s:struc name="head">		
 		<s:elem>
 			<s:inner/>
-			<script>alert('hello!!!');</script>
+			<script>alert('xhello!!!');</script>
 		</s:elem>		
 	</s:struc>
 	
