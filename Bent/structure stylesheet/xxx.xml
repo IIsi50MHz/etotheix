@@ -1,11 +1,13 @@
-<html>
+<html xmlns:ding="ding">	
 	<head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<script>alert('xhello!!!');</script>
-</head>
+		<title>bent</title>
+		<link rel="stylesheet" type="xml/sss" href="structure_stylesheet_example_alt2.xml">
+	</head>
 	<body>
+		<h1><span>(xxx)</span></h1>
 		<p id="xxxxxxxxx">string 0</p>
-		<div class="wrapper">
+		<div xmlns:s="structure_stylesheet" class="wrapper">
 <h1>before list</h1>
 <ol id="ding" class="blah ding hey what" title="THIS IS A TITLE">
 <h2>prepend</h2>

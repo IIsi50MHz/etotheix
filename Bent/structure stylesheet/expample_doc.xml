@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <?xml-stylesheet type="text/xsl" href="xxx.xsl"?>
-<html>
+<html xmlns:ding="ding">	
 	<head>
 		<title>bent</title>
 		<link rel="stylesheet" type="xml/sss" href="structure_stylesheet_example_alt2.xml"/>
 	</head>
 	<body>
+		<ding:blah></ding:blah>
 		<p id="xxxxxxxxx">string 0</p>
 		<ul id="ding" class="blah" title="hello">
 			<li>one</li>
