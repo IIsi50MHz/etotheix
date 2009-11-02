@@ -13,26 +13,45 @@
 	<!--grab all structure stylesheet rules-->
 	<xsl:variable name="rules" select="$structure_stylesheet/s:rule/s:match"/>
 	<xsl:variable name="last_rule_id" select="generate-id($rules[last()])"/>
-	<!--key named strucs-->
+	<!--key named strucs by name-->
 	<xsl:key name="struc" match="s:struc" use="@name"/>
+	
+	<!--pre-filtered rules-->
+	<xsl:variable name="id_rules" select="$rules[s:id]"/>
+	<xsl:variable name="class_rules" select="$rules[s:class]"/>
+	<xsl:variable name="attr_rules" select="$rules[s:attr]"/>
+	<xsl:variable name="tag_rules" select="$rules[s:tag]"/>
+	
+	<xsl:variable name="elem_id_only_rules" select="$id_rules[not(s:class)]"/>
+	<xsl:variable name="elem_class_only_rules" select="$class_rules[not(s:id)]"/>	
+	<!--this is an important one, should be able to vastly reduce rule checking for elements with no attributes-->
+	<xsl:variable name="elem_no_attr_rules" select="$tag_rules[not(s:class)][not(s:id)][not(s:attr)]"/>
+	
+	<!--key rules by priority **TODO: use this-->
+	<!--
+		* grab rules with max priority for current elem (what happens when there's more than one stylesheet doc?)
+		* seach backwards through this node set
+		* if match found, use rule, stop searching
+		* if no match, repeat for next lowest priority rule set
+	-->
+	<!--what happens when there's more than one stylesheet doc?????? Looked it up: looks like no gaurentees.-->	
+	<xsl:key name="rules_by_priority" match="s:structure_stylesheet/s:rule/s:match" use="concat(
+		count(s:id), ','
+		count(s:class)+count(s:attr), ','
+		count(s:tag)		
+	)"/>
+	<xsl:key name="rules_by_id" match="s:structure_stylesheet/s:rule/s:match" use="s:id"/>
+	<xsl:key name="rules_by_tag" match="s:structure_stylesheet/s:rule/s:match" use="s:tag"/>
 		
 	<!--
 		Identity transform (what comes in goes out)
-	-->
-	
-	<xsl:template match="/*">
-		<xsl:copy>			
-			<xsl:apply-templates select="@*|node()"/>
-		</xsl:copy>		
-	</xsl:template>	
+	-->	
 	
 	<xsl:template match="@*|node()">
 		<xsl:copy>			
 			<xsl:apply-templates select="@*|node()"/>
 		</xsl:copy>		
 	</xsl:template>	
-		
-	<xsl:template match="s:use_structure_stylesheet" mode="structure_stylesheet"/>
 	
 	<!--
 		Templates gathering structure stylesheet rules

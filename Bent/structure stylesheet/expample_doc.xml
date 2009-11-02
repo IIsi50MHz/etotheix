@@ -1,13 +1,18 @@
-<?xml-stylesheet type="text/xsl" href="sss.xsl"?>
+<?xml-stylesheet type="text/xsl" href="xxx.xsl"?>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>bent</title>
-		<link rel="stylesheet" type="xml/sss" href="structure_stylesheet_example.xml"/>
+		<link rel="stylesheet" type="xml/sss" href="structure_stylesheet_example_alt2.xml"/>
 	</head>
 	<body>
 		<p id="xxxxxxxxx">string 0</p>
-		<div id="ding" class="blah" title="hello"><p>string 1</p></div>		
+		<ul id="ding" class="blah" title="hello">
+			<li>one</li>
+			<li>two</li>
+			<li>three</li>
+			<li>four</li>
+		</ul>		
 		<p><span id="dong" class="blah foo">string 2</span></p>	
 		<p><span id="doh" class="blah">string 3</span></p>
 		<p><span>string 4</span></p>

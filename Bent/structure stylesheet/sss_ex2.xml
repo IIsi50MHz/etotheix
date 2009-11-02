@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<s:structure_stylesheet xmlns:s="structure_stylesheet" xmlns="http://www.w3.org/1999/xhtml">
+	<!--structures-->
+	<s:struc name="a">			
+		<div class="wrapper">
+			<h1>before list</h1>			
+			<s:elem>				
+				<s:class name="blah"/>
+				<s:class name="ding"/>
+				<s:attr name="title" val="THIS IS A TITLE"/>					
+				<h2>prepend</h2>
+				<div class="innerwrap">
+					<s:inner/>	
+				</div>
+				<h2>append</h2>
+			</s:elem>
+			<h1>after list</h1>
+		</div>
+	</s:struc>	
+
+	<s:struc name="b">		
+		<s:elem>						
+			<s:class name="hey"/>
+			<h1 style="color:lightblue;">
+				<s:inner/>
+			</h1>
+		</s:elem>		
+	</s:struc>
+	
+	<!--rules-->
+	<s:rule important="true">
+		<s:match>
+			<s:tag name="ul"/>
+			<s:id name="ding"/>
+			<s:class name="blah"/>
+		</s:match>
+		<s:apply struc="a">
+			<s:tag name="ol"/>
+			<s:class name="blah"/>
+			<s:class name="ding"/>
+			<s:class name="hey"/>
+			<s:class name="what"/>
+		</s:apply>
+		<s:rule>
+			<s:match>
+				<s:tag name="li"/>
+			</s:match>
+			<s:apply struc="b">
+				<s:class name="foo"/>
+				<s:class name="hello"/>
+				<s:attr name="title" val="ding"/>
+			</s:apply>
+		</s:rule>
+	</s:rule>	
+</s:structure_stylesheet>

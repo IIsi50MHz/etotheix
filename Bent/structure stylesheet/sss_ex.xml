@@ -12,9 +12,9 @@
 	</s:struc>	
 
 	<s:struc name="b">
-		<h1 style="color:red">
+		<h1 style="color:lightblue">
 			<!--<script>alert("!!!!!!!")</script>-->
-			<s:elem s:tag_name="i"> </s:elem>			
+			<s:elem s:tag_name="i"/>		
 		</h1>				
 	</s:struc>	
 	
@@ -46,11 +46,9 @@
 	<!--rules-->
 	<s:rule>
 		<s:match>
-			<s:id>ding</s:id>
-			<s:attr name="type">text</s:attr>
-			<s:attr name="data-blah"/>
+			<s:id>ding</s:id>			
 		</s:match>
-		<s:apply s:struc="a"/>			
+		<s:apply s:struc="a" s:add_classes="blah ding hey what"/>			
 		<s:rule>
 			<s:match>
 				<s:tag>li</s:tag>			
@@ -95,38 +93,4 @@
 		</s:match>
 		<s:apply s:tag_name="XXXXXX" s:struc="b"/>
 	</s:rule>
-
-	<!--<s:struc name="ding">
-		<div>before</div>
-		<s:elem add_class="ding dong">
-			<div>prepend</div>			
-			<s:contents/>					
-		</s:elem>
-	</s:struc>	
-	
-	<s:struc name="dong">
-		<s:elem add_class="king kong"/>		
-	</s:struc>	
-	
-	<s:rule>
-		<s:match>
-			<s:class>blah</s:class>
-		</s:match>				
-		<s:apply s:struc="ding" add_class="foo"/>
-		<s:apply s:struc="ding"/>			
-		<s:rule>
-			<s:match>
-				<s:tag>div</s:tag>
-			</s:match>			
-			<s:apply s:struc="ding" add_class="ring wrong"/>		
-		</s:rule>
-		<s:rule>
-			<s:match>
-				<s:tag>span</s:tag>
-			</s:match>			
-			<s:apply add_class="foo bar"/>		
-		</s:rule>
-		<s:rule/>
-	</s:rule>	-->
-
 </s:structure_stylesheet>
