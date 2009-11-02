@@ -2,8 +2,7 @@
 <xsl:stylesheet 
 	version="1.0" 	
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:s="structure_stylesheet"
-	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:s="structure_stylesheet"	
 	xmlns:axsl="axsl"
 	exclude-result-prefixes="s"
 >  	
@@ -29,10 +28,7 @@
 	<xsl:template match="s:structure_stylesheet">
 		<axsl:stylesheet 
 			version="1.0" 	
-			xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-			xmlns:h="http://www.w3.org/1999/xhtml"
-			xmlns="http://www.w3.org/1999/xhtml"			
-			exclude-result-prefixes="h"
+			xmlns:xsl="http://www.w3.org/1999/XSL/Transform"				
 		>  
 			<axsl:template match="@*|node()">
 				<axsl:copy>			
@@ -97,7 +93,7 @@
 		</xsl:if>		
 
 		<!--create an xsl template for each match rule-->		
-		<axsl:template match="h:{$tag}{$id}{$classes}{$attrs}" priority="{$selector_priority}">
+		<axsl:template match="{$tag}{$id}{$classes}{$attrs}" priority="{$selector_priority}">
 			<xsl:if test="$mode_id">
 				<xsl:attribute name="mode">
 					<xsl:value-of select="$mode_id"/>
