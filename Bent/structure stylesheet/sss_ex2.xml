@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<s:structure_stylesheet xmlns:s="structure_stylesheet" xmlns:ding="ding">	
+<s:structure_stylesheet 
+	xmlns:s="structure_stylesheet" xmlns:ding="ding" xmlns="http://www.w3.org/1999/xhtml"	
+>
 	<!--structures-->
 	<s:struc name="a">			
 		<div class="wrapper">
-			<h1>before list</h1>			
+			<h1>before list</h1>
 			<s:elem>				
 				<s:class name="blah"/>
 				<s:class name="ding"/>

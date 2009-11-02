@@ -1,29 +1,28 @@
-<html xmlns:ding="ding">	
-	<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<html xmlns:ding="ding" xmlns="http://www.w3.org/1999/xhtml">	
+	<head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>bent</title>
-		<link rel="stylesheet" type="xml/sss" href="structure_stylesheet_example_alt2.xml">
+		<link rel="stylesheet" type="xml/sss" href="structure_stylesheet_example_alt2.xml"></link>
 	</head>
 	<body>
 		<h1><span>(xxx)</span></h1>
 		<p id="xxxxxxxxx">string 0</p>
-		<div xmlns:s="structure_stylesheet" class="wrapper">
-<h1>before list</h1>
-<ol id="ding" class="blah ding hey what" title="THIS IS A TITLE">
-<h2>prepend</h2>
-<div class="innerwrap">
+		<div class="wrapper"><h1>before list</h1><ol id="ding" class="blah ding hey what" title="THIS IS A TITLE"><h2>prepend</h2><div class="innerwrap">
 			<li title="ding" class="hey foo hello"><h1 style="color:lightblue;">one</h1></li>
 			<li title="ding" class="hey foo hello"><h1 style="color:lightblue;">two</h1></li>
 			<li title="ding" class="hey foo hello"><h1 style="color:lightblue;">three</h1></li>
 			<li title="ding" class="hey foo hello"><h1 style="color:lightblue;">four</h1></li>
+		</div><h2>append</h2></ol><h1>after list</h1></div>		
+		<p>
+			<span id="dong" class="blah foo">string 2</span>
+		</p>	
+		<p>
+			<span id="doh" class="blah">string 3</span>
+		</p>
+		<p>
+			<span>string 4</span>
+		</p>
+		<div>
+			<p>string 5</p>
 		</div>
-<h2>append</h2>
-</ol>
-<h1>after list</h1>
-</div>		
-		<p><span id="dong" class="blah foo">string 2</span></p>	
-		<p><span id="doh" class="blah">string 3</span></p>
-		<p><span>string 4</span></p>
-		<div><p>string 5</p></div>
 	</body>
 </html>
