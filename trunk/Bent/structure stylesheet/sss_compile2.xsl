@@ -30,6 +30,7 @@
 			version="1.0" 	
 			xmlns:xsl="http://www.w3.org/1999/XSL/Transform"				
 		>  
+			<axsl:output method="html" encoding="ISO-8859-1"/>
 			<axsl:template match="@*|node()">
 				<axsl:copy>			
 					<axsl:apply-templates select="@*|node()"/>
@@ -37,6 +38,8 @@
 			</axsl:template>
 
 			<xsl:apply-templates select="s:rule/s:match"/>		
+			
+			<axsl:template match="processing-instruction('xml-stylesheet')"/>		
 		</axsl:stylesheet>
 	</xsl:template>
 

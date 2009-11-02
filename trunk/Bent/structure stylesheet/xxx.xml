@@ -1,7 +1,7 @@
-<?xml-stylesheet type="text/xsl" href="xxx.xsl"><html>
+<html>
 	<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script>alert('hello!!!');</script>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<script>alert('xhello!!!');</script>
 </head>
 	<body>
 		<p id="xxxxxxxxx">string 0</p>
