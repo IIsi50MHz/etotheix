@@ -1,17 +1,24 @@
-<?xml version="1.0"?>
-<?xml-stylesheet type="text/xsl" href="xxx.xsl"?><html xmlns="http://www.w3.org/1999/xhtml">
+<?xml-stylesheet type="text/xsl" href="xxx.xsl"><html>
 	<head>
-		<title>bent</title>
-		<link rel="stylesheet" type="xml/sss" href="structure_stylesheet_example_alt2.xml"/>
-	</head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script>alert('hello!!!');</script>
+</head>
 	<body>
 		<p id="xxxxxxxxx">string 0</p>
-		<div class="wrapper"><h1>before list</h1><ol id="ding" class="blah ding hey what" title="THIS IS A TITLE"><h2>prepend</h2><div class="innerwrap">
+		<div class="wrapper">
+<h1>before list</h1>
+<ol id="ding" class="blah ding hey what" title="THIS IS A TITLE">
+<h2>prepend</h2>
+<div class="innerwrap">
 			<li title="ding" class="hey foo hello"><h1 style="color:lightblue;">one</h1></li>
 			<li title="ding" class="hey foo hello"><h1 style="color:lightblue;">two</h1></li>
 			<li title="ding" class="hey foo hello"><h1 style="color:lightblue;">three</h1></li>
 			<li title="ding" class="hey foo hello"><h1 style="color:lightblue;">four</h1></li>
-		</div><h2>append</h2></ol><h1>after list</h1></div>		
+		</div>
+<h2>append</h2>
+</ol>
+<h1>after list</h1>
+</div>		
 		<p><span id="dong" class="blah foo">string 2</span></p>	
 		<p><span id="doh" class="blah">string 3</span></p>
 		<p><span>string 4</span></p>

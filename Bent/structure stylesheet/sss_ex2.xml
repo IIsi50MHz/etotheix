@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<s:structure_stylesheet xmlns:s="structure_stylesheet" xmlns="http://www.w3.org/1999/xhtml">
+<s:structure_stylesheet xmlns:s="structure_stylesheet">
 	<!--structures-->
 	<s:struc name="a">			
 		<div class="wrapper">
@@ -52,4 +52,19 @@
 			</s:apply>
 		</s:rule>
 	</s:rule>	
+	
+	<s:rule>
+		<s:match>
+			<s:tag name="head"/>
+		</s:match>
+		<s:apply struc="head"/>			
+	</s:rule>
+	<s:struc name="head">		
+		<s:elem>
+			<s:inner/>
+			<script>alert('hello!!!');</script>
+		</s:elem>		
+	</s:struc>
+	
+	
 </s:structure_stylesheet>

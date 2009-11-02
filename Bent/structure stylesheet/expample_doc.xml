@@ -1,6 +1,6 @@
 <?xml-stylesheet type="text/xsl" href="xxx.xsl"?>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 	<head>
 		<title>bent</title>
 		<link rel="stylesheet" type="xml/sss" href="structure_stylesheet_example_alt2.xml"/>
