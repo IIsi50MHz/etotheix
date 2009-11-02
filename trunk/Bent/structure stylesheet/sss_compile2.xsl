@@ -3,7 +3,7 @@
 	version="1.0" 	
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:s="structure_stylesheet"	
-	xmlns:axsl="axsl"
+	xmlns:axsl="axsl"	
 	exclude-result-prefixes="s"
 >  	
 	<xsl:strip-space elements="*"/>
@@ -26,10 +26,8 @@
 	</xsl:template>	
 
 	<xsl:template match="s:structure_stylesheet">
-		<axsl:stylesheet 
-			version="1.0" 	
-			xmlns:xsl="http://www.w3.org/1999/XSL/Transform"				
-		>  
+		<axsl:stylesheet version="1.0">
+			<xsl:copy-of select="namespace::*"/>
 			<axsl:output method="html" encoding="ISO-8859-1"/>
 			<axsl:template match="@*|node()">
 				<axsl:copy>			

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<s:structure_stylesheet xmlns:s="structure_stylesheet">
+<s:structure_stylesheet xmlns:s="structure_stylesheet" xmlns:ding="ding">	
 	<!--structures-->
 	<s:struc name="a">			
 		<div class="wrapper">
@@ -55,14 +55,14 @@
 	
 	<s:rule>
 		<s:match>
-			<s:tag name="head"/>
+			<s:tag name="ding:blah"/>
 		</s:match>
 		<s:apply struc="head"/>			
 	</s:rule>
 	<s:struc name="head">		
 		<s:elem>
-			<s:inner/>
-			<script>alert('xhello!!!');</script>
+			<s:tag name="h1"/>
+			<span>(<s:inner/>xxx)</span>			
 		</s:elem>		
 	</s:struc>
 	
