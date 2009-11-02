@@ -11,6 +11,8 @@
 	<xsl:namespace-alias stylesheet-prefix="axsl" result-prefix="xsl"/>
 	<xsl:key name="struc_by_name" match="s:structure_stylesheet/s:struc" use="@name"/>
 	<xsl:variable name="s_namsepace_uri" select="namespace-uri(/*)"/>	
+	<xsl:variable name="default_ns_is_xhtml" select="'http://www.w3.org/1999/xhtml' = /*/namespace::*[not(name())]"/>	
+	
 	<!--
 		Identity transform (what comes in goes out)
 	-->		
@@ -26,8 +28,8 @@
 	</xsl:template>	
 
 	<xsl:template match="s:structure_stylesheet">
-		<axsl:stylesheet version="1.0">
-			<xsl:copy-of select="namespace::*"/>
+		<axsl:stylesheet version="1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" exclude-result-prefixes="s xhtml">
+			<xsl:copy-of select="namespace::*|@*"/>			
 			<axsl:output method="html" encoding="ISO-8859-1"/>
 			<axsl:template match="@*|node()">
 				<axsl:copy>			
@@ -94,7 +96,11 @@
 		</xsl:if>		
 
 		<!--create an xsl template for each match rule-->		
-		<axsl:template match="{$tag}{$id}{$classes}{$attrs}" priority="{$selector_priority}">
+		<xsl:variable name="pre" select="substring-before($tag, ':')"/>			
+		<xsl:variable name="maybe_pre">
+			<xsl:if test="not($pre) and $default_ns_is_xhtml">xhtml:</xsl:if>
+		</xsl:variable>
+		<axsl:template match="{$maybe_pre}{$tag}{$id}{$classes}{$attrs}" priority="{$selector_priority}">
 			<xsl:if test="$mode_id">
 				<xsl:attribute name="mode">
 					<xsl:value-of select="$mode_id"/>
