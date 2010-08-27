@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <s:structure-stylesheet xmlns:s="structure-stylesheet">
+	<s:use href="sss_ex_use.xml"/>
+
 	<s:var name="s:ding">??!HEY!</s:var>
 	
 	<s:struc name="ding">
