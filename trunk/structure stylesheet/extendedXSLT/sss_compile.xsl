@@ -28,9 +28,9 @@
 	<xsl:template match="s:structure-stylesheet">
 		<axsl:stylesheet version="1.0" exclude-result-prefixes="s">
 			<xsl:copy-of select="namespace::*|@*"/>			
-			<axsl:output method="html" indent="yes" encoding="utf-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>  
+			<axsl:output method="html" indent="yes" encoding="utf-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
 			<axsl:strip-space elements="*"/>
-
+			
 			<!--create code for altering document structure-->
 			<axsl:template match="@*|node()">
 				<axsl:copy>			
@@ -45,7 +45,7 @@
 	</xsl:template>
 
 	<!--Replace s namespace with axsl.-->
-	<xsl:template match="s:*">		
+	<xsl:template match="s:* | xsl:*">		
 		<xsl:param name="mode_id"/>		
 		<xsl:element name="axsl:{local-name()}" namespace="http://www.w3.org/1999/XSL/Transform">
 			<xsl:apply-templates select="@* | node()">
@@ -54,6 +54,17 @@
 		</xsl:element>
 	</xsl:template>
 
+	<!--Use other structure stylesheets-->
+	<xsl:template match="s:use">
+		<xsl:comment></xsl:comment>
+		<xsl:comment>[START] s:use <xsl:value-of select="@href"/></xsl:comment>
+		<xsl:comment></xsl:comment>
+		<xsl:apply-templates select="document(@href)/*/*"/>
+		<xsl:comment></xsl:comment>
+		<xsl:comment>[END] s:use Using <xsl:value-of select="@href"/></xsl:comment>
+		<xsl:comment></xsl:comment>
+	</xsl:template>
+	
 	<!--Change s:this to xsl:element-->
 	<xsl:template match="s:this">
 		<xsl:param name="mode_id"/>
