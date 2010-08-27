@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<s:structure-stylesheet xmlns:s="structure-stylesheet">
+	<s:var name="s:ding">??!HEY!</s:var>
+	
+	<s:struc name="ding">
+		<li><s:val select="$s:ding"/></li>
+		<s:this style="color:lightblue;">
+			<s:apply-rules/>
+		</s:this>
+	</s:struc>
+	
+	<s:struc name="dong">		
+		<s:this style="color:pink;">
+			<s:apply-rules/>
+		</s:this>
+	</s:struc>
+	
+	<s:struc name="one">
+		<s:this style="color:orange;">
+			<s:apply-rules/>
+		</s:this>
+	</s:struc>
+	
+	<s:struc name="three">		
+		<s:this style="color:gray;">
+			<s:apply-rules/>
+		</s:this>
+	</s:struc>
+	
+	<s:struc name="copy">		
+		<s:this>
+			<s:apply-rules/>
+		</s:this>
+	</s:struc>
+	
+	<s:struc name="ul2">		
+		<s:this>			
+			<s:apply-rules>
+				<s:sort order="descending"/>
+			</s:apply-rules>			
+		</s:this>
+	</s:struc>
+	
+	<s:struc name="ul1">		
+		<s:this>			
+			<s:apply-rules select="*[class('one')]"/>
+			<s:inline-struc select="*[not(class('three'))]">
+				<s:this style="background-color:pink;">
+					<s:apply-rules/>
+				</s:this>
+			</s:inline-struc>
+		</s:this>
+	</s:struc>	
+
+	<s:rule match="*[class('ding')]" struc="ding"/>
+	<s:rule match="*[class('dong')]" struc="dong"/>
+	
+	<s:rule match="ul[2]" struc="ul1">
+		<s:rule match="*[class('one')]" struc="one"/>	
+		<s:rule match="*[class('three')]" struc="three"/>		
+	</s:rule>	
+	
+	<s:rule match="ul[1]" struc="ul2">		
+		<s:rule match="*[class('one')]" struc="ding"/>		
+		<s:rule match="*[class('three')]" struc="three"/>		
+	</s:rule>
+	
+</s:structure-stylesheet>	

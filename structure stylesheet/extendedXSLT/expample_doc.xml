@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="sss_ex_compiled.xsl"?>
+<html>	
+	<head>
+		<title>benxty</title>
+		<!--<link rel="stylesheet" type="xml/sss" href="structure-stylesheet_example_alt2.xml"/>
+		<script>alert('hello')</script>-->		
+	</head>
+	<body>		
+		<div class="ding">class ding</div>
+		<div class="dong">class dong</div>
+		<ul>
+			<li class="one">1)list.one</li>
+			<li>2)list</li>
+			<li class="three">3)list.three</li>
+			<li class="three">4)list.three</li>
+			<li class="one">5)list.one</li>
+		</ul>
+		<ul>
+			<li class="one">1)list.one</li>
+			<li>2)list</li>
+			<li class="three">3)list.three</li>
+			<li class="three">4)list.three</li>
+			<li class="one">5)list.one</li>
+		</ul>
+		<input />
+	</body>
+</html>
