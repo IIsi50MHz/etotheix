@@ -165,7 +165,7 @@
 				<xsl:comment>******************************************</xsl:comment>
 				<xsl:comment>Nested s:rule</xsl:comment>
 				<xsl:comment>   struc: <xsl:value-of select="@struc"/></xsl:comment>
-				<xsl:comment>   mode: <xsl:value-of select="$new_mode_id"/></xsl:comment>							
+				<xsl:comment>   mode: <xsl:value-of select="$mode_id"/></xsl:comment>							
 				<xsl:comment>******************************************</xsl:comment>
 			</xsl:otherwise>
 		</xsl:choose>
@@ -187,7 +187,8 @@
 		<xsl:if test="$rules">
 			<xsl:comment></xsl:comment>
 			<xsl:comment>**************************************************</xsl:comment>
-			<xsl:comment>Auto generated default nested rule (mode: <xsl:value-of select="$new_mode_id"/>)</xsl:comment>							
+			<xsl:comment>Auto generated default nested rule</xsl:comment>	
+			<xsl:comment>   mode: <xsl:value-of select="$new_mode_id"/></xsl:comment>	
 			<xsl:comment>**************************************************</xsl:comment>
 			<axsl:template match="node()" mode="{$new_mode_id}">
 				<axsl:apply-templates select="."/>
@@ -195,7 +196,7 @@
 		</xsl:if>	
 
 		<!--create an xsl template for each nested rule-->
-		<xsl:apply-templates select="s:rule">
+		<xsl:apply-templates select="$rules">
 			<xsl:with-param name="mode_id" select="$new_mode_id"/>
 		</xsl:apply-templates>
 	</xsl:template>
