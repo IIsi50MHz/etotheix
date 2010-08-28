@@ -10,7 +10,9 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:namespace-alias stylesheet-prefix="axsl" result-prefix="xsl"/>
-	<xsl:key name="struc_by_name" match="s:structure-stylesheet/s:struc" use="@name"/>
+	<xsl:key name="struc_by_name" match="s:struc" use="@name"/>
+	<xsl:variable name="uses" select="//s:use"/>
+	<xsl:variable name="master_doc" select="/*"/>
 	
 	<!--
 		Identity transform (what comes in goes out)
@@ -177,11 +179,21 @@
 				</xsl:attribute>
 			</xsl:if>			
 
-			<!--generate stucture for rule-->
-			<xsl:apply-templates select="key('struc_by_name', @struc)" mode="copy_struc">				
-				<xsl:with-param name="mode_id" select="string($new_mode_id)"/>
-			</xsl:apply-templates>
-		</axsl:template>		
+			<!--generate stucture for rule-->			
+			<xsl:variable name="struc" select="@struc"/>
+			<xsl:for-each select="$uses">								
+				<xsl:for-each select="document(@href)">					
+					<xsl:apply-templates select="key('struc_by_name', $struc)" mode="copy_struc">				
+						<xsl:with-param name="mode_id" select="string($new_mode_id)"/>
+					</xsl:apply-templates>
+				</xsl:for-each>
+			</xsl:for-each>
+			<xsl:for-each select="$master_doc">				
+				<xsl:apply-templates select="key('struc_by_name', $struc)" mode="copy_struc">				
+					<xsl:with-param name="mode_id" select="string($new_mode_id)"/>
+				</xsl:apply-templates>
+			</xsl:for-each>
+		</axsl:template>
 
 		<!--create default xsl template for children if there are nested match rules-->
 		<xsl:if test="$rules">
@@ -209,6 +221,7 @@
 
 	<!--struc-->
 	<xsl:template match="s:struc" mode="copy_struc">		
+		<xsl:param name="mode_id"/>		
 		<xsl:param name="mode_id"/>		
 		<xsl:apply-templates select="node()">			
 			<xsl:with-param name="mode_id" select="$mode_id"/>
