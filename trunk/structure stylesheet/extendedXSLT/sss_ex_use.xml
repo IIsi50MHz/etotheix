@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<s:structure-stylesheet xmlns:s="structure-stylesheet" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<s:var name="s:xxxxx">WTF</s:var>
+	
+	<s:struc name="www">
+		<div><s:val select="$s:xxxxx"/></div>
+		<s:this style="color:magenta;">
+			<s:tag name="h1"/>
+			<s:apply-rules/>
+		</s:this>
+	</s:struc>
+	
+	<xsl:variable name="xdsff" select="1234"/>
+
+	<s:rule match="*[class('wtf')]" struc="www"/>	
+</s:structure-stylesheet>	
