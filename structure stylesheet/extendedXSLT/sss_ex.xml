@@ -64,7 +64,7 @@
 	
 	<s:rule match="ul[1]" struc="ul2">		
 		<s:rule match="*[class('one')]" struc="ding">
-			<s:rule match="*[class('xyz')]" struc="ding"/>
+			<s:rule match="*[class('xyz')]" struc="www"/>
 		</s:rule>		
 		<s:rule match="*[class('three')]" struc="three"/>		
 	</s:rule>
