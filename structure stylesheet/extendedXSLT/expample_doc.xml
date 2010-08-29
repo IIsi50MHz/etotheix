@@ -7,22 +7,15 @@
 		<script>alert('hello')</script>-->		
 	</head>
 	<body>		
-		<div class="wtf">class wtf</div>
-		<div class="dong">class dong</div>
-		<ul>
-			<li class="one">1)list.one<div class="xyz">HELELELELELELE</div></li>
-			<li>2)list</li>
-			<li class="three">3)list.three</li>
-			<li class="three">4)list.three</li>
-			<li class="one">5)list.one</li>
-		</ul>
-		<ul>
-			<li class="one">1)list.one</li>
-			<li>2)list</li>
-			<li class="three">3)list.three</li>
-			<li class="three">4)list.three</li>
-			<li class="one">5)list.one</li>
-		</ul>
-		<input />
+		<p class="one">one</p>
+		<p class="two">two</p>
+		<p class="three">three</p>
+		<p class="four" id="fourMore">four</p>
+		<ul class="five">
+			<li>a</li>
+			<li>b</li>
+			<li>c</li>
+			<li>d</li>
+		</ul>		
 	</body>
 </html>

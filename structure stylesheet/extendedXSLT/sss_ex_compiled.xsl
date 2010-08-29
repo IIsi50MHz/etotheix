@@ -26,277 +26,168 @@
     
     <!--s:this-->
     <axsl:element name="h1">
-      <axsl:for-each select="@*[not(contains('', concat(name(), ' ')))]">
-        <axsl:attribute name="{name()}">
-          <axsl:value-of select="."/>
-        </axsl:attribute>
-      </axsl:for-each>
       
       <!--s:this atribute-->
       <axsl:attribute name="style">color:magenta;</axsl:attribute>
       
       <!--s:apply-rules-->
-      <axsl:apply-templates mode="id238999"/>
+      <axsl:apply-templates/>
     </axsl:element>
   </axsl:template>
   
   <!--[END] s:use Using sss_ex_use.xml-->
   
-  <!--s:var-->
-  <axsl:variable name="s:ding">??!HEY!</axsl:variable>
   
   <!--**************************************************************************************-->
   <!--Top level template for s:rule-->
-  <!--   struc: ding-->
-  <!--**************************************************************************************-->
-  <axsl:template match="*[contains(concat(normalize-space(@class), ' '), 'ding ')]">
-    <li>
-      <!--s:val-->
-      <axsl:value-of select="$s:ding"/>
-    </li>
-    
-    <!--s:this-->
-    <axsl:element name="{name()}">
-      <axsl:for-each select="@*[not(contains('', concat(name(), ' ')))]">
-        <axsl:attribute name="{name()}">
-          <axsl:value-of select="."/>
-        </axsl:attribute>
-      </axsl:for-each>
-      
-      <!--s:this atribute-->
-      <axsl:attribute name="style">color:lightblue;</axsl:attribute>
-      
-      <!--s:apply-rules-->
-      <axsl:apply-templates mode="id241636"/>
-    </axsl:element>
-  </axsl:template>
-  
-  <!--**************************************************************************************-->
-  <!--Top level template for s:rule-->
-  <!--   struc: dong-->
-  <!--**************************************************************************************-->
-  <axsl:template match="*[contains(concat(normalize-space(@class), ' '), 'dong ')]">
-    
-    <!--s:this-->
-    <axsl:element name="{name()}">
-      <axsl:for-each select="@*[not(contains('', concat(name(), ' ')))]">
-        <axsl:attribute name="{name()}">
-          <axsl:value-of select="."/>
-        </axsl:attribute>
-      </axsl:for-each>
-      
-      <!--s:this atribute-->
-      <axsl:attribute name="style">color:pink;</axsl:attribute>
-      
-      <!--s:apply-rules-->
-      <axsl:apply-templates mode="id241643"/>
-    </axsl:element>
-  </axsl:template>
-  
-  <!--**************************************************************************************-->
-  <!--Top level template for s:rule-->
-  <!--   struc: ul1-->
-  <!--**************************************************************************************-->
-  <axsl:template match="ul[2]">
-    
-    <!--s:this-->
-    <axsl:element name="{name()}">
-      <axsl:for-each select="@*[not(contains('', concat(name(), ' ')))]">
-        <axsl:attribute name="{name()}">
-          <axsl:value-of select="."/>
-        </axsl:attribute>
-      </axsl:for-each>
-      
-      <!--s:apply-rules-->
-      <axsl:apply-templates select="*[contains(concat(normalize-space(@class), ' '), 'one ')]" mode="id241650"/>
-      
-      <!--s:inline-struc-->
-      <axsl:for-each select="*[not(contains(concat(normalize-space(@class), ' '), 'three '))]">
-        
-        <!--s:this-->
-        <axsl:element name="{name()}">
-          <axsl:for-each select="@*[not(contains('', concat(name(), ' ')))]">
-            <axsl:attribute name="{name()}">
-              <axsl:value-of select="."/>
-            </axsl:attribute>
-          </axsl:for-each>
-          
-          <!--s:this atribute-->
-          <axsl:attribute name="style">background-color:pink;</axsl:attribute>
-          
-          <!--s:apply-rules-->
-          <axsl:apply-templates mode="id241650"/>
-        </axsl:element>
-      </axsl:for-each>
-    </axsl:element>
-  </axsl:template>
-  
-  <!--**************************************************-->
-  <!--Auto generated default nested rule-->
-  <!--   mode: id241650-->
-  <!--**************************************************-->
-  <axsl:template match="node()" mode="id241650">
-    <axsl:apply-templates select="."/>
-  </axsl:template>
-  
-  <!--******************************************-->
-  <!--Nested s:rule-->
   <!--   struc: one-->
-  <!--   mode: id241650-->
-  <!--******************************************-->
-  <axsl:template match="*[contains(concat(normalize-space(@class), ' '), 'one ')]" mode="id241650">
+  <!--**************************************************************************************-->
+  <axsl:template match="*[contains(concat(normalize-space(@class), ' '), 'one ')]">
     
     <!--s:this-->
-    <axsl:element name="{name()}">
-      <axsl:for-each select="@*[not(contains('', concat(name(), ' ')))]">
-        <axsl:attribute name="{name()}">
-          <axsl:value-of select="."/>
-        </axsl:attribute>
-      </axsl:for-each>
+    <axsl:copy>
       
       <!--s:this atribute-->
-      <axsl:attribute name="style">color:orange;</axsl:attribute>
+      <axsl:attribute name="style">color:red;</axsl:attribute>
       
       <!--s:apply-rules-->
-      <axsl:apply-templates mode="id241656"/>
-    </axsl:element>
-  </axsl:template>
-  
-  <!--******************************************-->
-  <!--Nested s:rule-->
-  <!--   struc: three-->
-  <!--   mode: id241650-->
-  <!--******************************************-->
-  <axsl:template match="*[contains(concat(normalize-space(@class), ' '), 'three ')]" mode="id241650">
-    
-    <!--s:this-->
-    <axsl:element name="{name()}">
-      <axsl:for-each select="@*[not(contains('', concat(name(), ' ')))]">
-        <axsl:attribute name="{name()}">
-          <axsl:value-of select="."/>
-        </axsl:attribute>
-      </axsl:for-each>
-      
-      <!--s:this atribute-->
-      <axsl:attribute name="style">color:gray;</axsl:attribute>
-      
-      <!--s:apply-rules-->
-      <axsl:apply-templates mode="id241663"/>
-    </axsl:element>
+      <axsl:apply-templates/>
+    </axsl:copy>
   </axsl:template>
   
   <!--**************************************************************************************-->
   <!--Top level template for s:rule-->
-  <!--   struc: ul2-->
+  <!--   struc: two-->
   <!--**************************************************************************************-->
-  <axsl:template match="ul[1]">
+  <axsl:template match="*[contains(concat(normalize-space(@class), ' '), 'two ')]">
     
     <!--s:this-->
-    <axsl:element name="{name()}">
-      <axsl:for-each select="@*[not(contains('', concat(name(), ' ')))]">
-        <axsl:attribute name="{name()}">
-          <axsl:value-of select="."/>
-        </axsl:attribute>
-      </axsl:for-each>
+    <axsl:copy>
+      
+      <!--s:this atribute-->
+      <axsl:attribute name="style">color:green;</axsl:attribute>
       
       <!--s:apply-rules-->
-      <axsl:apply-templates mode="id241671">
+      <axsl:apply-templates/>
+    </axsl:copy>
+  </axsl:template>
+  
+  <!--**************************************************************************************-->
+  <!--Top level template for s:rule-->
+  <!--   struc: three-->
+  <!--**************************************************************************************-->
+  <axsl:template match="*[contains(concat(normalize-space(@class), ' '), 'three ')]">
+    
+    <!--s:this-->
+    <axsl:copy>
+      
+      <!--s:this atribute-->
+      <axsl:attribute name="style">color:blue;</axsl:attribute>
+      
+      <!--s:apply-rules-->
+      <axsl:apply-templates>
         <axsl:sort order="descending"/>
       </axsl:apply-templates>
-    </axsl:element>
+    </axsl:copy>
   </axsl:template>
   
-  <!--**************************************************-->
-  <!--Auto generated default nested rule-->
-  <!--   mode: id241671-->
-  <!--**************************************************-->
-  <axsl:template match="node()" mode="id241671">
-    <axsl:apply-templates select="."/>
-  </axsl:template>
-  
-  <!--******************************************-->
-  <!--Nested s:rule-->
-  <!--   struc: ding-->
-  <!--   mode: id241671-->
-  <!--******************************************-->
-  <axsl:template match="*[contains(concat(normalize-space(@class), ' '), 'one ')]" mode="id241671">
-    <li>
-      <!--s:val-->
-      <axsl:value-of select="$s:ding"/>
-    </li>
+  <!--**************************************************************************************-->
+  <!--Top level template for s:rule-->
+  <!--   struc: four-->
+  <!--**************************************************************************************-->
+  <axsl:template match="*[contains(concat(normalize-space(@class), ' '), 'four ')]">
     
     <!--s:this-->
-    <axsl:element name="{name()}">
-      <axsl:for-each select="@*[not(contains('', concat(name(), ' ')))]">
+    <axsl:copy>
+      <axsl:for-each select="@*[not(contains('class fourMore ', concat(name(), ' ')))]">
         <axsl:attribute name="{name()}">
           <axsl:value-of select="."/>
         </axsl:attribute>
       </axsl:for-each>
       
       <!--s:this atribute-->
-      <axsl:attribute name="style">color:lightblue;</axsl:attribute>
+      <axsl:attribute name="style">color:orange; font-style:italic;</axsl:attribute>
       
       <!--s:apply-rules-->
-      <axsl:apply-templates mode="id241678"/>
-    </axsl:element>
+      <axsl:apply-templates/>
+    </axsl:copy>
+  </axsl:template>
+  
+  <!--**************************************************************************************-->
+  <!--Top level template for s:rule-->
+  <!--   struc: one-->
+  <!--**************************************************************************************-->
+  <axsl:template match="*[contains(concat(normalize-space(@class), ' '), 'five ')]">
+    
+    <!--s:this-->
+    <axsl:copy>
+      
+      <!--s:this atribute-->
+      <axsl:attribute name="style">color:red;</axsl:attribute>
+      
+      <!--s:apply-rules-->
+      <axsl:apply-templates mode="id234160"/>
+    </axsl:copy>
   </axsl:template>
   
   <!--**************************************************-->
   <!--Auto generated default nested rule-->
-  <!--   mode: id241678-->
+  <!--   mode: id234160-->
   <!--**************************************************-->
-  <axsl:template match="node()" mode="id241678">
+  <axsl:template match="node()" mode="id234160">
     <axsl:apply-templates select="."/>
-  </axsl:template>
-  
-  <!--******************************************-->
-  <!--Nested s:rule-->
-  <!--   struc: www-->
-  <!--   mode: id241678-->
-  <!--******************************************-->
-  <axsl:template match="*[contains(concat(normalize-space(@class), ' '), 'xyz ')]" mode="id241678">
-    <div>
-      <!--s:val-->
-      <axsl:value-of select="$s:xxxxx"/>
-    </div>
-    
-    <!--s:this-->
-    <axsl:element name="h1">
-      <axsl:for-each select="@*[not(contains('', concat(name(), ' ')))]">
-        <axsl:attribute name="{name()}">
-          <axsl:value-of select="."/>
-        </axsl:attribute>
-      </axsl:for-each>
-      
-      <!--s:this atribute-->
-      <axsl:attribute name="style">color:magenta;</axsl:attribute>
-      
-      <!--s:apply-rules-->
-      <axsl:apply-templates mode="id241685"/>
-    </axsl:element>
   </axsl:template>
   
   <!--******************************************-->
   <!--Nested s:rule-->
   <!--   struc: three-->
-  <!--   mode: id241671-->
+  <!--   mode: id234160-->
   <!--******************************************-->
-  <axsl:template match="*[contains(concat(normalize-space(@class), ' '), 'three ')]" mode="id241671">
+  <axsl:template match="li" mode="id234160">
     
     <!--s:this-->
-    <axsl:element name="{name()}">
-      <axsl:for-each select="@*[not(contains('', concat(name(), ' ')))]">
-        <axsl:attribute name="{name()}">
-          <axsl:value-of select="."/>
-        </axsl:attribute>
-      </axsl:for-each>
+    <axsl:copy>
       
       <!--s:this atribute-->
-      <axsl:attribute name="style">color:gray;</axsl:attribute>
+      <axsl:attribute name="style">color:blue;</axsl:attribute>
       
       <!--s:apply-rules-->
-      <axsl:apply-templates mode="id241693"/>
-    </axsl:element>
+      <axsl:apply-templates>
+        <axsl:sort order="descending"/>
+      </axsl:apply-templates>
+    </axsl:copy>
+  </axsl:template>
+  
+  <!--**************************************************************************************-->
+  <!--Top level template for s:rule-->
+  <!--   struc: body-->
+  <!--**************************************************************************************-->
+  <axsl:template match="body">
+    
+    <!--s:this-->
+    <axsl:copy>
+      
+      <!--s:apply-rules-->
+      <axsl:apply-templates>
+        <axsl:sort order="descending"/>
+      </axsl:apply-templates>
+    </axsl:copy>
+  </axsl:template>
+  
+  <!--**************************************************************************************-->
+  <!--Top level template for s:rule-->
+  <!--   struc: text-->
+  <!--**************************************************************************************-->
+  <axsl:template match="li/text()[. = 'c' or . = 'a']">
+    <span style="color:magenta;">
+      
+      <!--s:this-->
+      <axsl:copy>
+        
+        <!--s:this atribute-->
+        <axsl:attribute name="ding">dongxxx</axsl:attribute>
+      </axsl:copy>
+    </span>
   </axsl:template>
   <axsl:template match="processing-instruction('xml-stylesheet')"/>
 </axsl:stylesheet>

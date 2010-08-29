@@ -1,72 +1,73 @@
 <?xml version="1.0"?>
+<!--TODO:
+	* Make it so we can pass sorts, params, etc. to rules
+-->
 <s:structure-stylesheet xmlns:s="structure-stylesheet">
 	<s:use href="sss_ex_use.xml"/>
-
-	<s:var name="s:ding">??!HEY!</s:var>
 	
-	<s:struc name="ding">
-		<li><s:val select="$s:ding"/></li>
-		<s:this style="color:lightblue;">
+	<s:struc name="one">		
+		<s:this style="color:red;">
 			<s:apply-rules/>
 		</s:this>
 	</s:struc>
 	
-	<s:struc name="dong">		
-		<s:this style="color:pink;">
-			<s:apply-rules/>
-		</s:this>
-	</s:struc>
-	
-	<s:struc name="one">
-		<s:this style="color:orange;">
-			<s:apply-rules/>
+	<s:struc name="two">
+		<s:this style="color:green;">
+			<s:apply-rules/>				
 		</s:this>
 	</s:struc>
 	
 	<s:struc name="three">		
-		<s:this style="color:gray;">
-			<s:apply-rules/>
-		</s:this>
-	</s:struc>
-	
-	<s:struc name="copy">		
-		<s:this>
-			<s:apply-rules/>
-		</s:this>
-	</s:struc>
-	
-	<s:struc name="ul2">		
-		<s:this>			
+		<s:this style="color:blue;">
 			<s:apply-rules>
 				<s:sort order="descending"/>
-			</s:apply-rules>			
+			</s:apply-rules>
 		</s:this>
 	</s:struc>
 	
-	<s:struc name="ul1">		
-		<s:this>			
-			<s:apply-rules select="*[class('one')]"/>
-			<s:inline-struc select="*[not(class('three'))]">
-				<s:this style="background-color:pink;">
-					<s:apply-rules/>
-				</s:this>
+	<s:struc name="four">		
+		<s:this style="color:orange; font-style:italic;">
+			<s:remove-attr name="class"/>
+			<s:remove-attr name="fourMore"/>
+			<s:apply-rules/>
+		</s:this>
+	</s:struc>
+	
+	<s:struc name="five">		
+		<s:this>
+			<s:tag name="ol"/>
+			<li><s:text>FIVE!</s:text></li>
+			<s:inline-struc select="li">
+				<s:sort order="descending"/>
+				<li>
+					<s:apply-rules/>				
+				</li>
 			</s:inline-struc>
 		</s:this>
+	</s:struc>
+	
+	<s:struc name="body">		
+		<s:this>						
+			<s:apply-rules>
+				<s:sort order="descending"/>
+			</s:apply-rules>
+		</s:this>
 	</s:struc>	
+	
+	<s:struc name="text">		
+		<span style="color:magenta;"><s:this ding="dongxxx"/></span>
+	</s:struc>
 
-	<s:rule match="*[class('ding')]" struc="ding"/>
-	<s:rule match="*[class('dong')]" struc="dong"/>
-	
-	<s:rule match="ul[2]" struc="ul1">
-		<s:rule match="*[class('one')]" struc="one"/>	
-		<s:rule match="*[class('three')]" struc="three"/>		
+	<s:rule match="*[class('one')]" struc="one"/>
+	<s:rule match="*[class('two')]" struc="two"/>
+	<s:rule match="*[class('three')]" struc="three"/>
+	<s:rule match="*[class('four')]" struc="four"/>
+	<s:rule match="*[class('five')]" struc="one">
+		<s:rule match="li" struc="three">
+			<s:sort order="descending"/>
+		</s:rule>
 	</s:rule>	
-	
-	<s:rule match="ul[1]" struc="ul2">		
-		<s:rule match="*[class('one')]" struc="ding">
-			<s:rule match="*[class('xyz')]" struc="www"/>
-		</s:rule>		
-		<s:rule match="*[class('three')]" struc="three"/>		
-	</s:rule>
+	<s:rule match="body" struc="body"/>
+	<s:rule match="li/text()[. = 'c' or . = 'a']" struc="text"/>
 	
 </s:structure-stylesheet>	
