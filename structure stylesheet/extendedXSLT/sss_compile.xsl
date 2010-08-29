@@ -231,11 +231,10 @@
 	<!--struc-->
 	<xsl:template match="s:struc" mode="copy_struc">		
 		<xsl:param name="mode_id"/>		
-		<xsl:param name="mode_id"/>		
 		<xsl:apply-templates select="node()">			
 			<xsl:with-param name="mode_id" select="$mode_id"/>
 		</xsl:apply-templates>
-	</xsl:template>	
+	</xsl:template>
 
 	<!--apply-rules becomes apply-templates (with some special handling)-->
 	<xsl:template match="s:apply-rules">
