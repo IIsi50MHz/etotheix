@@ -70,17 +70,8 @@
 	<!--Change s:this to xsl:element-->
 	<xsl:template match="s:this">
 		<xsl:param name="mode_id"/>
-		<xsl:variable name="tag">
-			<xsl:choose>
-				<xsl:when test="s:tag">
-					<xsl:value-of select="s:tag/@name"/>
-				</xsl:when>
-				<xsl:otherwise>{name()}</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-		<xsl:comment></xsl:comment>
-		<xsl:comment>s:this</xsl:comment>		
-		<axsl:element name="{$tag}">
+		<xsl:variable name="tag" select="s:tag/@name"/>		
+		<xsl:variable name="inner">
 			<!--gather removed attributes-->
 			<xsl:variable name="removed_attr">
 				<xsl:for-each select="s:remove-attr">
@@ -89,17 +80,34 @@
 			</xsl:variable>		
 
 			<!--COMPILED XSL: only add attributes that are not removed-->
-			<axsl:for-each select="@*[not(contains('{$removed_attr}', concat(name(), ' ')))]">
-				<axsl:attribute name="{{name()}}">
-					<axsl:value-of select="."/>
-				</axsl:attribute>	
-			</axsl:for-each>						
+			<xsl:if test="normalize-space($removed_attr) != ''">
+				<axsl:for-each select="@*[not(contains('{$removed_attr}', concat(name(), ' ')))]">
+					<axsl:attribute name="{{name()}}">
+						<axsl:value-of select="."/>
+					</axsl:attribute>	
+				</axsl:for-each>			
+			</xsl:if>
 
 			<!--keep going...-->
 			<xsl:apply-templates select="@* | node()">
 				<xsl:with-param name="mode_id" select="$mode_id"/>
 			</xsl:apply-templates>
-		</axsl:element>
+		</xsl:variable>
+		<xsl:comment></xsl:comment>
+		<xsl:comment>s:this</xsl:comment>
+		
+		<xsl:choose>
+			<xsl:when test="$tag">				
+				<axsl:element name="{$tag}">
+					<xsl:copy-of select="$inner"/>
+				</axsl:element>				
+			</xsl:when>
+			<xsl:otherwise>
+				<axsl:copy>
+					<xsl:copy-of select="$inner"/>
+				</axsl:copy>
+			</xsl:otherwise>
+		</xsl:choose>		
 	</xsl:template>	
 
 	<!--Pull s:this attributes out; make them elements.-->
@@ -148,10 +156,11 @@
 	<xsl:template match="s:rule">		
 		<!--mode_id used to handle nested rules-->
 		<xsl:param name="mode_id"/> 
-		<xsl:variable name="new_mode_id" select="generate-id()"/>	
-
 		<!--grab nested rules-->
 		<xsl:variable name="rules" select="s:rule"/>		
+		<xsl:variable name="new_mode_id">
+			<xsl:if test="$rules"><xsl:value-of select="generate-id()"/></xsl:if>
+		</xsl:variable>	
 
 		<!--create top level template-->
 		<xsl:choose>
@@ -282,6 +291,17 @@
 				<xsl:with-param name="mode_id" select="$mode_id"/>
 			</xsl:apply-templates>
 		</axsl:value-of>
+	</xsl:template>
+	
+	<!--s:attr == xsl:attribute-->
+	<xsl:template match="s:attr">
+		<xsl:param name="mode_id"/>			
+		<xsl:comment>s:attr</xsl:comment>		
+		<axsl:attribute>
+			<xsl:apply-templates select="@* | node()">			
+				<xsl:with-param name="mode_id" select="$mode_id"/>
+			</xsl:apply-templates>
+		</axsl:attribute>
 	</xsl:template>
 
 </xsl:stylesheet>
