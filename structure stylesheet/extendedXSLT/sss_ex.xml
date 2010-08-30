@@ -1,9 +1,11 @@
 <?xml version="1.0"?>
 <!--TODO:
+	* add ability to use stuff like css(.ding.ding) in match and select
+	* get rid of class('ding')
 	* make it so we can have local named strucs????
 	* make it so we can pass params to strucs when using in rules???? (not sure if we can do this)
-	* class('one two three')
-	* match="class('ding')" instead of match="*[class('ding')]"
+	no * class('one two three')
+	* match="class('ding')" instead of match="css(.ding')]"
 	no * make it so s:rule and s:inline-struc take <s:struc> wrapper optionally (currently it's required for s:rule and can't be used with s:inline-struc)
 		no * or just make s:struc required for s:inline-struc
 		no * change @name for s:inline-struc to @struc to make it consistant with s:rule?
@@ -11,7 +13,7 @@
 		* or just get rid of s:struc wapper for s:rule too.
 -->
 <s:structure-stylesheet xmlns:s="structure-stylesheet">
-	<s:use href="sss_ex_use.xml"/>
+	<!--<s:use href="sss_ex_use.xml"/>-->
 	
 	<s:struc name="one">		
 		<s:inline-struc name="two" select="."/>
@@ -64,11 +66,11 @@
 		<span style="color:magenta;"><s:this ding="dongxxx"/></span>
 	</s:struc>
 
-	<s:rule match="*[class('one')]" struc="one"/>
-	<s:rule match="*[class('two')]" struc="two"/>
-	<s:rule match="*[class('three')]" struc="three"/>
-	<s:rule match="*[class('four')]" struc="four"/>
-	<s:rule match="*[class('five')]">	
+	<s:rule match="css(div#table.abc.xxx[type='text'])" struc="one"/>
+	<s:rule match="ding[css(#two) or css(#three)][@blam]" struc="two"/>
+	<s:rule match="css(.three)" struc="three"/>
+	<s:rule match="css(.four)" struc="four"/>
+	<s:rule match="css(.five)">	
 		<s:struc>
 			<s:this>
 				<s:inline-struc name="one">
