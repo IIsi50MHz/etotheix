@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <!--TODO:
-	* add ability to use stuff like css(.ding.ding) in match and select
-	* get rid of class('ding')
+	* make structure stylesheet language a true superset of XSLT
+	* think about other things that are confusing or painful in XSLT and make them better. (grouping?)
+	done * add ability to use stuff like css(.ding.ding) in match and select
+	done * get rid of class('ding')
 	* make it so we can have local named strucs????
 	* make it so we can pass params to strucs when using in rules???? (not sure if we can do this)
-	no * class('one two three')
-	* match="class('ding')" instead of match="css(.ding')]"
+	no * class('one two three')	
 	no * make it so s:rule and s:inline-struc take <s:struc> wrapper optionally (currently it's required for s:rule and can't be used with s:inline-struc)
 		no * or just make s:struc required for s:inline-struc
 		no * change @name for s:inline-struc to @struc to make it consistant with s:rule?
@@ -26,7 +27,7 @@
   <!--Top level template for s:rule-->
   <!--   struc: one-->
   <!--**************************************************************************************-->
-  <axsl:template match="div[@id='table'][contains(concat(normalize-space(@class), ' '), 'abc')][contains(concat(normalize-space(@class), ' '), 'xxx')][@type='text']">
+  <axsl:template match="div[@id='table'][contains(concat(' ', normalize-space(@class), ' '), ' abc ')][contains(concat(' ', normalize-space(@class), ' '), ' xxx ')][@type='text']">
     
     <!--s:inline-struc[@name]-->
     <axsl:for-each select=".">
@@ -64,7 +65,7 @@
   <!--Top level template for s:rule-->
   <!--   struc: three-->
   <!--**************************************************************************************-->
-  <axsl:template match="*[contains(concat(normalize-space(@class), ' '), 'three')]">
+  <axsl:template match="*[contains(concat(' ', normalize-space(@class), ' '), ' three ')]">
     
     <!--s:this-->
     <axsl:copy>
@@ -83,7 +84,7 @@
   <!--Top level template for s:rule-->
   <!--   struc: four-->
   <!--**************************************************************************************-->
-  <axsl:template match="*[contains(concat(normalize-space(@class), ' '), 'four')]">
+  <axsl:template match="*[contains(concat(' ', normalize-space(@class), ' '), ' four ')]">
     
     <!--s:this-->
     <axsl:copy>
@@ -105,7 +106,7 @@
   <!--Top level template for s:rule-->
   <!--   struc: -->
   <!--**************************************************************************************-->
-  <axsl:template match="*[contains(concat(normalize-space(@class), ' '), 'five')]">
+  <axsl:template match="*[contains(concat(' ', normalize-space(@class), ' '), ' five ')]">
     
     <!--s:this-->
     <axsl:copy>

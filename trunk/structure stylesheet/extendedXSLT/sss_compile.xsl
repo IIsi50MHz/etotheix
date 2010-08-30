@@ -2,13 +2,9 @@
 <xsl:stylesheet 
 	version="1.0" 	
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:regexp="http://exslt.org/regular-expressions"
-
-
 	xmlns:s="structure-stylesheet"	
 	xmlns:axsl="axsl"	
-	exclude-result-prefixes="s"
-	extension-element-prefixes="regexp"
+	exclude-result-prefixes="s"	
 >
 	<xsl:output indent="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -126,82 +122,39 @@
 	</xsl:template>
 
 	<!--Remove these tags and attributes-->
-	<xsl:template match="s:tag | s:remove-attr | s:structure-stylesheet/s:struc | @struc"/>	
-
-	<!--Replace class function in match and select attributes with valid xpath expression-->
-	<xsl:template name="replace_class">
-		<xsl:param name="match_attr" select="normalize-space(.)"/>				
-		<xsl:choose>					
-			<xsl:when test="contains($match_attr, 'class(')">
-				<xsl:variable name="class" select="substring-before(substring-after($match_attr, 'class('), ')')"/>
-				<xsl:variable name="quote_char" select="substring($class, 1, 1)"/>
-				<xsl:variable name="no_quotes_class" select="translate($class, $quote_char, '')"/>
-				<xsl:variable name="before_class" select="substring-before($match_attr, 'class(')"/>		
-				<xsl:variable name="after_class" select="substring-after($match_attr, concat('class(', $class, ')'))"/>		
-				<xsl:variable name="class_selector">
-					<xsl:text>contains(concat(normalize-space(@class), ' '), </xsl:text>					
-					<xsl:value-of select="concat($quote_char, $no_quotes_class, ' ', $quote_char)"/>
-					<xsl:text>)</xsl:text>
-				</xsl:variable>
-				<xsl:call-template name="replace_class">
-					<xsl:with-param name="match_attr" select="concat($before_class, $class_selector, $after_class)"/>
-				</xsl:call-template>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="$match_attr"/>
-			</xsl:otherwise>
-		</xsl:choose>		
-	</xsl:template>
+	<xsl:template match="s:tag | s:remove-attr | s:structure-stylesheet/s:struc | @struc"/>		
 
 	<!--Replace css function in match and select attributes with valid xpath expression-->
 	<xsl:template name="replace_css">
 		<xsl:param name="match_attr" select="normalize-space(.)"/>				
 		<xsl:choose>					
 			<xsl:when test="contains($match_attr, 'css(')">
-				<!--<xsl:text>{{helo}}</xsl:text>-->
 				<xsl:variable name="css" select="substring-before(substring-after($match_attr, 'css('), ')')"/>								
 				<xsl:variable name="before_css" select="substring-before($match_attr, 'css(')"/>		
 				<xsl:variable name="after_css" select="substring-after($match_attr, concat('css(', $css, ')'))"/>		
-				<!--<xsl:value-of select="concat('{{', $css, '}}')"/>-->
+				
 				<xsl:variable name="css_selector">
 					<xsl:call-template name="css_selector_to_xpath">
 						<xsl:with-param name="orig_string" select="$css"/>
 					</xsl:call-template>
 				</xsl:variable>
-				<!--<xsl:value-of select="concat('{{', $css_selector, '}}')"/>-->
+				
 				<xsl:call-template name="replace_css">
 					<xsl:with-param name="match_attr" select="concat($before_css, $css_selector, $after_css)"/>
 				</xsl:call-template>
 			</xsl:when>
-			<xsl:otherwise>
-				<!--<xsl:text>{{helo2}}</xsl:text>-->
+			<xsl:otherwise>				
 				<xsl:value-of select="$match_attr"/>
 			</xsl:otherwise>
 		</xsl:choose>		
-	</xsl:template>
-
-	<!--ding.dong.king#kong[blah][ask='asdf'] .blah	
-	..#[[
-	
-	translate('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOP-_=]   '"')
-	
-	ding|dong|king|kong|blah}|ask="asdf"}
-	
-	ding[contains(concat(normalize-space(@class), ' '), 'dong[@id='kong[@blah][@ask="asdf"]//[.blah
-	
-	ding[contains(concat(normalize-space(@class), ' '), 'dong')][contains(concat(normalize-space(@class), ' '), 'king')][@id='kong'][@blah][@ask="asdf"]
-	
-	
-	ding!dong!king!kong!blah!ask="abc ding" !blah-->
+	</xsl:template>	
 	
 	<xsl:template name="css_selector_to_xpath">
 		<!--build up xpath-->
 		<xsl:param name="xpath" select="''"/>
-		<!--ding.dong.king#kong[blah][ask='asdf']-->
-		<!--.dong.king#kong[blah][ask='asdf']-->
+		<!--ding.dong.king#kong[blah][ask='asdf']-->		
 		<xsl:param name="orig_string"/>		
-		<!--ding|dong|king|kong|blah}|ask="asdf"}|-->
-		<!--|dong|king|kong|blah}|ask="asdf"}|-->
+		<!--ding|dong|king|kong|blah}|ask="asdf"}|-->		
 		<xsl:param name="divided_string_step1" select="concat(translate(translate($orig_string, ']', '}'), '.#[', '|||'), '|')"/>							
 		<xsl:param name="divided_string">
 			<xsl:choose>
@@ -209,37 +162,23 @@
 				<xsl:otherwise><xsl:value-of select="$divided_string_step1"/></xsl:otherwise>
 			</xsl:choose>
 		</xsl:param>
-		<!--ding-->
-		<!--dong-->
+		<!--ding-->		
 		<xsl:variable name="current_string">
 			<xsl:choose>
 				<xsl:when test="starts-with($divided_string, '|')"><xsl:value-of select="substring(substring-before($divided_string, '|'), 2)"/></xsl:when>
 				<xsl:otherwise><xsl:value-of select="substring-before($divided_string, '|')"/></xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<!--<xsl:value-of select="concat('{{current_string : ', $current_string, '}}')"/>-->
-		<!--dong|king|kong|blah}|ask="asdf"}|-->
-		<!--king|kong|blah}|ask="asdf"}|-->
-		<!--<xsl:variable name="rest_of_string" select="substring-after($divided_string, '|')"/>		-->
-		<!--
-		<xsl:value-of select="concat('{{xpath : ', $xpath, '}}')"/>
-		<xsl:value-of select="concat('{{orig_string : ', $orig_string, '}}')"/>
-		<xsl:value-of select="concat('{{divided_string_step1 : ', $divided_string_step1, '}}')"/>
-		<xsl:value-of select="concat('{{divided_string : ', $divided_string, '}}')"/>
-		<xsl:value-of select="concat('{{current_string : ', $current_string, '}}')"/>
-		<xsl:value-of select="concat('{{rest_of_string : ', $rest_of_string, '}}')"/>-->		
 		
 		<xsl:choose>
 			<xsl:when test="$divided_string">
 				<!--calculate position of next char reprsenting the selector type .#[-->
-				<xsl:variable name="current_type_char_position" select="string-length($orig_string) - string-length($divided_string) + 1"/>				
-				<!--<xsl:value-of select="concat('{{current_type_char_position : ', $current_type_char_position, '}}')"/>-->
+				<xsl:variable name="current_type_char_position" select="string-length($orig_string) - string-length($divided_string) + 1"/>						
 				<!--generate xpath for current string-->
 				<xsl:variable name="current_string_xpath">
 					<xsl:choose>
 						<xsl:when test="$current_type_char_position &gt; 0">
-							<xsl:variable name="current_type_char" select="substring($orig_string, $current_type_char_position, 1)"/>
-							<!--<xsl:value-of select="concat('{{current_type_char : ', $current_type_char, '}}')"/>-->
+							<xsl:variable name="current_type_char" select="substring($orig_string, $current_type_char_position, 1)"/>							
 							<xsl:call-template name="single_css_selector_to_xpath">						
 								<xsl:with-param name="string" select="$current_string"/>
 								<xsl:with-param name="type" select="$current_type_char"/>
@@ -271,7 +210,7 @@
 		<xsl:param name="string"/>
 		<xsl:choose>
 			<!--class-->
-			<xsl:when test="$type = '.'">[contains(concat(normalize-space(@class), ' '), '<xsl:value-of select="$string"/>')]</xsl:when>			
+			<xsl:when test="$type = '.'">[contains(concat(' ', normalize-space(@class), ' '), ' <xsl:value-of select="$string"/> ')]</xsl:when>			
 			<!--id-->
 			<xsl:when test="$type = '#'">[@id='<xsl:value-of select="$string"/>']</xsl:when>
 			<!--attribute-->
@@ -463,27 +402,6 @@
 				<xsl:with-param name="mode_id" select="$mode_id"/>
 			</xsl:apply-templates>
 		</axsl:attribute>
-	</xsl:template>
-
-	<!--UTILITY TEMPLATES-->
-	<xsl:template name="string-replace-all">
-		<xsl:param name="text"/>
-		<xsl:param name="replace"/>
-		<xsl:param name="by"/>
-		<xsl:choose>
-			<xsl:when test="contains($text,$replace)">
-				<xsl:value-of select="substring-before($text,$replace)"/>
-				<xsl:value-of select="$by"/>
-				<xsl:call-template name="string-replace-all">
-					<xsl:with-param name="text" select="substring-after($text,$replace)"/>
-					<xsl:with-param name="replace" select="$replace"/>
-					<xsl:with-param name="by" select="$by"/>
-				</xsl:call-template>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="$text"/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
+	</xsl:template>	
 
 </xsl:stylesheet>
