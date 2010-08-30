@@ -1,14 +1,20 @@
 <?xml version="1.0"?>
 <!--TODO:
-	* Make it so we can pass sorts, params, etc. to rules
+	* make it so we can have local named strucs????
+	* make it so we can pass params to strucs when using in rules???? (not sure if we can do this)
+	* class('one two three')
+	* match="class('ding')" instead of match="*[class('ding')]"
+	no * make it so s:rule and s:inline-struc take <s:struc> wrapper optionally (currently it's required for s:rule and can't be used with s:inline-struc)
+		no * or just make s:struc required for s:inline-struc
+		no * change @name for s:inline-struc to @struc to make it consistant with s:rule?
+		no * ... and change s:inline-struc to just s:inline. <s:inline struc="ding"/>
+		* or just get rid of s:struc wapper for s:rule too.
 -->
 <s:structure-stylesheet xmlns:s="structure-stylesheet">
 	<s:use href="sss_ex_use.xml"/>
 	
 	<s:struc name="one">		
-		<s:this style="color:red;">
-			<s:apply-rules/>
-		</s:this>
+		<s:inline-struc name="two" select="."/>
 	</s:struc>
 	
 	<s:struc name="two">
@@ -62,12 +68,16 @@
 	<s:rule match="*[class('two')]" struc="two"/>
 	<s:rule match="*[class('three')]" struc="three"/>
 	<s:rule match="*[class('four')]" struc="four"/>
-	<s:rule match="*[class('five')]" struc="one">
-		<s:rule match="li" struc="three">
-			<s:sort order="descending"/>
-		</s:rule>
-	</s:rule>	
+	<s:rule match="*[class('five')]">	
+		<s:struc>
+			<s:this>
+				<s:inline-struc name="one">
+					<s:sort order="descending"/>													
+				</s:inline-struc>					
+			</s:this>
+		</s:struc>
+	</s:rule>
 	<s:rule match="body" struc="body"/>
 	<s:rule match="li/text()[. = 'c' or . = 'a']" struc="text"/>
 	
-</s:structure-stylesheet>	
+</s:structure-stylesheet>

@@ -1,4 +1,7 @@
 <?xml version="1.0"?>
+<!--TODO:
+	* Make it so we can pass sorts, params, etc. to rules
+-->
 <axsl:stylesheet xmlns:axsl="http://www.w3.org/1999/XSL/Transform" xmlns:s="structure-stylesheet" version="1.0" exclude-result-prefixes="s">
   <axsl:output method="html" indent="yes" encoding="utf-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
   <axsl:strip-space elements="*"/>
@@ -44,15 +47,19 @@
   <!--**************************************************************************************-->
   <axsl:template match="*[contains(concat(normalize-space(@class), ' '), 'one ')]">
     
-    <!--s:this-->
-    <axsl:copy>
+    <!--s:inline-struc[@name]-->
+    <axsl:for-each select=".">
       
-      <!--s:this atribute-->
-      <axsl:attribute name="style">color:red;</axsl:attribute>
-      
-      <!--s:apply-rules-->
-      <axsl:apply-templates/>
-    </axsl:copy>
+      <!--s:this-->
+      <axsl:copy>
+        
+        <!--s:this atribute-->
+        <axsl:attribute name="style">color:green;</axsl:attribute>
+        
+        <!--s:apply-rules-->
+        <axsl:apply-templates/>
+      </axsl:copy>
+    </axsl:for-each>
   </axsl:template>
   
   <!--**************************************************************************************-->
@@ -115,46 +122,20 @@
   
   <!--**************************************************************************************-->
   <!--Top level template for s:rule-->
-  <!--   struc: one-->
+  <!--   struc: -->
   <!--**************************************************************************************-->
   <axsl:template match="*[contains(concat(normalize-space(@class), ' '), 'five ')]">
     
     <!--s:this-->
     <axsl:copy>
       
-      <!--s:this atribute-->
-      <axsl:attribute name="style">color:red;</axsl:attribute>
-      
-      <!--s:apply-rules-->
-      <axsl:apply-templates mode="id234160"/>
-    </axsl:copy>
-  </axsl:template>
-  
-  <!--**************************************************-->
-  <!--Auto generated default nested rule-->
-  <!--   mode: id234160-->
-  <!--**************************************************-->
-  <axsl:template match="node()" mode="id234160">
-    <axsl:apply-templates select="."/>
-  </axsl:template>
-  
-  <!--******************************************-->
-  <!--Nested s:rule-->
-  <!--   struc: three-->
-  <!--   mode: id234160-->
-  <!--******************************************-->
-  <axsl:template match="li" mode="id234160">
-    
-    <!--s:this-->
-    <axsl:copy>
-      
-      <!--s:this atribute-->
-      <axsl:attribute name="style">color:blue;</axsl:attribute>
-      
-      <!--s:apply-rules-->
-      <axsl:apply-templates>
+      <!--s:inline-struc-->
+      <axsl:for-each select="li">
         <axsl:sort order="descending"/>
-      </axsl:apply-templates>
+        
+        <!--s:apply-rules-->
+        <axsl:apply-templates select="."/>
+      </axsl:for-each>
     </axsl:copy>
   </axsl:template>
   

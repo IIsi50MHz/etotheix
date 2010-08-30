@@ -120,7 +120,7 @@
 	</xsl:template>
 
 	<!--Remove these tags and attributes-->
-	<xsl:template match="s:tag | s:remove-attr | s:struc | @struc"/>	
+	<xsl:template match="s:tag | s:remove-attr | s:structure-stylesheet/s:struc | @struc"/>	
 
 	<!--Replace class function in match and select attributes with valid xpath expression-->
 	<xsl:template name="replace_class">
@@ -189,16 +189,17 @@
 			</xsl:if>			
 
 			<!--generate stucture for rule-->			
-			<xsl:variable name="struc" select="@struc"/>
+			<xsl:variable name="struc_name" select="@struc"/>
+			<xsl:variable name="anon_struc" select="s:struc"/>			
 			<xsl:for-each select="$uses">								
 				<xsl:for-each select="document(@href)">					
-					<xsl:apply-templates select="key('struc_by_name', $struc)" mode="copy_struc">				
+					<xsl:apply-templates select="key('struc_by_name', $struc_name)" mode="copy_struc">				
 						<xsl:with-param name="mode_id" select="string($new_mode_id)"/>
 					</xsl:apply-templates>
 				</xsl:for-each>
 			</xsl:for-each>
 			<xsl:for-each select="$master_doc">				
-				<xsl:apply-templates select="key('struc_by_name', $struc)" mode="copy_struc">				
+				<xsl:apply-templates select="key('struc_by_name', $struc_name) | $anon_struc" mode="copy_struc">				
 					<xsl:with-param name="mode_id" select="string($new_mode_id)"/>
 				</xsl:apply-templates>
 			</xsl:for-each>
@@ -254,12 +255,33 @@
 		</axsl:apply-templates>
 	</xsl:template>
 
+	<!--s:struc(inner struc)-->
+	<xsl:template match="s:inline-struc[@name]">		
+		<xsl:param name="mode_id"/>		
+		<xsl:variable name="select">
+			<xsl:choose>
+				<xsl:when test="@select"><xsl:value-of select="@select"/></xsl:when>
+				<xsl:otherwise>*</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:comment></xsl:comment>
+		<xsl:comment>s:inline-struc[@name]</xsl:comment>		
+		<axsl:for-each select="{$select}">
+			<xsl:apply-templates select="node()">			
+				<xsl:with-param name="mode_id" select="$mode_id"/>
+			</xsl:apply-templates>
+			<xsl:apply-templates select="key('struc_by_name', @name)" mode="copy_struc">				
+				<xsl:with-param name="mode_id" select="$mode_id"/>
+			</xsl:apply-templates>
+		</axsl:for-each>		
+	</xsl:template>	
+	
 	<!--
 		aliases
-	-->
-
+	-->	
+	
 	<!--s:inline-struc == xsl:for-each-->
-	<xsl:template match="s:inline-struc">		
+	<xsl:template match="s:inline-struc">	
 		<xsl:param name="mode_id"/>		
 		<xsl:comment></xsl:comment>
 		<xsl:comment>s:inline-struc</xsl:comment>
@@ -268,7 +290,7 @@
 				<xsl:with-param name="mode_id" select="$mode_id"/>
 			</xsl:apply-templates>
 		</axsl:for-each>
-	</xsl:template>
+	</xsl:template>	
 
 	<!--s:var == xsl:variable-->
 	<xsl:template match="s:var">
