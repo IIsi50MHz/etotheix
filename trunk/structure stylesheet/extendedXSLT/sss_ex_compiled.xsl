@@ -1,11 +1,13 @@
 <?xml version="1.0"?>
 <!--TODO:
-	* add ability to use stuff like css(.ding.ding) in match and select
-	* get rid of class('ding')
+	* make structure stylesheet language a true superset of XSLT
+	* handle s:use's when used docs have s:use's too
+	* think about other things that are confusing or painful in XSLT and make them better. (grouping?)
+	done * add ability to use stuff like css(.ding.ding) in match and select
+	done * get rid of class('ding')
 	* make it so we can have local named strucs????
 	* make it so we can pass params to strucs when using in rules???? (not sure if we can do this)
-	no * class('one two three')
-	* match="class('ding')" instead of match="css(.ding')]"
+	no * class('one two three')	
 	no * make it so s:rule and s:inline-struc take <s:struc> wrapper optionally (currently it's required for s:rule and can't be used with s:inline-struc)
 		no * or just make s:struc required for s:inline-struc
 		no * change @name for s:inline-struc to @struc to make it consistant with s:rule?
@@ -13,12 +15,21 @@
 		* or just get rid of s:struc wapper for s:rule too.
 -->
 <axsl:stylesheet xmlns:axsl="http://www.w3.org/1999/XSL/Transform" xmlns:s="structure-stylesheet" version="1.0" exclude-result-prefixes="s">
-  <axsl:output method="html" indent="yes" encoding="utf-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
+  <axsl:output method="xml" indent="yes" omit-xml-declaration="yes"/>
   <axsl:strip-space elements="*"/>
   <axsl:template match="@*|node()">
     <axsl:copy>
       <axsl:apply-templates select="@*|node()"/>
     </axsl:copy>
+  </axsl:template>
+  <axsl:template match="*[not(node())]" priority="0">
+    <axsl:copy>
+      <axsl:apply-templates select="@*"/>
+      <axsl:comment>empty</axsl:comment>
+    </axsl:copy>
+  </axsl:template>
+  <axsl:template match="     area[not(node())]|base[not(node())]|basefont[not(node())]|br[not(node())]|     col[not(node())]|frame[not(node())]|hr[not(node())]|img[not(node())]|     input[not(node())]|isindex[not(node())]|link[not(node())]|meta[not(node())]|     param[not(node())]|nextid[not(node())]|bgsound[not(node())]|embed[not(node())]|     keygen[not(node())]|spacer|wbr[not(node())]" priority="0">
+    <axsl:copy-of select="."/>
   </axsl:template>
   <!--<s:use href="sss_ex_use.xml"/>-->
   
@@ -81,24 +92,24 @@
   
   <!--**************************************************************************************-->
   <!--Top level template for s:rule-->
-  <!--   struc: four-->
+  <!--   struc: five-->
   <!--**************************************************************************************-->
   <axsl:template match="*[contains(concat(' ', normalize-space(@class), ' '), ' four ')]">
     
     <!--s:this-->
-    <axsl:copy>
-      <axsl:for-each select="@*[not(contains('class fourMore ', concat(name(), ' ')))]">
-        <axsl:attribute name="{name()}">
-          <axsl:value-of select="."/>
-        </axsl:attribute>
+    <axsl:element name="ol">
+      <li>DING!</li>
+      
+      <!--s:inline-struc-->
+      <axsl:for-each select="li">
+        <axsl:sort order="descending"/>
+        <li>
+          
+          <!--s:apply-rules-->
+          <axsl:apply-templates/>
+        </li>
       </axsl:for-each>
-      
-      <!--s:this attribute-->
-      <axsl:attribute name="style">color:orange; font-style:italic;</axsl:attribute>
-      
-      <!--s:apply-rules-->
-      <axsl:apply-templates/>
-    </axsl:copy>
+    </axsl:element>
   </axsl:template>
   
   <!--**************************************************************************************-->
@@ -145,6 +156,16 @@
         <axsl:sort order="descending"/>
       </axsl:apply-templates>
     </axsl:copy>
+  </axsl:template>
+  
+  <!--**************************************************************************************-->
+  <!--Top level template for s:rule-->
+  <!--   struc: -->
+  <!--**************************************************************************************-->
+  <axsl:template match="div">
+    
+    <!--s:this-->
+    <axsl:copy>hello</axsl:copy>
   </axsl:template>
   
   <!--**************************************************************************************-->

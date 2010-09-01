@@ -24,20 +24,40 @@
 				<xsl:with-param name="mode_id" select="$mode_id"/>
 			</xsl:apply-templates>
 		</xsl:copy>
-	</xsl:template>	
+	</xsl:template>		
 
 	<!--create stylesheet-->
-	<xsl:template match="s:structure-stylesheet">
+	<xsl:template match="s:stylesheet | s:template">
 		<axsl:stylesheet version="1.0" exclude-result-prefixes="s">
 			<xsl:copy-of select="namespace::*|@*"/>			
-			<axsl:output method="html" indent="yes" encoding="utf-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
+			<axsl:output method="xml" indent="yes" omit-xml-declaration="yes"/>
 			<axsl:strip-space elements="*"/>
 
-			<!--create code for altering document structure-->
+			<!--Create code for altering document structure.-->
 			<axsl:template match="@*|node()">
 				<axsl:copy>			
 					<axsl:apply-templates select="@*|node()"/>
 				</axsl:copy>		
+			</axsl:template>
+			
+			<!--Don't collapse empty tags...-->
+			<axsl:template match="*[not(node())]" priority="0">		
+				<axsl:copy>
+					<axsl:apply-templates select="@*"/>				
+					<axsl:comment>empty</axsl:comment>
+				</axsl:copy>
+			</axsl:template>
+			
+			<!--...unless they are supposed to be collapsed.-->
+			<axsl:template match="
+				area[not(node())]|base[not(node())]|basefont[not(node())]|br[not(node())]|
+				col[not(node())]|frame[not(node())]|hr[not(node())]|img[not(node())]|
+				input[not(node())]|isindex[not(node())]|link[not(node())]|meta[not(node())]|
+				param[not(node())]|nextid[not(node())]|bgsound[not(node())]|embed[not(node())]|
+				keygen[not(node())]|spacer|wbr[not(node())]"
+				priority="0"
+			>
+				<axsl:copy-of select="."/>			
 			</axsl:template>
 
 			<xsl:apply-templates select="@* | node()"/>		
@@ -122,7 +142,7 @@
 	</xsl:template>
 
 	<!--Remove these tags and attributes-->
-	<xsl:template match="s:tag | s:remove-attr | s:structure-stylesheet/s:struc | @struc"/>		
+	<xsl:template match="s:tag | s:remove-attr | s:stylesheet/s:struc | s:stylesheet/s:struc | @struc"/>		
 
 	<!--Replace css function in match and select attributes with valid xpath expression-->
 	<xsl:template name="replace_css">
