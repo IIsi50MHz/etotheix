@@ -1,8 +1,11 @@
 <?xml version="1.0"?>
 <!--TODO:
 	* make structure stylesheet language a true superset of XSLT
+	* make defaults for stuff like xsl:output, but make it easy to override
+	* create shorthand for commonly used boilerplate type
 	* handle s:use's when used docs have s:use's too
 	* think about other things that are confusing or painful in XSLT and make them better. (grouping?)
+	* add code to add/remove a class (s:add-class, s:remove-class)
 	done * add ability to use stuff like css(.ding.ding) in match and select
 	done * get rid of class('ding')
 	* make it so we can have local named strucs????
@@ -14,7 +17,7 @@
 		no * ... and change s:inline-struc to just s:inline. <s:inline struc="ding"/>
 		* or just get rid of s:struc wapper for s:rule too.
 -->
-<s:structure-stylesheet xmlns:s="structure-stylesheet">
+<s:stylesheet xmlns:s="structure-stylesheet">
 	<!--<s:use href="sss_ex_use.xml"/>-->
 	
 	<s:struc name="one">		
@@ -46,7 +49,7 @@
 	<s:struc name="five">		
 		<s:this>
 			<s:tag name="ol"/>
-			<li><s:text>FIVE!</s:text></li>
+			<li>DING!</li>
 			<s:inline-struc select="li">
 				<s:sort order="descending"/>
 				<li>
@@ -71,7 +74,7 @@
 	<s:rule match="css(div#table.abc.xxx[type='text'])" struc="one"/>
 	<s:rule match="ding[css(#two) or css(#three)][@blam]" struc="two"/>
 	<s:rule match="css(.three)" struc="three"/>
-	<s:rule match="css(.four)" struc="four"/>
+	<s:rule match="css(.four)" struc="five"/>
 	<s:rule match="css(.five)">	
 		<s:struc>
 			<s:this>
@@ -82,6 +85,11 @@
 		</s:struc>
 	</s:rule>
 	<s:rule match="body" struc="body"/>
+	<s:rule match="div">
+		<s:struc>
+			<s:this>hello</s:this>
+		</s:struc>
+	</s:rule>	
 	<s:rule match="li/text()[. = 'c' or . = 'a']" struc="text"/>
 	
-</s:structure-stylesheet>
+</s:stylesheet>

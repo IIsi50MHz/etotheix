@@ -1,12 +1,13 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<?xml-stylesheet type="text/xsl" href="sss_ex_compiled.xsl"?>
+<?php echo "<!DOCTYPE html>"?>
 <html>	
 	<head>
 		<title>benxty</title>
 		<!--<link rel="stylesheet" type="xml/sss" href="structure-stylesheet_example_alt2.xml"/>
-		<script>alert('hello')</script>-->		
+		<script>alert('hello')</script>-->
+		<script src="ding.js"></script>
 	</head>
-	<body>		
+	<body>
+		<?php include ("menu.html"); ?>
 		<p class="one">one</p>
 		<p class="two">two</p>
 		<p class="three">three</p>
@@ -17,5 +18,7 @@
 			<li>c</li>
 			<li>d</li>
 		</ul>		
+		<div></div>
+		<p></p>
 	</body>
 </html>
