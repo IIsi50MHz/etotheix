@@ -82,7 +82,7 @@ var GLOBAL = this;
 		} else if (u2 == null) {
 			resultUnit = toUnitObj(u1);
 		} else {
-			resultUnit = unitPlus(u1, unitTimes(u2, NEGATIVE_ONE));
+			resultUnit = unitPlus(u1, unitTimes(u2, -1));
 		}
 		return resultUnit;
 	}
@@ -168,14 +168,14 @@ var GLOBAL = this;
 		return resultNum;
 	}	
 
-	function applyOpToArr(f, arr, inReverse) {
-		if (inReverse) {
+	function applyOpToArr(op, arr) {
+		if (op.inReverse) {
 			arr.reverse();
 		}
 		var resultUnit, dimAreCompatible = true;
 		resultUnit = unitTimes(1, arr[0]);
 		for (var i = 1, len = arr.length; i < len && !resultUnit.incompatibleDim; i++) {
-			resultUnit = f(resultUnit, arr[i]);
+			resultUnit = op(resultUnit, arr[i]);
 		}
 		//console.debug("resultUnit", resultUnit);
 		return resultUnit;
@@ -194,10 +194,10 @@ var GLOBAL = this;
 		// put a "|" betweeen numbers and units so we can make things like this work as expected: 10 ft / 5 ft = 2;
 		str = str.replace(/([0-9])([a-zA-Z'"])/g, "$1|$2");
 		str = str.replace(/([0-9a-zA-Z])\s+([a-zA-Z'"])/g, "$1|$2");
-		console.debug("// put a | betweeen numbers and units so we can make things like this work as expected: 10 ft / 5 ft = 2\n", str);
+		//console.debug("// put a | betweeen numbers and units so we can make things like this work as expected: 10 ft / 5 ft = 2\n", str);
 		// replace / before units with "`" so we can make things like this work as expected: 5 ft/sec / 5 in/sec = 12;
 		str = str.replace(/([0-9a-zA-Z])\s*\/\s*([a-zA-Z])/g, "$1`$2");
-		console.debug("replace / before units with ` so we can make things like this work as expected: 5 ft/sec / 5 in/sec = 12\n", str);
+		//console.debug("replace / before units with ` so we can make things like this work as expected: 5 ft/sec / 5 in/sec = 12\n", str);
 		// replace spaces with * unless adjacent to and operator or followed by a letter
 		str = str.replace(/([^\+\-\*\/\^\'\"])\s([^\+\-\*\/\^])/g, "$1*$2");		
 		//console.debug("// replace spaces with * unless adjacent to and operator\n", str);
@@ -253,87 +253,33 @@ var GLOBAL = this;
 		return arrPlus;
 	}
 	
-	function calcUnitResult(str) {
-		var result = calcAllFromFullArr(parseString(str));
-		//console.debug("calcAllFromFullArr", result);
-		return result;
+	unitPow.inReverse = true;
+	function generateOrderedOpArray() {
+		return [unitPlus, unitMinus, unitTimes, unitDiv, unitTimes, unitDiv, unitPow];
 	}
 	
-	function calcAllFromFullArr(arr) {
-		var result = calcPlusFromFullArr(arr);
-		//console.debug("calcAllFromFullArr", result, arr);
-		return result;	
-	}
-	
-	function calcPlusFromFullArr(arr) {	
-		//console.debug("calcPlusFromFullArr 0", arr);
-		for (var i = 0, len = arr.length; i < len; i++) {
-			arr[i] = calcMinusFromFullArr(arr[i]);
+	function copyArr(arr) {
+		var i = arr.length, copy = [];
+		while (i--) {
+			copy[i] = arr[i];
 		}
-		var result = applyOpToArr(unitPlus, arr);
-		//console.debug("calcPlusFromFullArr", result, arr);
-		return result;	
+		return copy;
 	}
 	
-	function calcMinusFromFullArr(arr) {
-		//console.debug("calcMinusFromFullArr 0", arr);
+	function calcUnitResult(str) {		
+		return calcOpsFromFullArr(parseString(str), generateOrderedOpArray());	
+	}	
+	
+	function calcOpsFromFullArr(arr, orderedOpArray) {		
+		var nextFunc = orderedOpArray.length > 1 ? calcOpsFromFullArr : toUnitObj,
+			op = orderedOpArray.shift();		
+		
 		for (var i = 0, len = arr.length; i < len; i++) {
-			arr[i] = calcTimesFromFullArr(arr[i]);
+			arr[i] = nextFunc(arr[i], copyArr(orderedOpArray));
 		}
-		var result = applyOpToArr(unitMinus, arr);
-		//console.debug("calcMinusFromFullArr", result, arr);
-		return result;			
-	}
-	
-	function calcTimesFromFullArr(arr) {
-		//console.debug("calcTimesFromFullArr 0", arr);
-		for (var i = 0, len = arr.length; i < len; i++) {
-			arr[i] = calcDivFromFullArr(arr[i]);
-		}
-		var result = applyOpToArr(unitTimes, arr);
-		//console.debug("calcTimesFromFullArr", result, arr);
-		return result;				
-	}
-	
-	function calcDivFromFullArr(arr) {
-		//console.debug("calcDivFromFullArr 0", arr);
-		for (var i = 0, len = arr.length; i < len; i++) {
-			arr[i] = calcUnitTimesFromFullArr(arr[i]);
-		}		
-		var result = applyOpToArr(unitDiv, arr);
-		//console.debug("calcDivFromFullArr", result, arr);
-		return result;			
-	}
-	
-	function calcUnitTimesFromFullArr(arr) {
-		//console.debug("calcUnitTimesFromFullArr 0", arr);
-		for (var i = 0, len = arr.length; i < len; i++) {
-			arr[i] = calcUnitDivFromFullArr(arr[i]);
-		}
-		var result = applyOpToArr(unitTimes, arr);
-		//console.debug("calcUnitTimesFromFullArr", result, arr);
-		return result;		
-	}
-	
-	function calcUnitDivFromFullArr(arr) {		
-		//console.debug("calcUnitDivFromFullArr 0", arr);
-		for (var i = 0, len = arr.length; i < len; i++) {
-			arr[i] = calcPowFromFullArr(arr[i]);
-		}
-		var result = applyOpToArr(unitDiv, arr);
-		//console.debug("calcUnitDivFromFullArr", result, arr);
-		return result;		
-	}
-	
-	function calcPowFromFullArr(arr) {		
-		//console.debug("calcPowFromFullArr 0", arr);
-		for (var i = 0, len = arr.length; i < len; i++) {						
-			arr[i] = toUnitObj(arr[i]);			
-		}
-		var result = applyOpToArr(unitPow, arr, true);
-		//console.debug("calcPowFromFullArr", result, arr);
-		return result;		
-	}
+		
+		return applyOpToArr(op , arr);		
+	}	
 	
 	// export to GLOBAL	
 	GLOBAL["unitPlus"] = unitPlus;
