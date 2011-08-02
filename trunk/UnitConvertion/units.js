@@ -168,52 +168,14 @@ var GLOBAL = this;
 		return resultNum;
 	}	
 
-	function unitPlusArr(unitArr) {
-		var resultUnit, dimAreCompatible = true;
-		resultUnit = unitTimes(1, unitArr[0]);
-		for (var i = 1, len = unitArr.length; i < len && !resultUnit.incompatibleDim; i++) {
-			resultUnit = unitPlus(resultUnit, unitArr[i]);
+	function applyOpToArr(f, arr, inReverse) {
+		if (inReverse) {
+			arr.reverse();
 		}
-		//console.debug("resultUnit", resultUnit);
-		return resultUnit;
-	}
-	
-	function unitMinusArr(unitArr) {
 		var resultUnit, dimAreCompatible = true;
-		resultUnit = unitTimes(1, unitArr[0]);
-		for (var i = 1, len = unitArr.length; i < len && !resultUnit.incompatibleDim; i++) {
-			resultUnit = unitMinus(resultUnit, unitArr[i]);
-		}
-		//console.debug("resultUnit", resultUnit);
-		return resultUnit;
-	}
-	
-	function unitTimesArr(unitArr) {
-		var resultUnit, dimAreCompatible = true;
-		resultUnit = unitTimes(1, unitArr[0]);
-		for (var i = 1, len = unitArr.length; i < len && !resultUnit.incompatibleDim; i++) {
-			resultUnit = unitTimes(resultUnit, unitArr[i]);
-		}
-		//console.debug("resultUnit", resultUnit);
-		return resultUnit;
-	}
-	
-	function unitDivArr(unitArr) {
-		var resultUnit, dimAreCompatible = true;
-		//console.debug("unitDivArr 0", unitArr);
-		resultUnit = unitTimes(1, unitArr[0]);
-		for (var i = 1, len = unitArr.length; i < len && !resultUnit.incompatibleDim; i++) {
-			resultUnit = unitDiv(resultUnit, unitArr[i]);
-		}
-		//console.debug("unitDivArr", resultUnit);
-		return resultUnit;
-	}
-	
-	function unitPowArr(unitArr) {
-		var resultUnit, dimAreCompatible = true, i = unitArr.length - 1;
-		resultUnit = unitTimes(ONE, unitArr[i]);
-		while (i-- && !resultUnit.incompatibleDim) {
-			resultUnit = unitPow(unitArr[i], resultUnit);
+		resultUnit = unitTimes(1, arr[0]);
+		for (var i = 1, len = arr.length; i < len && !resultUnit.incompatibleDim; i++) {
+			resultUnit = f(resultUnit, arr[i]);
 		}
 		//console.debug("resultUnit", resultUnit);
 		return resultUnit;
@@ -308,7 +270,7 @@ var GLOBAL = this;
 		for (var i = 0, len = arr.length; i < len; i++) {
 			arr[i] = calcMinusFromFullArr(arr[i]);
 		}
-		var result = unitPlusArr(arr);
+		var result = applyOpToArr(unitPlus, arr);
 		//console.debug("calcPlusFromFullArr", result, arr);
 		return result;	
 	}
@@ -318,7 +280,7 @@ var GLOBAL = this;
 		for (var i = 0, len = arr.length; i < len; i++) {
 			arr[i] = calcTimesFromFullArr(arr[i]);
 		}
-		var result = unitMinusArr(arr);
+		var result = applyOpToArr(unitMinus, arr);
 		//console.debug("calcMinusFromFullArr", result, arr);
 		return result;			
 	}
@@ -328,7 +290,7 @@ var GLOBAL = this;
 		for (var i = 0, len = arr.length; i < len; i++) {
 			arr[i] = calcDivFromFullArr(arr[i]);
 		}
-		var result = unitTimesArr(arr);
+		var result = applyOpToArr(unitTimes, arr);
 		//console.debug("calcTimesFromFullArr", result, arr);
 		return result;				
 	}
@@ -337,9 +299,8 @@ var GLOBAL = this;
 		//console.debug("calcDivFromFullArr 0", arr);
 		for (var i = 0, len = arr.length; i < len; i++) {
 			arr[i] = calcUnitTimesFromFullArr(arr[i]);
-		}
-		//console.debug("calcDivFromFullArr 1", arr);
-		var result = unitDivArr(arr);
+		}		
+		var result = applyOpToArr(unitDiv, arr);
 		//console.debug("calcDivFromFullArr", result, arr);
 		return result;			
 	}
@@ -349,7 +310,7 @@ var GLOBAL = this;
 		for (var i = 0, len = arr.length; i < len; i++) {
 			arr[i] = calcUnitDivFromFullArr(arr[i]);
 		}
-		var result = unitTimesArr(arr);
+		var result = applyOpToArr(unitTimes, arr);
 		//console.debug("calcUnitTimesFromFullArr", result, arr);
 		return result;		
 	}
@@ -359,7 +320,7 @@ var GLOBAL = this;
 		for (var i = 0, len = arr.length; i < len; i++) {
 			arr[i] = calcPowFromFullArr(arr[i]);
 		}
-		var result = unitDivArr(arr);
+		var result = applyOpToArr(unitDiv, arr);
 		//console.debug("calcUnitDivFromFullArr", result, arr);
 		return result;		
 	}
@@ -369,7 +330,7 @@ var GLOBAL = this;
 		for (var i = 0, len = arr.length; i < len; i++) {						
 			arr[i] = toUnitObj(arr[i]);			
 		}
-		var result = unitPowArr(arr);
+		var result = applyOpToArr(unitPow, arr, true);
 		//console.debug("calcPowFromFullArr", result, arr);
 		return result;		
 	}
@@ -379,12 +340,7 @@ var GLOBAL = this;
 	GLOBAL["unitMinus"] = unitMinus;
 	GLOBAL["unitTimes"] = unitTimes;
 	GLOBAL["unitDiv"] = unitDiv;
-	GLOBAL["unitPow"] = unitPow;
-	GLOBAL["unitPlusArr"] = unitPlusArr;
-	GLOBAL["unitMinusArr"] = unitMinusArr;
-	GLOBAL["unitTimesArr"] = unitTimesArr;
-	GLOBAL["unitDivArr"] = unitDivArr;
-	GLOBAL["unitPowArr"] = unitPowArr;	
+	GLOBAL["unitPow"] = unitPow;	
 	GLOBAL["groupString"] = groupString;
 	GLOBAL["parseString"] = parseString;
 	GLOBAL["calcUnitResult"] = calcUnitResult;
