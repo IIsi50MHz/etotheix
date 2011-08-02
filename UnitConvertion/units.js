@@ -35,23 +35,23 @@ var GLOBAL = this;
 	var ONE = {dim:{}, factor:1}, NEGATIVE_ONE = {dim:{}, factor:-1}, ZERO = {dim:{}, factor:0};
 	
 	function toUnitObj(x) {
-		var resultUnit, xNum = +x;
+		var result, xNum = +x;
 		if (x.factor != null) {
-			resultUnit = x;
+			result = x;
 		} else if (isNaN(xNum)) {
-			resultUnit = UNIT[x];
+			result = UNIT[x];
 		} else {
-			resultUnit = {dim:{}, factor:xNum};
+			result = {dim:{}, factor:xNum};
 		}
-		return resultUnit;
+		return result;
 	}
 	
 	function unitPlus(u1, u2) {
-		var resultUnit = {dim:{}}, dimAreCompatible = true;
+		var result = {dim:{}}, dimAreCompatible = true;
 		if (u1 == null) {
-			resultUnit = toUnitObj(0);
+			result = toUnitObj(0);
 		} else if (u2 == null) {
-			resultUnit = toUnitObj(u1);
+			result = toUnitObj(u1);
 		} else {
 			u1 = toUnitObj(u1);
 			u2 = toUnitObj(u2);
@@ -61,124 +61,113 @@ var GLOBAL = this;
 			}
 
 			if (dimAreCompatible) {
-				// copy dim to resultUnit
+				// copy dim to result
 				for (var key in u1.dim) {
-					resultUnit.dim[key] = u1.dim[key];
+					result.dim[key] = u1.dim[key];
 				}
 				// add factors
-				resultUnit.factor = u1.factor + u2.factor;
+				result.factor = u1.factor + u2.factor;
 			} else {
-				resultUnit.incompatibleDim = true;
+				result.incompatibleDim = true;
 			}
 		}
-		//console.debug("resultUnit", resultUnit);
-		return resultUnit;
+		//console.debug("result", result);
+		return result;
 	}
 	
 	function unitMinus(u1, u2) { 
-		var resultUnit;
+		var result;
 		if (u1 == null) {
-			resultUnit = toUnitObj(0);
+			result = toUnitObj(0);
 		} else if (u2 == null) {
-			resultUnit = toUnitObj(u1);
+			result = toUnitObj(u1);
 		} else {
-			resultUnit = unitPlus(u1, unitTimes(u2, -1));
+			result = unitPlus(u1, unitTimes(u2, -1));
 		}
-		return resultUnit;
+		return result;
 	}
 	
-	function unitTimes(u1, u2) {
-		//console.debug("unitTImes u1, u2", u1, u2);
-		var resultUnit = {dim:{}};
+	function unitTimes(u1, u2) {		
+		var result = {dim:{}};
 		if (u1 == null) {
-			resultUnit = toUnitObj(1);
+			result = toUnitObj(1);
 		} else if (u2 == null) {
-			resultUnit = toUnitObj(u1);
+			result = toUnitObj(u1);
 		} else {
 			u1 = toUnitObj(u1);
 			u2 = toUnitObj(u2);
 			for (var key in DIM) {
-				// add matching dimension powers
-				//console.debug("dfs", u1, u2);
-				resultUnit.dim[key] = (u1.dim[key] || 0) + (u2.dim[key] || 0);
-				//console.debug("resultUnit.dim[key]", resultUnit.dim[key]);
+				// add matching dimension powers				
+				result.dim[key] = (u1.dim[key] || 0) + (u2.dim[key] || 0);				
 
 				// remove any 0 dimension
-				if (!resultUnit.dim[key]) {
-					delete resultUnit.dim[key];
+				if (!result.dim[key]) {
+					delete result.dim[key];
 				}
 
 				// multiply matching dimension factors
-				resultUnit.factor = u1.factor*u2.factor;
+				result.factor = u1.factor*u2.factor;
 			}
-		}
-		//console.debug("resultUnit", resultUnit);
-		return resultUnit;
+		}		
+		return result;
 	}
 	
-	function unitDiv(u1, u2) {
-		//console.debug("u1, u2", u1, u2);
-		var resultUnit;
+	function unitDiv(u1, u2) {		
+		var result;
 		if (u1 == null) {
-			resultUnit = toUnitObj(1);
+			result = toUnitObj(1);
 		} else if (u2 == null) {
-			resultUnit = toUnitObj(u1);			
+			result = toUnitObj(u1);			
 		} else {
-			resultUnit = unitTimes(u1, unitPow(u2, -1));
+			result = unitTimes(u1, unitPow(u2, -1));
 		}
-		return resultUnit;
+		return result;
 	}
 	
 	function unitPow(u, p) {
-		var resultUnit;		
+		var result;		
 		
 		if (u == null) {
-			resultUnit = toUnitObj(1);
+			result = toUnitObj(1);
 		} else if (p == null) {
-			resultUnit = toUnitObj(u);
+			result = toUnitObj(u);
 		} else {				
 			// p should be dimensionless	
 			p = toNum(p);
 			if (p != null) {
-				resultUnit = {dim:{}};
+				result = {dim:{}};
 				u = toUnitObj(u);			
 				for (var key in u.dim) {
-					resultUnit.dim[key] = u.dim[key]*p
+					result.dim[key] = u.dim[key]*p
 				}
-				resultUnit.factor = Math.pow(u.factor, p);
+				result.factor = Math.pow(u.factor, p);
 			}
-		}
-		//console.debug("resultUnit unitDiv ", u, p, resultUnit);
-		return resultUnit;
+		}		
+		return result;
 	}
 	
 	function toNum(x) {
 		// x can't be converted to number unless it's dimensionless
-		var resultNum, xNum = +x; 
+		var result, xNum = +x; 
 		if (!isNaN(xNum)) {
-			resultNum = xNum;
-		} else if (x.dim != null) {
-			for (var key in x.dim) {				
-				break;
-			}
-			if (!key) {
-				resultNum = x.factor;
-			}
+			result = xNum;
+		} else if (x.dim) {
+			for (var key in x.dim) {break;}
+			if (!key) {result = x.factor;}
 		}
-		return resultNum;
+		return result;
 	}	
 
 	function applyOpToArr(op, arr) {
 		if (op.inReverse) {
 			arr.reverse();
 		}
-		var resultUnit, dimAreCompatible = true;
-		resultUnit = unitTimes(1, arr[0]);
-		for (var i = 1, len = arr.length; i < len && !resultUnit.incompatibleDim; i++) {
-			resultUnit = op(resultUnit, arr[i]);
-		}
-		//console.debug("resultUnit", resultUnit);
-		return resultUnit;
+		var result, dimAreCompatible = true;
+		result = unitTimes(1, arr[0]);
+		for (var i = 1, len = arr.length; i < len && !result.incompatibleDim; i++) {
+			result = op.inReverse ? op(arr[i], result) : op(result, arr[i]);			
+		}		
+		return result;
 	}
 
 	function groupString(str) {
@@ -186,6 +175,7 @@ var GLOBAL = this;
 		str = str.replace(/[)]/g, "')");
 		return str;
 	}
+	
 	function parseString(str) {
 		//console.debug("// str\n", str);
 		// normalize space
@@ -224,62 +214,48 @@ var GLOBAL = this;
 		str = str.replace(/^\s+|\s+$/g, "");
 		console.debug("// trim\n", str);
 		// create an array from the string
-		var arrPlus = str.split("+"), arrMinus, arrTimes, arrDiv, arrUnitTimes, arrUnitDiv, arrPow;
-		var iPlus = arrPlus.length, iMinus, iTimes, iDiv, iUnitTimes, iUnitDiv, iPow;
-		while (iPlus--) {
-			arrPlus[iPlus] = arrMinus = arrPlus[iPlus].split(/~/);
-			iMinus = arrMinus.length;
-			while (iMinus--) {
-				arrMinus[iMinus] = arrTimes = arrMinus[iMinus].split("*");
-				iTimes = arrTimes.length;
-				while (iTimes--) {
-					arrTimes[iTimes] = arrDiv = arrTimes[iTimes].split("/");
-					iDiv = arrDiv.length;
-					while (iDiv--) {
-						arrDiv[iDiv] = arrUnitTimes = arrDiv[iDiv].split("|");
-						iUnitTimes = arrUnitTimes.length;
-						while (iUnitTimes--) {
-							arrUnitTimes[iUnitTimes] = arrUnitDiv = arrUnitTimes[iUnitTimes].split("`");
-							iUnitDiv = arrUnitDiv.length;
-							while (iUnitDiv--) {
-								arrUnitDiv[iUnitDiv] = arrPow = arrUnitDiv[iUnitDiv].split("^");
-							}
-						}
-					}
-				}
-			}
-		}		
+		
 		//console.debug(arrPlus);
-		return arrPlus;
+		return splitToNestedArr([str], generateOrderedOpStrArray())[0];
+	}		
+	
+	// We create an array with a bunch of levels so we can easily keep track of the order of operations.
+	// Plus is at the lowest level; Power is at the highest.
+	// ~ is used for minus so we can treat it differently than the negative sign
+	// We have couple extra operators so we can bind all units following a number together.
+	// ...This lets interpret something like "10 m/s / 10 ft/s" as "(10 m/s) / (10 ft/s) " instead of "(10 / 10) m*ft/s^2"
+	function generateOrderedOpStrArray() {return ["+", "~", "*", "/", "|", "`", "^"];}
+	function splitToNestedArr(arr, orderedOpStrArr) {
+		orderedOpStrArr || (orderedOpStrArr = generateOrderedOpStrArray());		
+		var opStr = orderedOpStrArr.shift();		
+		if (opStr) {
+			var i = arr.length;			
+			while (i--) {					
+				arr[i] = arr[i].split(opStr);				
+				splitToNestedArr(arr[i], copyArr(orderedOpStrArr));				
+			}					
+		} 		
+		return arr;
 	}
 	
 	unitPow.inReverse = true;
-	function generateOrderedOpArray() {
-		return [unitPlus, unitMinus, unitTimes, unitDiv, unitTimes, unitDiv, unitPow];
-	}
-	
+	function generateorderedOpArr() {return [unitPlus, unitMinus, unitTimes, unitDiv, unitTimes, unitDiv, unitPow];}		
 	function copyArr(arr) {
 		var i = arr.length, copy = [];
-		while (i--) {
-			copy[i] = arr[i];
-		}
+		while (i--) {copy[i] = arr[i];}
 		return copy;
-	}
-	
-	function calcUnitResult(str) {		
-		return calcOpsFromFullArr(parseString(str), generateOrderedOpArray());	
 	}	
-	
-	function calcOpsFromFullArr(arr, orderedOpArray) {		
-		var nextFunc = orderedOpArray.length > 1 ? calcOpsFromFullArr : toUnitObj,
-			op = orderedOpArray.shift();		
+	function calcUnitResult(str) {return calcOpsFromFullArr(parseString(str), generateorderedOpArr());}		
+	function calcOpsFromFullArr(arr, orderedOpArr) {		
+		var nextFunc = orderedOpArr.length > 1 ? calcOpsFromFullArr : toUnitObj,
+			op = orderedOpArr.shift();		
 		
 		for (var i = 0, len = arr.length; i < len; i++) {
-			arr[i] = nextFunc(arr[i], copyArr(orderedOpArray));
+			arr[i] = nextFunc(arr[i], copyArr(orderedOpArr));
 		}
 		
 		return applyOpToArr(op , arr);		
-	}	
+	}
 	
 	// export to GLOBAL	
 	GLOBAL["unitPlus"] = unitPlus;
@@ -292,8 +268,7 @@ var GLOBAL = this;
 	GLOBAL["calcUnitResult"] = calcUnitResult;
 	GLOBAL["toNum"] = toNum;
 	GLOBAL["toUnitObj"] = toUnitObj;
-	
-	
+	GLOBAL["splitToNestedArr"] = splitToNestedArr;	
 }());
 //unitTimes({dim:{L:1, T:-3}, factor:3}, {dim:{L:2, T:3}, factor:5});
 //unitPlus({dim:{L:1, T:-3}, factor:13}, {dim:{L:1, T:-3}, factor:5});
