@@ -279,10 +279,56 @@ parseString
 
 /*
 	5*(10 m + 50 feet^2 / (4 in))^10 + 3
+	
+	5*|(|10 m + 50 feet^2 / |(|4 in|)|)^10 + 3
+	["5*","(10 m + 50 feet^2 / ", "(4 in)", ")", "^10 + 3"]
+	
+	["5*","(", "10 m + 50 feet^2 / ", "(", "4 in", ")", ")", "^10 + 3"]
+	
+	["5*","(", "10 m + 50 feet^2 / ", "(", "4 in))^10 + 3"]
+	
 
-	["5", "*", ["10", "m", "+", "50", "feet", "^", "2", "/", "4", "in"], "^", "10", "+", "3"]
-	group("5", "*", group("10", "m", "+", "feet", "^", "2", "/", group("4", "in")), "^", "10", "+", "3")
-	group(["10", "m"],["50", "feet", "^", "2", group("4", "in"), "^", "-1"])
-	group(["10", "m"],["50", ["feet","2"], [group(["4", "in"]), "-1"]]])
+	["5", "*", ["10", "m", "+", "50", "feet", "^", "2", "/", "4", "in"], "^", "10", "+", "3"]	
 
 */
+function parenToArr(str) {
+	var openParenPos, closeParenPos, parenCount, startToOpen, openToClose, closeToEnd, result;
+	// Find position of first open paren
+	openParenPos = str.indexOf("(");		
+	
+	if (openParenPos !== -1) {		
+		for (var i = openParenPos+1, parenCount = 1, len = str.length; (-1 < i && i < len) && parenCount > 0; i++) {		
+			// Increment count when we find an opne paren; decrement when we find a closed one. 
+			if (str[i] === "(") {
+				parenCount++;
+			} else if (str[i] === ")") {
+				parenCount--;
+			}
+			
+			console.debug("i", i);
+			console.debug("parenCount", parenCount);
+			
+			// When the count reches zero, we've found the matching paren
+			if (parenCount === 0) {
+				closeParenPos = i;
+			}
+		}	
+		
+		// Slice from string start to openParenPos 
+		startToOpen = str.slice(0, openParenPos);
+		// Slice from openParenPos to closeParenPos, wrap this in an array, apply this function to that string
+		openToClose = parenToArr(str.slice(openParenPos+1, closeParenPos));
+		// Slice from closeParenPos to end of string, apply this function to that string	
+		closeToEnd = parenToArr(str.slice(closeParenPos+1));
+		
+		if (closeToEnd[0]) {
+			result = [startToOpen, openToClose].concat(closeToEnd);
+		} else { 
+			result = [startToOpen, openToClose];
+		}
+	} else {
+		result = [str];
+	}
+	
+	return result;
+};
