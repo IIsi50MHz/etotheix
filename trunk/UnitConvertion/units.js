@@ -293,11 +293,11 @@ parseString
 */
 function parenToArr(str) {
 	var openParenPos, closeParenPos, parenCount, startToOpen, openToClose, closeToEnd, result;
-	// Find position of first open paren
-	openParenPos = str.indexOf("(");		
 	
+	// Find position of first open paren
+	openParenPos = str.indexOf("(");	
 	if (openParenPos !== -1) {		
-		for (var i = openParenPos+1, parenCount = 1, len = str.length; (-1 < i && i < len) && parenCount > 0; i++) {		
+		for (var i = openParenPos + 1, parenCount = 1, len = str.length; 0 < parenCount && i < len; i++) {		
 			// Increment count when we find an opne paren; decrement when we find a closed one. 
 			if (str[i] === "(") {
 				parenCount++;
@@ -305,10 +305,7 @@ function parenToArr(str) {
 				parenCount--;
 			}
 			
-			console.debug("i", i);
-			console.debug("parenCount", parenCount);
-			
-			// When the count reches zero, we've found the matching paren
+			// When the count reaches zero, we've found the matching paren
 			if (parenCount === 0) {
 				closeParenPos = i;
 			}
@@ -316,16 +313,25 @@ function parenToArr(str) {
 		
 		// Slice from string start to openParenPos 
 		startToOpen = str.slice(0, openParenPos);
-		// Slice from openParenPos to closeParenPos, wrap this in an array, apply this function to that string
-		openToClose = parenToArr(str.slice(openParenPos+1, closeParenPos));
-		// Slice from closeParenPos to end of string, apply this function to that string	
-		closeToEnd = parenToArr(str.slice(closeParenPos+1));
+		// Slice from openParenPos to closeParenPos
+		openToClose = str.slice(openParenPos+1, closeParenPos);
+		// Slice from closeParenPos to end of string	
+		closeToEnd = str.slice(closeParenPos+1);
 		
-		if (closeToEnd[0]) {
-			result = [startToOpen, openToClose].concat(closeToEnd);
-		} else { 
-			result = [startToOpen, openToClose];
+		// build result
+		result = [];
+		if (startToOpen) { 
+			// we don't need to process stuff before paren
+			result.push(startToOpen);
 		}
+		if (openToClose) {
+			// apply function again to stuff between parens
+			result.push(parenToArr(openToClose));
+		}
+		if (closeToEnd) {
+			// apply function again to stuff after closing paren
+			result = result.concat(parenToArr(closeToEnd));
+		} 
 	} else {
 		result = [str];
 	}
