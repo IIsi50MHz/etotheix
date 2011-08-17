@@ -5,27 +5,75 @@
 	* create shorthand for commonly used boilerplate type
 	* handle s:use's when used docs have s:use's too
 	* think about other things that are confusing or painful in XSLT and make them better. (grouping?)
-	* add code to add/remove a class (s:add-class, s:remove-class)
+	done * add code to add/remove a class (s:add-class, s:remove-class)
 	done * add ability to use stuff like css(.ding.ding) in match and select
 	done * get rid of class('ding')
-	* make it so we can have local named strucs????
-	* make it so we can pass params to strucs when using in rules???? (not sure if we can do this)
+	no * make it so we can have local named strucs????
+	no * make it so we can pass params to strucs when using in rules???? (not sure if we can do this)
 	no * class('one two three')	
 	no * make it so s:rule and s:inline-struc take <s:struc> wrapper optionally (currently it's required for s:rule and can't be used with s:inline-struc)
 		no * or just make s:struc required for s:inline-struc
 		no * change @name for s:inline-struc to @struc to make it consistant with s:rule?
 		no * ... and change s:inline-struc to just s:inline. <s:inline struc="ding"/>
 		* or just get rid of s:struc wapper for s:rule too.
+		
+	2011.01.11
+	done * NOTE: Code for add/remove class is completely wrong. Should probably remove and start over.
+	* add html5 compatable doctype to output html
+	no * think about changing s:this back to s:elem (s:this seems weird) 
+	 	<s:elem>
+			<s:add-class>yyy www</s:add-class>
+			<s:remove-class>xxx asdf</s:remove-class>
+			<s:remove-attr>dong blah</s:remove-attr>
+			<s:tag-name>ding</s:tag-name>
+		</s:elem>
+		
+	done * add ability to move elements with id's
+		<s:elem>
+			<s:relocate id="kong"/>
+		</s:elem>
+		===
+		<xsl:apply-templates select="//s:relocate"/>
+		===
+		<xsl:key name="elem_by_id" match="*[@id]" use="@id"/>
+		...
+		<xsl:template select="*[@id='kong']"/> // get rid of original element
+		...
+		<xsl:apply-templates select="key('elem_by_id', 'kong'") mode="relocate"/> // handle like s:apply-rules
+	
+	2011.01.29
+	done * remove-attr seems to be broken. need to fix.
+	fixed * inline-struc doesn't work very well anymore since fixing add-class/remove-class (remove feature?)
+	done * need to find a good way to do nested structures? or not.
+	done * make these attributes of s:this
+		<s:this s:tag-name="ding" s:add-class="a b c" s:remove-class="d e f" s:remove-attr="id"/>
+	done * improve s:relocate (move? shift? reposition? grab? yank? put? pop?)
+		<s:move id="a" struc="ding"/> 
+		<s:move id="a"/>
+		<s:move id="a">
+			<s:this>
+				<ding>abd</ding>
+				<apply-rules/>
+			</s:this>
+		</s:move>
+	done * <s:inline-struc name="blah"/> change @name to @struc?
+	done * make this work: <s:inline-struc select="xxx"/>
+	* create a structure-stylesheet 'validator' (make it so it runs in the browser....)
+	* make it easy to turn comments on/off
+	* make grouping easy (hide the Muenchian method)
+	
 -->
 <s:stylesheet xmlns:s="structure-stylesheet">
-	<!--<s:use href="sss_ex_use.xml"/>-->
+	<s:use href="sss_ex_use.xml"/>
 	
-	<s:struc name="one">		
-		<s:inline-struc name="two" select="."/>
+	<s:struc name="one">	
+		<s:this>
+			<s:apply-rules/>
+		</s:this>
 	</s:struc>
 	
 	<s:struc name="two">
-		<s:this style="color:green;">
+		<s:this s:add-class="addedClass addClass2" s:remove-class="qwer asdf" style="color:green;">	
 			<s:apply-rules/>				
 		</s:this>
 	</s:struc>
@@ -39,57 +87,94 @@
 	</s:struc>
 	
 	<s:struc name="four">		
-		<s:this style="color:orange; font-style:italic;">
-			<s:remove-attr name="class"/>
-			<s:remove-attr name="fourMore"/>
+		<s:this s:tag-name="div" s:remove-attr="id ding dong" s:remove-class="xxx" style="color:orange; font-style:italic;">
 			<s:apply-rules/>
 		</s:this>
 	</s:struc>
 	
 	<s:struc name="five">		
-		<s:this>
-			<s:tag name="ol"/>
-			<li>DING!</li>
-			<s:inline-struc select="li">
-				<s:sort order="descending"/>
-				<li>
-					<s:apply-rules/>				
-				</li>
-			</s:inline-struc>
+		<s:this s:tag-name="table" s:add-class="ding dong">
+			<tr>
+				<s:inline-struc>
+					<s:this s:tag-name="td" s:add-class="HA HO z" what="is going on?">
+						<s:apply-rules/>
+					</s:this>
+				</s:inline-struc>
+			</tr>
 		</s:this>
 	</s:struc>
 	
+	<!--<s:struc name="five">		
+		<s:this s:tag-name="table" s:add-class="ding dong">
+			<tr>
+				<s:apply-rules/>
+			</tr>
+		</s:this>
+	</s:struc>
+	
+	<s:struc name="five_cells">		
+		<s:this s:tag-name="td">
+			<s:apply-rules/>
+		</s:this>
+	</s:struc>-->
+	
+	<!--HRLEO!!!-->
 	<s:struc name="body">		
-		<s:this>						
-			<s:apply-rules>
-				<s:sort order="descending"/>
-			</s:apply-rules>
+		<s:this s:add-class="hello">
+			<s:move id="ELEPHANT"/>	
+			<s:move id="relocate_me"/>
+			
+			<div>www</div>
+			<s:inline-struc select="ul"/>
+			<div>dings</div>
+			
+			<div>ding</div>
+			<script>
+				//<![CDATA[
+					alert('>this< is a test & stuff');
+				//]]>
+			</script>
+			<s:apply-rules/>
 		</s:this>
 	</s:struc>	
+	
 	
 	<s:struc name="text">		
 		<span style="color:magenta;"><s:this ding="dongxxx"/></span>
 	</s:struc>
+	
+	<s:struc name="div">		
+		<tt style="color:magenta;">
+			<s:this ding="DONG!!!">
+				<s:apply-rules/>
+			</s:this>
+		</tt>
+	</s:struc>
+	
+	<!--
+		this is xxx
+	-->
+	<s:struc name="xxx">
+		<p style="color:pink;">
+			<s:this s:add-class="What the">
+				<s:apply-rules/>
+			</s:this>
+		</p>
+	</s:struc>
 
 	<s:rule match="css(div#table.abc.xxx[type='text'])" struc="one"/>
 	<s:rule match="ding[css(#two) or css(#three)][@blam]" struc="two"/>
+	<s:rule match="css(.two)" struc="two"/>
 	<s:rule match="css(.three)" struc="three"/>
-	<s:rule match="css(.four)" struc="five"/>
-	<s:rule match="css(.five)">	
-		<s:struc>
-			<s:this>
-				<s:inline-struc name="one">
-					<s:sort order="descending"/>													
-				</s:inline-struc>					
-			</s:this>
-		</s:struc>
+	<s:rule match="css(.five)" struc="five">
+		<s:rule match="li" struc="five_cells"/>
 	</s:rule>
+	<s:rule match="css(.four)" struc="four"/>
 	<s:rule match="body" struc="body"/>
-	<s:rule match="div">
-		<s:struc>
-			<s:this>hello</s:this>
-		</s:struc>
-	</s:rule>	
+	<s:rule match="div" struc="div">
+		<s:rule match="css(.xxx)" struc="xxx"/>
+	</s:rule>
+	
 	<s:rule match="li/text()[. = 'c' or . = 'a']" struc="text"/>
 	
 </s:stylesheet>
