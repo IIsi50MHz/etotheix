@@ -9,6 +9,8 @@ var global = this;
 	//
 	var incompatibleDimError = new Error("Uh oh, incompatible dimensions.");
 	// Conversion factors for all units 
+	var cupFactor = 0.000236588237;
+	var poundFactor = 0.45359237;
 	var UNIT = {
 		// ANGLE
 		"degree":{dim:{}, factor:Math.PI/180, alias:["degree", "degrees", "deg"]},
@@ -23,6 +25,20 @@ var global = this;
 		"yard":{dim:{L:1}, factor:0.9144, alias:["yard", "yards", "yd", "yds"]},
 		"mile":{dim:{L:1}, factor:1609.344, alias:["mile", "miles", "mi"]},
 		
+		// AREA
+		//"xxx":{dim:{L:1}, factor:1, alias:["xxx", "xxx"]},
+		"acre":{dim:{L:2}, factor:4046.85642, alias:["acre", "acres"]},
+		
+		// VOLUME
+		"liter":{dim:{L:3}, factor:0.001, alias:["liter", "liters", "ltr"]},
+		"mililiter":{dim:{L:3}, factor:1e-6, alias:["mililiter", "mililiters", "ml"]},
+		"gallon":{dim:{L:3}, factor:cupFactor*16, alias:["gallon", "gallons", "gal", "gals"]},
+		"quart":{dim:{L:3}, factor:cupFactor*4, alias:["quart", "quarts", "qt", "qts"]},
+		"pint":{dim:{L:3}, factor:cupFactor*2, alias:["pint", "pints", "pt", "pts"]},
+		"cup":{dim:{L:3}, factor:cupFactor, alias:["cup", "cups"]},
+		"tablespoon":{dim:{L:3}, factor:cupFactor/16, alias:["tablespoon", "tablespoons", "tbsp", "tblsp"]},
+		"teaspoon":{dim:{L:3}, factor:cupFactor/48, alias:["teaspoon", "teaspoons", "tsp"]},
+		
 		// TIME
 		"second":{dim:{T:1}, factor:1, alias:["second", "seconds", "sec", "secs", "s"]},
 		"minute":{dim:{T:1}, factor:60, alias:["minute", "minutes", "min", "mins"]},
@@ -34,14 +50,12 @@ var global = this;
 		"kilogram":{dim:{M:1}, factor:1, alias:["kilogram", "kilograms", "kg"]},
 		"gram":{dim:{M:1}, factor:0.001, alias:["gram", "grams", "g"]},
 		"miligram":{dim:{M:1}, factor:1e-6, alias:["miligram", "miligrams", "mg"]},
-		"stone":{dim:{M:1}, factor:14*0.45359237, alias:["stone", "stones"]}, // not really mass?
-		"pound":{dim:{M:1}, factor:0.45359237, alias:["pound", "pounds", "lb", "lbs"]}, // not really mass
+		"pound":{dim:{M:1}, factor:poundFactor, alias:["pound", "pounds", "lb", "lbs"]}, // not really mass
+		"stone":{dim:{M:1}, factor:14*poundFactor, alias:["stone", "stones"]}, // not really mass?
 		
 		// SPEED
 		"mph":{dim:{L:1, T:-1}, factor:1609.344/3600, alias:["mph"]},
 		"kph":{dim:{L:1, T:-1}, factor:1000/3600, alias:["kph"]},
-		"fps":{dim:{L:1, T:-1}, factor:0.3048, alias:["fps"]},
-		"mps":{dim:{L:1, T:-1}, factor:1, alias:["mps"]},
 		
 		// FUNCTIONS
 		"sine": {dim:{}, alias:["sine", "sin"], f:function (x) {
