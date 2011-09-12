@@ -1,10 +1,21 @@
 var global = this;
+
 //(function () {
+	function each(callback, thisArg) {
+		var len = this.length;
+		for (i = 0; i < len; i++) {
+			callback.call(thisArg, this[i], i, this);
+		}
+	}
 	// All units are converted to these when doing calculations
-	var DIM = {
-		L:"m",
-		T:"s",
-		M:"kg"
+	var DIM = ["L", "T", "M"];
+	var DEFAULT_DISPLAY_UNITS = {
+		"L1": "m",
+		"T1": "s",
+		"M1": "kg",
+		"L1T-1": "m/s",
+		"L2": "m^2",
+		"L3": "m^3"
 	};
 	//
 	var incompatibleDimError = new Error("Uh oh, incompatible dimensions.");
@@ -32,7 +43,7 @@ var global = this;
 		"acre":{dim:{L:2}, factor:4046.85642, alias:["acre", "acres"]},
 		
 		// VOLUME
-		"liter":{dim:{L:3}, factor:0.001, alias:["liter", "liters", "ltr"]},
+		"liter":{dim:{L:3}, factor:0.001, alias:["liter", "liters", "litre", "litres", "ltr"]},
 		"mililiter":{dim:{L:3}, factor:1e-6, alias:["mililiter", "mililiters", "ml"]},
 		"gallon":{dim:{L:3}, factor:cupFactor*16, alias:["gallon", "gallons", "gal", "gals"]},
 		"quart":{dim:{L:3}, factor:cupFactor*4, alias:["quart", "quarts", "qt", "qts"]},
@@ -97,18 +108,15 @@ var global = this;
 	//------------------------------------------
 	function dimsMatch(u1, u2) {
 		var dimAreCompatible = true;
-		for (var key in DIM) {
+		each.call(DIM, function (key) {
 			dimAreCompatible = dimAreCompatible && u1.dim[key] == u2.dim[key];
-			if (!dimAreCompatible) {
-				break;
-			}
-		}
+		});
 		return dimAreCompatible;
 	}
 	//------------------------------------------
 	// Add unit objects (or numbers)
 	function unitPlus(u1, u2) {
-		var result = {dim:{}}, dimAreCompatible = true;
+		var result = {dim:{}};
 		if (u1 == null) {
 			result = toUnitObj(0);
 		} else if (u2 == null) {
@@ -117,10 +125,6 @@ var global = this;
 			u1 = toUnitObj(u1);
 			u2 = toUnitObj(u2);
 			// check if units have compatiple dimensions
-			for (var key in DIM) {
-				dimAreCompatible = dimAreCompatible && u1.dim[key] == u2.dim[key];
-			}
-
 			if (dimsMatch(u1, u2)) {
 				// copy dim to result
 				for (var key in u1.dim) {
@@ -160,7 +164,7 @@ var global = this;
 		} else {
 			u1 = toUnitObj(u1);
 			u2 = toUnitObj(u2);
-			for (var key in DIM) {
+			each.call(DIM, function (key) {
 				// add matching dimension powers				
 				result.dim[key] = (u1.dim[key] || 0) + (u2.dim[key] || 0);				
 
@@ -168,7 +172,7 @@ var global = this;
 				if (!result.dim[key]) {
 					delete result.dim[key];
 				}	
-			}
+			});
 			// multiply factors
 			result.factor = u1.factor*u2.factor;
 		}		
@@ -349,17 +353,46 @@ var global = this;
 		}
 	};
 	//------------------------------------------
-	function unitObjToStr(unitObj) {
-		var factor = unitObj.factor, dim = unitObj.dim, units = "", dimExp;
-		for (var key in dim) {
+	function unitObjToStr(unitObj, precision) {
+		var factor = unitObj.factor, 
+			dim = unitObj.dim, dimExp,
+			units = "",
+			displayUnitsKey = "", displayUnits; 
+		
+		// Construct key so we can get the default display unit string (if it exists)
+		each.call(DIM, function (key) {
 			dimExp = dim[key];
-			units += " " + DIM[key];
-			if (dimExp != 1) {
-				units += "^" + dimExp;
+			if (dimExp) {
+				displayUnitsKey += key+dimExp;
 			}
+		});
+		
+		displayUnits = DEFAULT_DISPLAY_UNITS[displayUnitsKey];
+		if (displayUnits) {
+			factor = factor/calcUnitResult(displayUnits).factor;
+			if (precision) {
+				factor = +factor.toPrecision(precision);
+			}
+			// We found default display units. Convert to those units and use the display units string
+			result = "" + factor + " " + displayUnits;
+		} else {
+			// No default display units. Create an ugly display units string.
+			each.call(DIM, function (key) {
+				dimExp = dim[key];
+				if (dimExp) {
+					units += " " + DEFAULT_DISPLAY_UNITS[key+"1"];
+					if (dimExp != 1) {
+						units += "^" + dimExp;
+					}
+				}
+			});
+			if (precision) {
+				factor = +factor.toPrecision(precision);
+			}
+			result = "" + factor + units;
 		}
 		
-		return "" + factor + units;
+		return result;
 	}
 	//------------------------------------------
 	function calcStrResult(str) {
@@ -388,10 +421,20 @@ var global = this;
 	}
 	//------------------------------------------
 	function calcWithUnitConversion(str) {
-		// split on "in" or "to"
-		var splitStrArr = str.replace(/(\s+)(in|to)(\s+[a-zA-Z])/, "$1@@@$3").split(/\s+@@@\s+/);
+		// TODO: handle "in a"
+		// Split on "in" or "to" or "into"
+		var resultStr, resultUnitObj, splitArr, numberPart, unitPart;
+			splitStrArr = str.replace(/(\s+)(into|in|to)(\s+[a-zA-Z])/, "$1@@@$3").split(/\s+@@@\s+/);
 		console.debug("splitStrArr", splitStrArr[0], "|", splitStrArr[1]);
-		return unitConvert(splitStrArr[0], splitStrArr[1]);
+		resultStr = unitConvert(splitStrArr[0], splitStrArr[1]);
+		// Split number part and other part
+		splitArr = resultStr.split(/(\s+.*)$/);
+		// Set the precision of the display result
+		numberPart = +(+splitArr[0]).toPrecision(13);
+		unitPart = splitArr[1] || "";	
+		
+		
+		return "" + numberPart + unitPart;
 	}
 	//------------------------------------------
 	/*
