@@ -324,7 +324,7 @@ var GLOBAL = this;
 	}
 	//------------------------------------------
 	var recurseCount = 0;
-	function flattenNestedParenArr(nestedParenArr) {
+	function calcFromNestedParenArr(nestedParenArr) {
 		if (recurseCount < 100) {
 			var i = nestedParenArr.length, item, resultStr;
 			recurseCount++;
@@ -336,14 +336,17 @@ var GLOBAL = this;
 				while(i--) {
 					item = nestedParenArr[i];
 					if (typeof item !== "string") {
-						nestedParenArr[i] = flattenNestedParenArr(item);
+						nestedParenArr[i] = calcFromNestedParenArr(item);
 					}
 				}
 				return calcStrResult(nestedParenArr.join(""));
 			}
 		}
 	}
-
+	//------------------------------------------
+	function calcFromNestedParenStr(nestedParenStr) {
+		return calcFromNestedParenArr(parenToArr(nestedParenStr));
+	}
 	// export to GLOBAL	
 	// GLOBAL["unitPlus"] = unitPlus;
 	// GLOBAL["unitMinus"] = unitMinus;
