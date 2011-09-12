@@ -1,4 +1,4 @@
-var GLOBAL = this;
+var global = this;
 //(function () {
 	// All units are converted to these when doing calculations
 	var DIM = {
@@ -6,6 +6,8 @@ var GLOBAL = this;
 		T:"s",
 		M:"kg"
 	};
+	//
+	var incompatibleDimError = new Error("Uh oh, incompatible dimensions.");
 	// Conversion factors for all units 
 	var UNIT = {
 		// ANGLE
@@ -24,7 +26,7 @@ var GLOBAL = this;
 		// TIME
 		"second":{dim:{T:1}, factor:1, alias:["second", "seconds", "sec", "secs", "s"]},
 		"minute":{dim:{T:1}, factor:60, alias:["minute", "minutes", "min", "mins"]},
-		"hour":{dim:{T:1}, factor:3600, alias:["hour", "hours", "hr", "hrs"]},
+		"hour":{dim:{T:1}, factor:3600, alias:["hour", "hours", "hr", "hrs", "h"]},
 		"day":{dim:{T:1}, factor:3600*24, alias:["day", "days"]},
 		"year":{dim:{T:1}, factor:3600*24*365.242199, alias:["year", "years", "yr"]},
 		
@@ -32,10 +34,14 @@ var GLOBAL = this;
 		"kilogram":{dim:{M:1}, factor:1, alias:["kilogram", "kilograms", "kg"]},
 		"gram":{dim:{M:1}, factor:0.001, alias:["gram", "grams", "g"]},
 		"miligram":{dim:{M:1}, factor:1e-6, alias:["miligram", "miligrams", "mg"]},
+		"stone":{dim:{M:1}, factor:14*0.45359237, alias:["stone", "stones"]}, // not really mass?
+		"pound":{dim:{M:1}, factor:0.45359237, alias:["pound", "pounds", "lb", "lbs"]}, // not really mass
 		
 		// SPEED
 		"mph":{dim:{L:1, T:-1}, factor:1609.344/3600, alias:["mph"]},
 		"kph":{dim:{L:1, T:-1}, factor:1000/3600, alias:["kph"]},
+		"fps":{dim:{L:1, T:-1}, factor:0.3048, alias:["fps"]},
+		"mps":{dim:{L:1, T:-1}, factor:1, alias:["mps"]},
 		
 		// FUNCTIONS
 		"sine": {dim:{}, alias:["sine", "sin"], f:function (x) {
@@ -73,6 +79,17 @@ var GLOBAL = this;
 		return result;
 	}
 	//------------------------------------------
+	function dimsMatch(u1, u2) {
+		var dimAreCompatible = true;
+		for (var key in DIM) {
+			dimAreCompatible = dimAreCompatible && u1.dim[key] == u2.dim[key];
+			if (!dimAreCompatible) {
+				break;
+			}
+		}
+		return dimAreCompatible;
+	}
+	//------------------------------------------
 	// Add unit objects (or numbers)
 	function unitPlus(u1, u2) {
 		var result = {dim:{}}, dimAreCompatible = true;
@@ -88,7 +105,7 @@ var GLOBAL = this;
 				dimAreCompatible = dimAreCompatible && u1.dim[key] == u2.dim[key];
 			}
 
-			if (dimAreCompatible) {
+			if (dimsMatch(u1, u2)) {
 				// copy dim to result
 				for (var key in u1.dim) {
 					result.dim[key] = u1.dim[key];
@@ -97,6 +114,7 @@ var GLOBAL = this;
 				result.factor = u1.factor + u2.factor;
 			} else {
 				result.incompatibleDim = true;
+				throw incompatibleDimError;
 			}
 		}
 		//console.debug("result", result);
@@ -203,31 +221,25 @@ var GLOBAL = this;
 		return result;
 	}
 	//------------------------------------------
-	function groupString(str) {
-		str = str.replace(/[(]/g, "group('");
-		str = str.replace(/[)]/g, "')");
-		return str;
-	}
-	//------------------------------------------
 	// Reformat str so it can be split into a special nested array, then do the split.
 	function parseString(str) {
 		//console.debug("// str\n", str);
 		// normalize space
 		str = str.replace(/\s+/g, " ").replace(/^\s+|\s+$/g, "");
 		//console.debug("// normalize space\n", str);
+		// handle "e" notation
+		str = str.replace(/([0-9])[eE]([-]*[0-9])/g, "$1*10^$2");
+		//console.debug('// handle "e" notation\n', str);
 		// put a "|" betweeen numbers and units so we can make things like this work as expected: 10 ft / 5 ft = 2;
 		str = str.replace(/([0-9])([a-zA-Z'"])/g, "$1|$2");
-		str = str.replace(/([0-9a-zA-Z])\s+([a-zA-Z'"])/g, "$1|$2");
+		str = str.replace(/([0-9a-zA-Z])\s+([a-zA-Z][^][-]?[0-9]|[a-zA-Z'"])/g, "$1|$2").replace(/([0-9a-zA-Z])\s+([a-zA-Z][^][-]?[0-9]|[a-zA-Z'"])/g, "$1|$2");
 		//console.debug("// put a | betweeen numbers and units so we can make things like this work as expected: 10 ft / 5 ft = 2\n", str);
 		// replace / before units with "`" so we can make things like this work as expected: 5 ft/sec / 5 in/sec = 12;
-		str = str.replace(/([0-9a-zA-Z])\s*\/\s*([a-zA-Z])/g, "$1`$2");
+		str = str.replace(/([0-9a-zA-Z])\s*\/\s*([a-zA-Z])/g, "$1`$2").replace(/([0-9a-zA-Z])\s*\/\s*([a-zA-Z])/g, "$1`$2");
 		//console.debug("replace / before units with ` so we can make things like this work as expected: 5 ft/sec / 5 in/sec = 12\n", str);
 		// replace spaces with * unless adjacent to an operator or followed by a letter
 		str = str.replace(/([^\+\-\*\/\^\'\"])\s([^\+\-\*\/\^])/g, "$1*$2");		
 		//console.debug("// replace spaces with * unless adjacent to and operator\n", str);
-		// handle "e" notation
-		str = str.replace(/([0-9])[eE]([-]*[0-9])/g, "$110^$2");
-		//console.debug('// handle "e" notation\n', str);
 		// remove all spaces around operators
 		str = str.replace(/\s*([^\+\-\*\/\^])\s*/g, "$1");
 		//console.debug("// remove all spaces around operators\n", str);
@@ -306,6 +318,20 @@ var GLOBAL = this;
 		return calcOpsFromFullArr(parseString(str), generateOrderedOpArr());
 	}	
 	//------------------------------------------
+	function unitConvert(str, unitStr) {
+		var strResult = calcFromNestedParenStr(str);
+		var unitObj = calcUnitResult(strResult);
+		var toUnit = calcUnitResult(unitStr);
+		if (dimsMatch(unitObj, toUnit)) {
+			return "" + unitObj.factor/toUnit.factor + " " + unitStr; 
+		} else {
+			throw incompatibleDimError;
+		}
+	};
+	//------------------------------------------
+	function unitConvertFromStr() {
+	}
+	//------------------------------------------
 	function unitObjToStr(unitObj) {
 		var factor = unitObj.factor, dim = unitObj.dim, units = "", dimExp;
 		for (var key in dim) {
@@ -323,104 +349,83 @@ var GLOBAL = this;
 		return unitObjToStr(calcUnitResult(str));
 	}
 	//------------------------------------------
-	var recurseCount = 0;
 	function calcFromNestedParenArr(nestedParenArr) {
-		if (recurseCount < 100) {
-			var i = nestedParenArr.length, item, resultStr;
-			recurseCount++;
-			if (i === 1) { 
-				// If the array contains a single string, we want replace it with the result (string)
-				return calcStrResult(nestedParenArr[0]);
-			} else {
-				// Otherwise we need to make sure everything in this array is a string, join those strings together, and calculate that (string) result. 
-				while(i--) {
-					item = nestedParenArr[i];
-					if (typeof item !== "string") {
-						nestedParenArr[i] = calcFromNestedParenArr(item);
-					}
+		var i = nestedParenArr.length, item, resultStr;
+		if (i === 1) { 
+			// If the array contains a single string, we want replace it with the result (string)
+			return calcStrResult(nestedParenArr[0]);
+		} else {
+			// Otherwise we need to make sure everything in this array is a string, join those strings together, and calculate that (string) result. 
+			while(i--) {
+				item = nestedParenArr[i];
+				if (typeof item !== "string") {
+					nestedParenArr[i] = calcFromNestedParenArr(item);
 				}
-				return calcStrResult(nestedParenArr.join(""));
 			}
+			return calcStrResult(nestedParenArr.join(""));
 		}
 	}
 	//------------------------------------------
 	function calcFromNestedParenStr(nestedParenStr) {
 		return calcFromNestedParenArr(parenToArr(nestedParenStr));
 	}
-	// export to GLOBAL	
-	// GLOBAL["unitPlus"] = unitPlus;
-	// GLOBAL["unitMinus"] = unitMinus;
-	// GLOBAL["unitTimes"] = unitTimes;
-	// GLOBAL["unitDiv"] = unitDiv;
-	// GLOBAL["unitPow"] = unitPow;	
-	// GLOBAL["groupString"] = groupString;
-	// GLOBAL["parseString"] = parseString;
-	// GLOBAL["calcUnitResult"] = calcUnitResult;
-	// GLOBAL["toNum"] = toNum;
-	// GLOBAL["toUnitObj"] = toUnitObj;
-	// GLOBAL["splitToNestedArr"] = splitToNestedArr;
-	// GLOBAL["unitObjToStr"] = unitObjToStr;		
-	// GLOBAL["calcOpsFromFullArr"] = calcOpsFromFullArr;
+	//------------------------------------------
+	/*
+		5*(10 m + 50 feet^2 / (4 in))^10 + 3
+		["5*, ["10 m + 50 feet^2 / ", ["4 in"]], "^10 + 3"]
+	*/
+	// Take a string and convert a nested array that duplicates the form of nested parentheses in the string.
+	// Should be able to then evaluate from inside out using calcUnitResult???
+	function parenToArr(str) {
+		var openParenPos, closeParenPos, parenCount, startToOpen, openToClose, closeToEnd, result;
+		
+		// Find position of first open paren
+		openParenPos = str.indexOf("(");	
+		if (openParenPos !== -1) {		
+			for (var i = openParenPos + 1, parenCount = 1, len = str.length; 0 < parenCount && i < len; i++) {		
+				// Increment count when we find an open paren; decrement when we find a closed one. 
+				if (str[i] === "(") {
+					parenCount++;
+				} else if (str[i] === ")") {
+					parenCount--;
+				}
+				
+				// When the count reaches zero, we've found the matching paren
+				if (parenCount === 0) {
+					closeParenPos = i;
+				}
+			}	
+			
+			// Slice from string start to openParenPos 
+			startToOpen = str.slice(0, openParenPos);
+			// Slice from openParenPos to closeParenPos
+			openToClose = str.slice(openParenPos+1, closeParenPos);
+			// Slice from closeParenPos to end of string	
+			closeToEnd = str.slice(closeParenPos+1);
+			
+			// build result
+			result = [];
+			if (startToOpen) { 
+				// we don't need to process stuff before paren
+				result.push(startToOpen);
+			}
+			if (openToClose) {
+				// apply function again to stuff between parens
+				result.push(parenToArr(openToClose));
+			}
+			if (closeToEnd) {
+				// apply function again to stuff after closing paren
+				result = result.concat(parenToArr(closeToEnd));
+			} 
+		} else {
+			result = [str];
+		}
+		
+		return result;
+	};
 //}());
 //unitTimes({dim:{L:1, T:-3}, factor:3}, {dim:{L:2, T:3}, factor:5});
 //unitPlus({dim:{L:1, T:-3}, factor:13}, {dim:{L:1, T:-3}, factor:5});
 //unitPlus({dim:{}, factor:13}, {dim:{}, factor:5});
 //unitPow({dim:{L:1, T:2, M:3}, factor:5}, 3);
 //unitPlusArr([{dim:{L:1}, factor:5}, {dim:{L:1}, factor:5}, {dim:{L:1}, factor:5}, {dim:{L:1}, factor:5}, {dim:{L:1}, factor:5}]);
-/*
-	5*(10 m + 50 feet^2 / (4 in))^10 + 3
-	
-
-	["5*, ["10 m + 50 feet^2 / ", ["4 in"]], "^10 + 3"]
-
-*/
-// Take a string and convert a nested array that duplicates the form of nested parentheses in the string.
-// Should be able to then evaluate from inside out using calcUnitResult???
-function parenToArr(str) {
-	var openParenPos, closeParenPos, parenCount, startToOpen, openToClose, closeToEnd, result;
-	
-	// Find position of first open paren
-	openParenPos = str.indexOf("(");	
-	if (openParenPos !== -1) {		
-		for (var i = openParenPos + 1, parenCount = 1, len = str.length; 0 < parenCount && i < len; i++) {		
-			// Increment count when we find an open paren; decrement when we find a closed one. 
-			if (str[i] === "(") {
-				parenCount++;
-			} else if (str[i] === ")") {
-				parenCount--;
-			}
-			
-			// When the count reaches zero, we've found the matching paren
-			if (parenCount === 0) {
-				closeParenPos = i;
-			}
-		}	
-		
-		// Slice from string start to openParenPos 
-		startToOpen = str.slice(0, openParenPos);
-		// Slice from openParenPos to closeParenPos
-		openToClose = str.slice(openParenPos+1, closeParenPos);
-		// Slice from closeParenPos to end of string	
-		closeToEnd = str.slice(closeParenPos+1);
-		
-		// build result
-		result = [];
-		if (startToOpen) { 
-			// we don't need to process stuff before paren
-			result.push(startToOpen);
-		}
-		if (openToClose) {
-			// apply function again to stuff between parens
-			result.push(parenToArr(openToClose));
-		}
-		if (closeToEnd) {
-			// apply function again to stuff after closing paren
-			result = result.concat(parenToArr(closeToEnd));
-		} 
-	} else {
-		result = [str];
-	}
-	
-	return result;
-};
-
