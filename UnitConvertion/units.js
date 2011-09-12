@@ -24,6 +24,8 @@ var global = this;
 		"foot":{dim:{L:1}, factor:0.3048, alias:["foot", "feet", "ft", "'"]},
 		"yard":{dim:{L:1}, factor:0.9144, alias:["yard", "yards", "yd", "yds"]},
 		"mile":{dim:{L:1}, factor:1609.344, alias:["mile", "miles", "mi"]},
+		"lightyear":{dim:{L:1}, factor:9.4605284e15, alias:["lightyear", "lightyears"]},
+		"parsec":{dim:{L:1}, factor:3.08568025e16, alias:["parsec", "parsecs"]},
 		
 		// AREA
 		//"xxx":{dim:{L:1}, factor:1, alias:["xxx", "xxx"]},
@@ -334,17 +336,18 @@ var global = this;
 	//------------------------------------------
 	function unitConvert(str, unitStr) {
 		var strResult = calcFromNestedParenStr(str);
-		var unitObj = calcUnitResult(strResult);
-		var toUnit = calcUnitResult(unitStr);
-		if (dimsMatch(unitObj, toUnit)) {
-			return "" + unitObj.factor/toUnit.factor + " " + unitStr; 
+		if (unitStr) {
+			var unitObj = calcUnitResult(strResult);
+			var toUnit = calcUnitResult(unitStr);
+			if (dimsMatch(unitObj, toUnit)) {
+				return "" + unitObj.factor/toUnit.factor + " " + unitStr; 
+			} else {
+				throw incompatibleDimError;
+			}
 		} else {
-			throw incompatibleDimError;
+			return strResult;
 		}
 	};
-	//------------------------------------------
-	function unitConvertFromStr() {
-	}
 	//------------------------------------------
 	function unitObjToStr(unitObj) {
 		var factor = unitObj.factor, dim = unitObj.dim, units = "", dimExp;
@@ -382,6 +385,13 @@ var global = this;
 	//------------------------------------------
 	function calcFromNestedParenStr(nestedParenStr) {
 		return calcFromNestedParenArr(parenToArr(nestedParenStr));
+	}
+	//------------------------------------------
+	function calcWithUnitConversion(str) {
+		// split on "in" or "to"
+		var splitStrArr = str.replace(/(\s+)(in|to)(\s+[a-zA-Z])/, "$1@@@$3").split(/\s+@@@\s+/);
+		console.debug("splitStrArr", splitStrArr[0], "|", splitStrArr[1]);
+		return unitConvert(splitStrArr[0], splitStrArr[1]);
 	}
 	//------------------------------------------
 	/*
