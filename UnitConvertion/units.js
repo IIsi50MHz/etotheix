@@ -1,5 +1,5 @@
 var GLOBAL = this;
-(function () {
+//(function () {
 	// All units are converted to these when doing calculations
 	var DIM = {
 		L:"m",
@@ -8,6 +8,9 @@ var GLOBAL = this;
 	};
 	// Conversion factors for all units 
 	var UNIT = {
+		// ANGLE
+		"degree":{dim:{}, factor:Math.PI/180, alias:["degree", "degrees", "deg"]},
+		
 		// LENGTH
 		"meter":{dim:{L:1}, factor:1, alias:["meter", "meters", "metre", "metres", "m"]},
 		"centimeter":{dim:{L:1}, factor:0.01, alias:["centimeter", "centimeters", "centimetre", "centimetres", "cm"]},
@@ -34,12 +37,17 @@ var GLOBAL = this;
 		"mph":{dim:{L:1, T:-1}, factor:1609.344/3600, alias:["mph"]},
 		"kph":{dim:{L:1, T:-1}, factor:1000/3600, alias:["kph"]},
 		
+		// FUNCTIONS
+		"sine": {dim:{}, alias:["sine", "sin"], f:function (x) {
+			return Math.sin(toNum(x));
+		}},
+		
 		// CONSTANTS
 		"pi": {dim:{}, factor:Math.PI, alias:["pi", "Pi", "PI"]},
 		"e": {dim:{}, factor:Math.E, alias:["e", "E"]} //
 		/////////////////////////////////////////////////
 	};
-
+	//------------------------------------------
 	// expand UNIT object to include all alias units
 	(function () {
 		for (var key in UNIT) {
@@ -49,9 +57,9 @@ var GLOBAL = this;
 			}
 		}
 	}());
-	
+	//------------------------------------------
 	var ONE = {dim:{}, factor:1}, NEGATIVE_ONE = {dim:{}, factor:-1}, ZERO = {dim:{}, factor:0};
-	
+	//------------------------------------------
 	// Converts a number a unit object
 	function toUnitObj(x) {
 		var result, xNum = +x;
@@ -64,7 +72,7 @@ var GLOBAL = this;
 		}
 		return result;
 	}
-	
+	//------------------------------------------
 	// Add unit objects (or numbers)
 	function unitPlus(u1, u2) {
 		var result = {dim:{}}, dimAreCompatible = true;
@@ -94,7 +102,7 @@ var GLOBAL = this;
 		//console.debug("result", result);
 		return result;
 	}
-	
+	//------------------------------------------
 	// Subtract units objects (or numbers)
 	function unitMinus(u1, u2) { 
 		var result;
@@ -107,7 +115,7 @@ var GLOBAL = this;
 		}
 		return result;
 	}
-	
+	//------------------------------------------
 	// Multiply unit objects (or numbers)
 	function unitTimes(u1, u2) {		
 		var result = {dim:{}};
@@ -132,7 +140,7 @@ var GLOBAL = this;
 		}		
 		return result;
 	}
-	
+	//------------------------------------------
 	// Divide units objects (or numbers)
 	function unitDiv(u1, u2) {		
 		var result;
@@ -145,7 +153,7 @@ var GLOBAL = this;
 		}
 		return result;
 	}
-	
+	//------------------------------------------
 	// Raise unit object (or number) to a power. Power must be dimensionless.
 	function unitPow(u, p) {
 		var result;		
@@ -168,7 +176,7 @@ var GLOBAL = this;
 		}		
 		return result;
 	}
-	
+	//------------------------------------------
 	// Convert a dimensionless unit object to a number
 	function toNum(x) {
 		// x can't be converted to number unless it's dimensionless
@@ -181,7 +189,7 @@ var GLOBAL = this;
 		}
 		return result;
 	}	
-
+	//------------------------------------------
 	// Apply operator to an array
 	function applyOpToArr(op, arr) {
 		if (op.inReverse) {
@@ -194,14 +202,14 @@ var GLOBAL = this;
 		}		
 		return result;
 	}
-
+	//------------------------------------------
 	function groupString(str) {
 		str = str.replace(/[(]/g, "group('");
 		str = str.replace(/[)]/g, "')");
 		return str;
 	}
-	
-	// Reformat str so it can be split into a special nested array, then to the split.
+	//------------------------------------------
+	// Reformat str so it can be split into a special nested array, then do the split.
 	function parseString(str) {
 		//console.debug("// str\n", str);
 		// normalize space
@@ -256,7 +264,9 @@ var GLOBAL = this;
 	// TODO: handle functions (tan, log, arcsin, etc.)
 	// TODO: handle constants (pi, e, etc.)
 	// TODO: handle parentheses
+	//------------------------------------------
 	function generateOrderedOpStrArray() {return ["+", "~", "*", "/", "|", "`", "^"];}
+	//------------------------------------------
 	function splitToNestedArr(arr, orderedOpStrArr) {
 		orderedOpStrArr || (orderedOpStrArr = generateOrderedOpStrArray());		
 		var opStr = orderedOpStrArr.shift();		
@@ -269,14 +279,18 @@ var GLOBAL = this;
 		} 		
 		return arr;
 	}
-	
+	//------------------------------------------
 	unitPow.inReverse = true;
-	function generateorderedOpArr() {return [unitPlus, unitMinus, unitTimes, unitDiv, unitTimes, unitDiv, unitPow];}		
+	function generateOrderedOpArr() {
+		return [unitPlus, unitMinus, unitTimes, unitDiv, unitTimes, unitDiv, unitPow];
+	}
+	//------------------------------------------	
 	function copyArr(arr) {
 		var i = arr.length, copy = [];
 		while (i--) {copy[i] = arr[i];}
 		return copy;
 	}	
+	//------------------------------------------
 	function calcOpsFromFullArr(arr, orderedOpArr) {		
 		var nextFunc = orderedOpArr.length > 1 ? calcOpsFromFullArr : toUnitObj,
 			op = orderedOpArr.shift();		
@@ -287,35 +301,64 @@ var GLOBAL = this;
 		
 		return applyOpToArr(op , arr);		
 	}
-	function calcUnitResult(str) {return calcOpsFromFullArr(parseString(str), generateorderedOpArr());}	
-	
+	//------------------------------------------
+	function calcUnitResult(str) {
+		return calcOpsFromFullArr(parseString(str), generateOrderedOpArr());
+	}	
+	//------------------------------------------
 	function unitObjToStr(unitObj) {
-	var factor = unitObj.factor, dim = unitObj.dim, units = "", dimExp;
-	for (var key in dim) {
-		dimExp = dim[key];
-		units += " " + DIM[key];
-		if (dimExp != 1) {
-			units += "^" + dimExp;
+		var factor = unitObj.factor, dim = unitObj.dim, units = "", dimExp;
+		for (var key in dim) {
+			dimExp = dim[key];
+			units += " " + DIM[key];
+			if (dimExp != 1) {
+				units += "^" + dimExp;
+			}
+		}
+		
+		return "" + factor + units;
+	}
+	//------------------------------------------
+	function calcStrResult(str) {
+		return unitObjToStr(calcUnitResult(str));
+	}
+	//------------------------------------------
+	var recurseCount = 0;
+	function flattenNestedParenArr(nestedParenArr) {
+		if (recurseCount < 100) {
+			var i = nestedParenArr.length, item, resultStr;
+			recurseCount++;
+			if (i === 1) { 
+				// If the array contains a single string, we want replace it with the result (string)
+				return calcStrResult(nestedParenArr[0]);
+			} else {
+				// Otherwise we need to make sure everything in this array is a string, join those strings together, and calculate that (string) result. 
+				while(i--) {
+					item = nestedParenArr[i];
+					if (typeof item !== "string") {
+						nestedParenArr[i] = flattenNestedParenArr(item);
+					}
+				}
+				return calcStrResult(nestedParenArr.join(""));
+			}
 		}
 	}
-	
-	return "" + factor + units;
-}
 
 	// export to GLOBAL	
-	GLOBAL["unitPlus"] = unitPlus;
-	GLOBAL["unitMinus"] = unitMinus;
-	GLOBAL["unitTimes"] = unitTimes;
-	GLOBAL["unitDiv"] = unitDiv;
-	GLOBAL["unitPow"] = unitPow;	
-	GLOBAL["groupString"] = groupString;
-	GLOBAL["parseString"] = parseString;
-	GLOBAL["calcUnitResult"] = calcUnitResult;
-	GLOBAL["toNum"] = toNum;
-	GLOBAL["toUnitObj"] = toUnitObj;
-	GLOBAL["splitToNestedArr"] = splitToNestedArr;
-	GLOBAL["unitObjToStr"] = unitObjToStr;		
-}());
+	// GLOBAL["unitPlus"] = unitPlus;
+	// GLOBAL["unitMinus"] = unitMinus;
+	// GLOBAL["unitTimes"] = unitTimes;
+	// GLOBAL["unitDiv"] = unitDiv;
+	// GLOBAL["unitPow"] = unitPow;	
+	// GLOBAL["groupString"] = groupString;
+	// GLOBAL["parseString"] = parseString;
+	// GLOBAL["calcUnitResult"] = calcUnitResult;
+	// GLOBAL["toNum"] = toNum;
+	// GLOBAL["toUnitObj"] = toUnitObj;
+	// GLOBAL["splitToNestedArr"] = splitToNestedArr;
+	// GLOBAL["unitObjToStr"] = unitObjToStr;		
+	// GLOBAL["calcOpsFromFullArr"] = calcOpsFromFullArr;
+//}());
 //unitTimes({dim:{L:1, T:-3}, factor:3}, {dim:{L:2, T:3}, factor:5});
 //unitPlus({dim:{L:1, T:-3}, factor:13}, {dim:{L:1, T:-3}, factor:5});
 //unitPlus({dim:{}, factor:13}, {dim:{}, factor:5});
@@ -324,15 +367,8 @@ var GLOBAL = this;
 /*
 	5*(10 m + 50 feet^2 / (4 in))^10 + 3
 	
-	5*|(|10 m + 50 feet^2 / |(|4 in|)|)^10 + 3
-	["5*","(10 m + 50 feet^2 / ", "(4 in)", ")", "^10 + 3"]
-	
-	["5*","(", "10 m + 50 feet^2 / ", "(", "4 in", ")", ")", "^10 + 3"]
-	
-	["5*","(", "10 m + 50 feet^2 / ", "(", "4 in))^10 + 3"]
-	
 
-	["5", "*", ["10", "m", "+", "50", "feet", "^", "2", "/", "4", "in"], "^", "10", "+", "3"]	
+	["5*, ["10 m + 50 feet^2 / ", ["4 in"]], "^10 + 3"]
 
 */
 // Take a string and convert a nested array that duplicates the form of nested parentheses in the string.
@@ -344,7 +380,7 @@ function parenToArr(str) {
 	openParenPos = str.indexOf("(");	
 	if (openParenPos !== -1) {		
 		for (var i = openParenPos + 1, parenCount = 1, len = str.length; 0 < parenCount && i < len; i++) {		
-			// Increment count when we find an opne paren; decrement when we find a closed one. 
+			// Increment count when we find an open paren; decrement when we find a closed one. 
 			if (str[i] === "(") {
 				parenCount++;
 			} else if (str[i] === ")") {
