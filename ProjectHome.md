@@ -1,0 +1,1 @@
+The goal of the project is to create a computer algebra system that runs entirely in browser.
